@@ -5,9 +5,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { Menu, X, Phone, Clock, ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const DOCTOLIB_URL =
   "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking?speciality_id=1336&utm_source=website";
+
+const locales = [
+  { code: "de", flag: "🇩🇪", label: "Deutsch" },
+  { code: "en", flag: "🇬🇧", label: "English" },
+  { code: "fr", flag: "🇫🇷", label: "Français" },
+  { code: "tr", flag: "🇹🇷", label: "Türkçe" },
+];
 
 const navLinks = [
   { key: "practice", href: "/praxis" },
@@ -46,6 +54,24 @@ export default function Navbar() {
             <Clock size={11} />
             Mo–Di, Do: 08–12 &amp; 14–17 | Mi, Fr: 08–12
           </span>
+        </div>
+        {/* Language switcher */}
+        <div className="flex items-center gap-1">
+          {locales.map((loc) => (
+            <Link
+              key={loc.code}
+              href={`/${loc.code}`}
+              title={loc.label}
+              className={cn(
+                "flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium transition-all",
+                locale === loc.code
+                  ? "bg-white/20 text-white"
+                  : "text-slate-400 hover:text-white hover:bg-white/10"
+              )}
+            >
+              <span className="text-base leading-none">{loc.flag}</span>
+            </Link>
+          ))}
         </div>
       </div>
 
