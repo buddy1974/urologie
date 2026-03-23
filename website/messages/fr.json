@@ -1,0 +1,36 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "practice": "Notre Cabinet",
+    "team": "Équipe",
+    "services": "Prestations",
+    "appointment": "Prendre RDV",
+    "contact": "Contact",
+    "portal": "Espace Patient"
+  },
+  "home": {
+    "hero_title": "Cabinet d'Urologie Neuwied",
+    "hero_subtitle": "Urologie moderne avec suivi personnalisé",
+    "hero_cta": "Prendre rendez-vous",
+    "hero_cta_secondary": "Nos prestations",
+    "welcome_title": "Bienvenue",
+    "welcome_text": "Notre philosophie est de prendre le temps nécessaire pour chaque patient afin de discuter en détail de ses problèmes de santé."
+  },
+  "contact": {
+    "address": "Dierdorfer Str. 115-117, 56564 Neuwied",
+    "phone": "02631 - 23351",
+    "fax": "02631 - 941845"
+  },
+  "hours": {
+    "title": "Horaires de consultation",
+    "monday": "Lun: 08:00–12:00, 14:00–17:00",
+    "tuesday": "Mar: 08:00–12:00, 14:00–17:00",
+    "wednesday": "Mer: 08:00–12:00",
+    "thursday": "Jeu: 08:00–12:00, 14:00–17:00",
+    "friday": "Ven: 08:00–12:00"
+  },
+  "chat": {
+    "greeting": "Bonjour! Je suis l'assistant IA du cabinet Urologie Neuwied. Comment puis-je vous aider?",
+    "disclaimer": "Cet assistant fournit uniquement des informations générales. Ne remplace pas un avis médical."
+  }
+}

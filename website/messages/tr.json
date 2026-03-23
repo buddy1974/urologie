@@ -1,0 +1,36 @@
+{
+  "nav": {
+    "home": "Ana Sayfa",
+    "practice": "Kliniğimiz",
+    "team": "Ekip",
+    "services": "Hizmetler",
+    "appointment": "Randevu Al",
+    "contact": "İletişim",
+    "portal": "Hasta Portalı"
+  },
+  "home": {
+    "hero_title": "Neuwied Üroloji Kliniği",
+    "hero_subtitle": "Kişisel bakımla modern üroloji",
+    "hero_cta": "Randevu Al",
+    "hero_cta_secondary": "Hizmetlerimiz",
+    "welcome_title": "Hoş Geldiniz",
+    "welcome_text": "Kliniğimizin felsefesi, her hastamıza zaman ayırarak sağlık sorunlarını ve sorularını ayrıntılı biçimde ele almaktır."
+  },
+  "contact": {
+    "address": "Dierdorfer Str. 115-117, 56564 Neuwied",
+    "phone": "02631 - 23351",
+    "fax": "02631 - 941845"
+  },
+  "hours": {
+    "title": "Muayene Saatleri",
+    "monday": "Pzt: 08:00–12:00, 14:00–17:00",
+    "tuesday": "Sal: 08:00–12:00, 14:00–17:00",
+    "wednesday": "Çar: 08:00–12:00",
+    "thursday": "Per: 08:00–12:00, 14:00–17:00",
+    "friday": "Cum: 08:00–12:00"
+  },
+  "chat": {
+    "greeting": "Merhaba! Neuwied Üroloji Kliniği'nin yapay zeka asistanıyım. Size nasıl yardımcı olabilirim?",
+    "disclaimer": "Bu asistan yalnızca genel bilgi verir. Tıbbi tavsiyenin yerini tutmaz."
+  }
+}

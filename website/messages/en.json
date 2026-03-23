@@ -1,0 +1,36 @@
+{
+  "nav": {
+    "home": "Home",
+    "practice": "Our Practice",
+    "team": "Team",
+    "services": "Services",
+    "appointment": "Book Appointment",
+    "contact": "Contact",
+    "portal": "Patient Portal"
+  },
+  "home": {
+    "hero_title": "Urology Practice Neuwied",
+    "hero_subtitle": "Modern urology with personal care",
+    "hero_cta": "Book Appointment",
+    "hero_cta_secondary": "Our Services",
+    "welcome_title": "Welcome",
+    "welcome_text": "Our practice philosophy is to take the time for each individual patient to discuss their medical concerns and questions in detail."
+  },
+  "contact": {
+    "address": "Dierdorfer Str. 115-117, 56564 Neuwied",
+    "phone": "02631 - 23351",
+    "fax": "02631 - 941845"
+  },
+  "hours": {
+    "title": "Opening Hours",
+    "monday": "Mon: 08:00–12:00, 14:00–17:00",
+    "tuesday": "Tue: 08:00–12:00, 14:00–17:00",
+    "wednesday": "Wed: 08:00–12:00",
+    "thursday": "Thu: 08:00–12:00, 14:00–17:00",
+    "friday": "Fri: 08:00–12:00"
+  },
+  "chat": {
+    "greeting": "Hello! I am the AI assistant of Urologie Neuwied. How can I help you?",
+    "disclaimer": "This assistant provides general information only. Not a substitute for medical advice."
+  }
+}

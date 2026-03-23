@@ -1,0 +1,36 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "practice": "Unsere Praxis",
+    "team": "Team",
+    "services": "Leistungen",
+    "appointment": "Termin buchen",
+    "contact": "Kontakt",
+    "portal": "Patientenportal"
+  },
+  "home": {
+    "hero_title": "Urologische Praxis Neuwied",
+    "hero_subtitle": "Moderne Urologie mit persönlicher Betreuung",
+    "hero_cta": "Termin buchen",
+    "hero_cta_secondary": "Leistungen entdecken",
+    "welcome_title": "Herzlich Willkommen",
+    "welcome_text": "Zur Philosophie unserer Praxis gehört es, dass wir uns für jeden einzelnen Patienten die Zeit nehmen, um die jeweiligen Krankheitsbeschwerden und medizinischen Fragestellungen ausführlich zu besprechen."
+  },
+  "contact": {
+    "address": "Dierdorfer Str. 115-117, 56564 Neuwied",
+    "phone": "02631 - 23351",
+    "fax": "02631 - 941845"
+  },
+  "hours": {
+    "title": "Sprechstunden",
+    "monday": "Mo: 08:00–12:00, 14:00–17:00",
+    "tuesday": "Di: 08:00–12:00, 14:00–17:00",
+    "wednesday": "Mi: 08:00–12:00",
+    "thursday": "Do: 08:00–12:00, 14:00–17:00",
+    "friday": "Fr: 08:00–12:00"
+  },
+  "chat": {
+    "greeting": "Hallo! Ich bin der KI-Assistent der Urologie Neuwied. Wie kann ich Ihnen helfen?",
+    "disclaimer": "Dieser Assistent gibt nur allgemeine Informationen. Kein Ersatz für ärztliche Beratung."
+  }
+}
