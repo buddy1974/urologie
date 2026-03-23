@@ -7,6 +7,7 @@ import type { Locale } from "@/types";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ChatWidget from "@/components/chat/ChatWidget";
+import JsonLd from "@/components/JsonLd";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -24,12 +25,22 @@ export const metadata: Metadata = {
     "Vasektomie",
     "UroLift",
     "Andrologie",
+    "Urologe Rheinland-Pfalz",
   ],
   openGraph: {
     title: "Urologie Neuwied | Dr. Walters T. Fomuki",
     description: "Moderne Urologie mit persönlicher Betreuung in Neuwied.",
     locale: "de_DE",
     type: "website",
+    url: "https://urologie-neuwied.de",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
 };
 
@@ -50,6 +61,9 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
+      <head>
+        <JsonLd />
+      </head>
       <body className="antialiased flex flex-col min-h-screen">
         <NextIntlClientProvider messages={messages}>
           <Navbar />
