@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-turbopack)",
+      "Bash(rm \"C:/Users/loneb/Documents/ai-software-dev/projects/urologie/website/.gitkeep\")",
+      "Bash(printf '\\\\n')",
+      "Bash(printf 'No\\\\nNo\\\\n')",
+      "Bash(npm install:*)",
+      "Bash(cd:*)",
+      "Bash(npm run:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill //PID 1740 //F)",
+      "Bash(taskkill //PID 39100 //F)",
+      "Bash(ls:*)",
+      "Bash(npm create:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(node -e \"const p=require\\(''./package.json''\\); console.log\\(JSON.stringify\\({...p.dependencies,...p.devDependencies},null,2\\)\\)\")"
+    ]
+  }
+}
