@@ -9,6 +9,14 @@ import Labor from "@/pages/labor/Labor";
 import Dokumente from "@/pages/dokumente/Dokumente";
 import Abrechnung from "@/pages/abrechnung/Abrechnung";
 import Kommunikation from "@/pages/kommunikation/Kommunikation";
+import Team from "@/pages/team/Team";
+import QM from "@/pages/qm/QM";
+import Formulare from "@/pages/formulare/Formulare";
+import Video from "@/pages/video/Video";
+import Analytics from "@/pages/analytics/Analytics";
+import HR from "@/pages/hr/HR";
+import Compliance from "@/pages/compliance/Compliance";
+import Einstellungen from "@/pages/einstellungen/Einstellungen";
 
 export default function App() {
   return (
@@ -24,6 +32,14 @@ export default function App() {
           <Route path="/dokumente" element={<Dokumente />} />
           <Route path="/abrechnung" element={<Abrechnung />} />
           <Route path="/kommunikation" element={<Kommunikation />} />
+          <Route path="/team" element={<Team />} />
+          <Route path="/qm" element={<QM />} />
+          <Route path="/formulare" element={<Formulare />} />
+          <Route path="/video" element={<Video />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/hr" element={<HR />} />
+          <Route path="/compliance" element={<Compliance />} />
+          <Route path="/einstellungen" element={<Einstellungen />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
