@@ -4,6 +4,7 @@ import Login from "@/pages/auth/Login";
 import Overview from "@/pages/overview/Overview";
 import Terminplan from "@/pages/terminplan/Terminplan";
 import Patienten from "@/pages/patienten/Patienten";
+import KiAssistent from "@/pages/ki-assistent/KiAssistent";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
           <Route path="/" element={<Overview />} />
           <Route path="/terminplan" element={<Terminplan />} />
           <Route path="/patienten" element={<Patienten />} />
+          <Route path="/ki-assistent" element={<KiAssistent />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
