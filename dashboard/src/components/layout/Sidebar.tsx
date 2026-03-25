@@ -163,6 +163,11 @@ export default function Sidebar() {
           <LogOut size={16} />
           {!collapsed && <span>Abmelden</span>}
         </button>
+        {!collapsed && (
+          <div className="text-center mt-2 text-xs" style={{ color: "#334155" }}>
+            © 2026 Urologie Neuwied · <a href="https://maxpromo.digital" target="_blank" rel="noopener noreferrer" style={{ color: "#5ECFEB" }}>maxpromo.digital</a>
+          </div>
+        )}
       </div>
     </aside>
   );

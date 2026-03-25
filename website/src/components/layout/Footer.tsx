@@ -115,7 +115,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-slate-700/50">
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-          <span>© {currentYear} Urologische Praxis Walters T. Fomuki · Neuwied. Alle Rechte vorbehalten.</span>
+          <span>© {currentYear} Urologische Praxis Walters T. Fomuki · Neuwied. Alle Rechte vorbehalten. · Entwickelt von <a href="https://maxpromo.digital" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors underline underline-offset-2">maxpromo.digital</a></span>
           <div className="flex items-center gap-5">
             <Link href="/impressum" className="hover:text-slate-300 transition-colors">Impressum</Link>
             <Link href="/datenschutz" className="hover:text-slate-300 transition-colors">Datenschutz</Link>
