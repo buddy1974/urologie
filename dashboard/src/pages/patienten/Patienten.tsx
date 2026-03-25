@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Search, Plus, User, Phone, Calendar, Shield,
-  ChevronRight, FileText, FlaskConical, Clock,
+  ChevronRight, FileText, FlaskConical, Clock, X,
 } from "lucide-react";
 import AddressAutocomplete from "@/components/ui/AddressAutocomplete";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,42 @@ interface Patient {
   conditions: string[];
   doctor: string;
 }
+
+type APIPatient = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string | null;
+  insurance: string;
+  phone: string | null;
+  email: string | null;
+  conditions: string[] | null;
+  doctor: string | null;
+};
+
+type PatientForm = {
+  anrede: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  phone: string;
+  email: string;
+  address: string;
+  insurance: "GKV" | "PKV" | "Selbstzahler";
+  insuranceNumber: string;
+};
+
+const EMPTY_FORM: PatientForm = {
+  anrede: "Herr",
+  firstName: "",
+  lastName: "",
+  dateOfBirth: "",
+  phone: "",
+  email: "",
+  address: "",
+  insurance: "GKV",
+  insuranceNumber: "",
+};
 
 const MOCK_PATIENTS: Patient[] = [
   { id: "1", firstName: "Hans", lastName: "Müller", dob: "15.03.1958", age: 68, insurance: "GKV", phone: "0172-1234567", email: "h.mueller@email.de", lastVisit: "23.03.2026", conditions: ["BPH", "PSA erhöht"], doctor: "Dr. Fomuki" },
@@ -42,12 +78,65 @@ const insuranceColors: Record<string, { color: string; bg: string }> = {
   Selbstzahler: { color: "#d97706", bg: "rgba(217,119,6,0.1)" },
 };
 
+function calcAge(dob: string): number {
+  const birth = new Date(dob);
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+  return age;
+}
+
+function formatDob(iso: string): string {
+  if (!iso) return "";
+  const [y, mo, d] = iso.split("-");
+  return `${d}.${mo}.${y}`;
+}
+
+function mapAPIPatient(p: APIPatient): Patient {
+  const today = new Date().toLocaleDateString("de-DE");
+  return {
+    id: p.id,
+    firstName: p.firstName,
+    lastName: p.lastName,
+    dob: p.dateOfBirth ? formatDob(p.dateOfBirth) : "–",
+    age: p.dateOfBirth ? calcAge(p.dateOfBirth) : 0,
+    insurance: (p.insurance as "GKV" | "PKV" | "Selbstzahler") ?? "GKV",
+    phone: p.phone ?? "–",
+    email: p.email ?? undefined,
+    lastVisit: today,
+    conditions: p.conditions ?? [],
+    doctor: p.doctor ?? "Dr. Fomuki",
+  };
+}
+
+const API = "http://localhost:3002";
+
 export default function Patienten() {
+  const [patients, setPatients] = useState<Patient[]>(MOCK_PATIENTS);
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<Patient | null>(null);
   const [filterInsurance, setFilterInsurance] = useState<string>("all");
+  const [showModal, setShowModal] = useState(false);
+  const [form, setForm] = useState<PatientForm>(EMPTY_FORM);
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
-  const filtered = MOCK_PATIENTS.filter((p) => {
+  async function fetchPatients() {
+    try {
+      const res = await fetch(`${API}/api/patients`);
+      if (res.ok) {
+        const data: APIPatient[] = await res.json();
+        if (data.length > 0) setPatients(data.map(mapAPIPatient));
+      }
+    } catch {
+      // backend offline — keep mock data
+    }
+  }
+
+  useEffect(() => { fetchPatients(); }, []);
+
+  const filtered = patients.filter((p) => {
     const name = `${p.firstName} ${p.lastName}`.toLowerCase();
     const matchSearch = name.includes(search.toLowerCase()) ||
       p.conditions.some((c) => c.toLowerCase().includes(search.toLowerCase()));
@@ -55,8 +144,166 @@ export default function Patienten() {
     return matchSearch && matchInsurance;
   });
 
+  function setField<K extends keyof PatientForm>(key: K, value: PatientForm[K]) {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.firstName || !form.lastName || !form.dateOfBirth) {
+      setFormError("Bitte Vorname, Nachname und Geburtsdatum ausfüllen.");
+      return;
+    }
+    setSubmitting(true);
+    setFormError(null);
+    try {
+      const res = await fetch(`${API}/api/patients`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: form.firstName,
+          lastName: form.lastName,
+          dateOfBirth: form.dateOfBirth,
+          phone: form.phone || null,
+          email: form.email || null,
+          address: form.address || null,
+          insurance: form.insurance,
+          notes: form.insuranceNumber ? `Vers.Nr.: ${form.insuranceNumber}` : null,
+        }),
+      });
+      if (!res.ok) {
+        const err: { error?: string } = await res.json();
+        setFormError(err.error ?? "Fehler beim Speichern.");
+        return;
+      }
+      setShowModal(false);
+      setForm(EMPTY_FORM);
+      await fetchPatients();
+    } catch {
+      setFormError("Server nicht erreichbar. Bitte Backend starten.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  function closeModal() {
+    setShowModal(false);
+    setForm(EMPTY_FORM);
+    setFormError(null);
+  }
+
+  const inputCls = "w-full px-3 py-2 rounded-xl border border-slate-200 text-sm outline-none focus:border-[#1E9FD4] transition-colors bg-white";
+  const labelCls = "block text-xs font-semibold text-slate-600 mb-1";
+
   return (
     <div className="flex h-full">
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
+          onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            {/* Modal header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+              <h2 className="text-lg font-bold text-slate-900">Neuer Patient</h2>
+              <button onClick={closeModal} className="p-2 hover:bg-slate-100 rounded-xl transition-colors">
+                <X size={18} className="text-slate-400" />
+              </button>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+              {/* Anrede */}
+              <div>
+                <label className={labelCls}>Anrede</label>
+                <select value={form.anrede} onChange={(e) => setField("anrede", e.target.value)} className={inputCls}>
+                  <option>Herr</option>
+                  <option>Frau</option>
+                  <option>Divers</option>
+                </select>
+              </div>
+
+              {/* Vorname / Nachname */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className={labelCls}>Vorname *</label>
+                  <input required value={form.firstName} onChange={(e) => setField("firstName", e.target.value)}
+                    placeholder="Max" className={inputCls} />
+                </div>
+                <div>
+                  <label className={labelCls}>Nachname *</label>
+                  <input required value={form.lastName} onChange={(e) => setField("lastName", e.target.value)}
+                    placeholder="Mustermann" className={inputCls} />
+                </div>
+              </div>
+
+              {/* Geburtsdatum */}
+              <div>
+                <label className={labelCls}>Geburtsdatum *</label>
+                <input required type="date" value={form.dateOfBirth} onChange={(e) => setField("dateOfBirth", e.target.value)}
+                  className={inputCls} />
+              </div>
+
+              {/* Telefon / Email */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className={labelCls}>Telefon</label>
+                  <input type="tel" value={form.phone} onChange={(e) => setField("phone", e.target.value)}
+                    placeholder="0172-1234567" className={inputCls} />
+                </div>
+                <div>
+                  <label className={labelCls}>E-Mail</label>
+                  <input type="email" value={form.email} onChange={(e) => setField("email", e.target.value)}
+                    placeholder="max@email.de" className={inputCls} />
+                </div>
+              </div>
+
+              {/* Adresse */}
+              <div>
+                <label className={labelCls}>Adresse</label>
+                <AddressAutocomplete
+                  value={form.address}
+                  onChange={(val) => setField("address", val)}
+                  onSelect={(result) => setField("address", [result.street, result.zip, result.city].filter(Boolean).join(", "))}
+                  placeholder="Straße und Hausnummer..."
+                />
+              </div>
+
+              {/* Versicherung / Versicherungsnummer */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className={labelCls}>Versicherung</label>
+                  <select value={form.insurance}
+                    onChange={(e) => setField("insurance", e.target.value as "GKV" | "PKV" | "Selbstzahler")}
+                    className={inputCls}>
+                    <option value="GKV">GKV</option>
+                    <option value="PKV">PKV</option>
+                    <option value="Selbstzahler">Selbstzahler</option>
+                  </select>
+                </div>
+                <div>
+                  <label className={labelCls}>Versicherungsnummer</label>
+                  <input value={form.insuranceNumber} onChange={(e) => setField("insuranceNumber", e.target.value)}
+                    placeholder="A123456789" className={inputCls} />
+                </div>
+              </div>
+
+              {/* Error */}
+              {formError && (
+                <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-xl">{formError}</p>
+              )}
+
+              {/* Submit */}
+              <button type="submit" disabled={submitting}
+                className="w-full py-3 rounded-xl text-white font-semibold text-sm transition-opacity disabled:opacity-60"
+                style={{ backgroundColor: "#1E9FD4" }}>
+                {submitting ? "Wird gespeichert..." : "Patient speichern"}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Left — Patient list */}
       <div className={cn("flex flex-col border-r border-slate-200 bg-white transition-all",
@@ -67,12 +314,13 @@ export default function Patienten() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-xl font-bold text-slate-900">Patienten</h1>
-              <p className="text-slate-400 text-xs mt-0.5">{MOCK_PATIENTS.length} Patienten gesamt</p>
+              <p className="text-slate-400 text-xs mt-0.5">{patients.length} Patienten gesamt</p>
             </div>
-            <button className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-white text-xs font-semibold"
+            <button onClick={() => setShowModal(true)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-white text-xs font-semibold"
               style={{ backgroundColor: "#1E9FD4" }}>
               <Plus size={14} />
-              Neu
+              Neuer Patient
             </button>
           </div>
 
@@ -106,7 +354,7 @@ export default function Patienten() {
         {/* List */}
         <div className="flex-1 overflow-y-auto divide-y divide-slate-50">
           {filtered.map((patient) => {
-            const ins = insuranceColors[patient.insurance];
+            const ins = insuranceColors[patient.insurance] ?? insuranceColors["GKV"];
             return (
               <button key={patient.id}
                 onClick={() => setSelected(selected?.id === patient.id ? null : patient)}
@@ -132,7 +380,7 @@ export default function Patienten() {
                     <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-2">
                       <span>{patient.age} Jahre</span>
                       <span>·</span>
-                      <span className="truncate">{patient.conditions[0]}</span>
+                      <span className="truncate">{patient.conditions[0] ?? "–"}</span>
                     </div>
                   </div>
                   <ChevronRight size={14} className="text-slate-300 flex-shrink-0" />
@@ -163,7 +411,7 @@ export default function Patienten() {
                   </p>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
-                      style={{ backgroundColor: insuranceColors[selected.insurance].bg, color: insuranceColors[selected.insurance].color }}>
+                      style={{ backgroundColor: insuranceColors[selected.insurance]?.bg, color: insuranceColors[selected.insurance]?.color }}>
                       {selected.insurance}
                     </span>
                     <span className="text-xs text-slate-400">{selected.doctor}</span>
@@ -197,12 +445,12 @@ export default function Patienten() {
               Diagnosen / Anliegen
             </h3>
             <div className="flex flex-wrap gap-2">
-              {selected.conditions.map((c) => (
+              {selected.conditions.length > 0 ? selected.conditions.map((c) => (
                 <span key={c} className="px-3 py-1.5 rounded-xl text-sm font-medium"
                   style={{ backgroundColor: "rgba(30,159,212,0.08)", color: "#1480AB" }}>
                   {c}
                 </span>
-              ))}
+              )) : <span className="text-slate-400 text-sm">Keine Diagnosen</span>}
             </div>
           </div>
 
