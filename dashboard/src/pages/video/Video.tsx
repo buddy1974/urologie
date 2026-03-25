@@ -3,8 +3,8 @@ import { Video as VideoIcon, Plus, Clock, User, CheckCircle, AlertCircle } from 
 import { cn } from "@/lib/utils";
 
 const sessions = [
-  { id:"1", patient:"Hoffmann, Peter", time:"10:00", duration:"30 Min.", type:"UroLift Nachsorge", doctor:"Dr. Fomuki", status:"upcoming", link:"https://meet.urologie-neuwied.de/session-001" },
-  { id:"2", patient:"Wagner, Stefan", time:"11:00", duration:"30 Min.", type:"Andrologie Beratung", doctor:"Dr. Fomuki", status:"upcoming", link:"https://meet.urologie-neuwied.de/session-002" },
+  { id:"1", patient:"Hoffmann, Peter", time:"10:00", duration:"30 Min.", type:"UroLift Nachsorge", doctor:"Dr. Fomuki", status:"upcoming", link:"https://whereby.com/urologie-neuwied-1" },
+  { id:"2", patient:"Wagner, Stefan", time:"11:00", duration:"30 Min.", type:"Andrologie Beratung", doctor:"Dr. Fomuki", status:"upcoming", link:"https://whereby.com/urologie-neuwied-2" },
   { id:"3", patient:"Weber, Klaus", time:"09:00", duration:"20 Min.", type:"PSA-Befund Besprechung", doctor:"Dr. Fomuki", status:"completed", link:"" },
 ];
 
