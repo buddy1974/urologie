@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Bot, Send, Loader2, Sparkles, FileText, FlaskConical, CreditCard, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth";
+import AIWriteButton from "@/components/ui/AIWriteButton";
 
 interface Message {
   id: string;
@@ -235,6 +236,15 @@ export default function KiAssistent() {
 
       {/* Right — Quick prompts */}
       <div className="w-72 flex-shrink-0 border-l border-slate-200 bg-white p-5 overflow-y-auto">
+        <div className="mb-5 pb-5 border-b border-slate-100">
+          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Schreibassistent</h3>
+          <p className="text-xs text-slate-400 mb-3">Stichworte ins Chat-Feld tippen, dann Feld wählen:</p>
+          <div className="space-y-1.5">
+            <AIWriteButton fieldValue={input} field="arztbrief_befund" onResult={(text) => setInput(text)} />
+            <AIWriteButton fieldValue={input} field="arztbrief_therapie" onResult={(text) => setInput(text)} />
+            <AIWriteButton fieldValue={input} field="arztbrief_anamnese" onResult={(text) => setInput(text)} />
+          </div>
+        </div>
         <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Schnellzugriff</h3>
         <div className="space-y-2">
           {QUICK_PROMPTS.map((qp) => {

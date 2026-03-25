@@ -3,6 +3,7 @@ import {
   Search, Plus, User, Phone, Calendar, Shield,
   ChevronRight, FileText, FlaskConical, Clock,
 } from "lucide-react";
+import AddressAutocomplete from "@/components/ui/AddressAutocomplete";
 import { cn } from "@/lib/utils";
 
 interface Patient {

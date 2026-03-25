@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FlaskConical, TrendingUp, TrendingDown, Minus, AlertCircle, CheckCircle, Search, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
+import OCRScanner from "@/components/ui/OCRScanner";
 
 interface LabResult {
   id: string;
@@ -69,6 +70,14 @@ export default function Labor() {
         ))}
       </div>
 
+      <div className="mb-5">
+        <OCRScanner
+          label="Laborzettel scannen (KI)"
+          onImport={(data) => {
+            console.log("Lab scan result:", data);
+          }}
+        />
+      </div>
       <div className="flex gap-3 mb-4">
         <div className="relative flex-1">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
