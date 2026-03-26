@@ -36,53 +36,54 @@ export default function Overview() {
   const navigate = useNavigate();
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-4 lg:p-6 max-w-7xl mx-auto">
 
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">
+      <div className="mb-6 lg:mb-8">
+        <h1 className="text-xl lg:text-2xl font-bold text-slate-900">
           Guten Tag, {user?.name?.split(" ")[0]} 👋
         </h1>
-        <p className="text-slate-500 mt-1">
+        <p className="text-slate-500 mt-1 text-sm">
           Willkommen im PraxisOS — Urologie Neuwied
         </p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6 lg:mb-8">
         {stats.map((stat) => (
           <div key={stat.label}
-            className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
-            <div className="text-3xl font-bold mb-1" style={{ color: stat.color }}>
+            className="bg-white rounded-2xl p-3 lg:p-5 border border-slate-100 shadow-sm">
+            <div className="text-2xl lg:text-3xl font-bold mb-1" style={{ color: stat.color }}>
               {stat.value}
             </div>
-            <div className="text-sm font-semibold text-slate-700">{stat.label}</div>
+            <div className="text-xs lg:text-sm font-semibold text-slate-700">{stat.label}</div>
             <div className="text-xs text-slate-400 mt-0.5">{stat.sub}</div>
           </div>
         ))}
       </div>
 
       {/* Module Grid */}
-      <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">
+      <h2 className="text-xs lg:text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3 lg:mb-4">
         Alle Module
       </h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 lg:gap-3">
         {modules.map((mod) => {
           const Icon = mod.icon;
           return (
             <button
               key={mod.label}
               onClick={() => navigate(mod.href)}
-              className="group bg-white rounded-2xl p-4 border border-slate-100 hover:border-slate-200 hover:shadow-md transition-all text-left"
+              className="group bg-white rounded-2xl p-3 lg:p-4 border border-slate-100 hover:border-slate-200 hover:shadow-md transition-all text-left"
             >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
+              <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-xl flex items-center justify-center mb-2 lg:mb-3"
                 style={{ backgroundColor: `${mod.color}15` }}>
-                <Icon size={20} style={{ color: mod.color }} />
+                <Icon size={16} className="lg:hidden" style={{ color: mod.color }} />
+                <Icon size={20} className="hidden lg:block" style={{ color: mod.color }} />
               </div>
-              <div className="text-sm font-semibold text-slate-800 group-hover:text-slate-900 leading-tight mb-1">
+              <div className="text-xs lg:text-sm font-semibold text-slate-800 group-hover:text-slate-900 leading-tight mb-0.5 lg:mb-1">
                 {mod.label}
               </div>
-              <div className="text-xs text-slate-400 leading-tight">{mod.desc}</div>
+              <div className="text-xs text-slate-400 leading-tight hidden sm:block">{mod.desc}</div>
             </button>
           );
         })}
