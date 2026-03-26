@@ -142,9 +142,9 @@ export default function Patienten() {
   useEffect(() => { fetchPatients(); }, []);
 
   const filtered = patients.filter((p) => {
-    const name = `${p.firstName} ${p.lastName}`.toLowerCase();
+    const name = `${p.firstName ?? ""} ${p.lastName ?? ""}`.toLowerCase();
     const matchSearch = name.includes(search.toLowerCase()) ||
-      p.conditions.some((c) => c.toLowerCase().includes(search.toLowerCase()));
+      (p.conditions ?? []).some((c) => (c ?? "").toLowerCase().includes(search.toLowerCase()));
     const matchInsurance = filterInsurance === "all" || p.insurance === filterInsurance;
     return matchSearch && matchInsurance;
   });

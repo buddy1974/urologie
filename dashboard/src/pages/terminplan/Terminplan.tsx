@@ -131,7 +131,7 @@ export default function Terminplan() {
 
   const selectedPatient = patients.find((p) => p.id === form.patientId);
   const filteredPatients = patients.filter((p) =>
-    `${p.vorname} ${p.nachname}`.toLowerCase().includes(patientSearch.toLowerCase())
+    `${p.vorname ?? ""} ${p.nachname ?? ""}`.toLowerCase().includes(patientSearch.toLowerCase())
   );
 
   async function handleSubmit(e: React.FormEvent) {
@@ -158,8 +158,8 @@ export default function Terminplan() {
   }
 
   const filtered = appointments.filter((a) => {
-    const matchSearch = a.patient.toLowerCase().includes(search.toLowerCase()) ||
-      a.type.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = (a.patient ?? "").toLowerCase().includes(search.toLowerCase()) ||
+      (a.type ?? "").toLowerCase().includes(search.toLowerCase());
     const matchFilter = filter === "all" || a.status === filter;
     return matchSearch && matchFilter;
   });

@@ -89,7 +89,7 @@ export default function Labor() {
   }, []);
 
   const filtered = results.filter(r => {
-    const matchSearch = r.patient.toLowerCase().includes(search.toLowerCase()) || r.test.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = (r.patient ?? "").toLowerCase().includes(search.toLowerCase()) || (r.test ?? "").toLowerCase().includes(search.toLowerCase());
     const matchFilter = filter === "all" || r.status === filter;
     return matchSearch && matchFilter;
   });
