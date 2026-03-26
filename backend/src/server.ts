@@ -17,32 +17,36 @@ const fastify = Fastify({
   },
 });
 
-await fastify.register(cors, {
-  origin: [
-    "http://localhost:3001",
-    "http://localhost:5173",
-    "https://urologie-six.vercel.app",
-    /\.vercel\.app$/,
-  ],
-  credentials: true,
-});
+async function main() {
+  await fastify.register(cors, {
+    origin: [
+      "http://localhost:3001",
+      "http://localhost:5173",
+      "https://urologie-six.vercel.app",
+      /\.vercel\.app$/,
+    ],
+    credentials: true,
+  });
 
-await fastify.register(patientsRoutes);
-await fastify.register(appointmentsRoutes);
-await fastify.register(labRoutes);
+  await fastify.register(patientsRoutes);
+  await fastify.register(appointmentsRoutes);
+  await fastify.register(labRoutes);
 
-fastify.get("/health", async () => ({
-  status: "ok",
-  service: "Urologie Neuwied API",
-  timestamp: new Date().toISOString(),
-}));
+  fastify.get("/health", async () => ({
+    status: "ok",
+    service: "Urologie Neuwied API",
+    timestamp: new Date().toISOString(),
+  }));
 
-const port = parseInt(process.env.PORT ?? "3002");
+  const port = parseInt(process.env.PORT ?? "3002");
 
-try {
-  await fastify.listen({ port, host: "0.0.0.0" });
-  console.log(`🏥 Urologie API running on port ${port}`);
-} catch (err) {
-  fastify.log.error(err);
-  process.exit(1);
+  try {
+    await fastify.listen({ port, host: "0.0.0.0" });
+    console.log(`🏥 Urologie API running on port ${port}`);
+  } catch (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
 }
+
+main();
