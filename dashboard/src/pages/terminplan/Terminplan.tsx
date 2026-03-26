@@ -96,7 +96,7 @@ export default function Terminplan() {
     setLoading(true);
     setFetchError(null);
     try {
-      const res = await fetch("http://localhost:3002/api/appointments");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/appointments`);
       if (!res.ok) throw new Error(`Serverfehler ${res.status}`);
       const data: Appointment[] = await res.json();
       setAppointments(data);
@@ -111,7 +111,7 @@ export default function Terminplan() {
 
   useEffect(() => {
     if (!modalOpen) return;
-    fetch("http://localhost:3002/api/patients")
+    fetch(`${import.meta.env.VITE_API_URL}/api/patients`)
       .then((r) => (r.ok ? r.json() : []))
       .then((data: PatientOption[]) => setPatients(data))
       .catch(() => setPatients([]));
@@ -139,7 +139,7 @@ export default function Terminplan() {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      const res = await fetch("http://localhost:3002/api/appointments", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/appointments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

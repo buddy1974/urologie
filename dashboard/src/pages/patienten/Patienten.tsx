@@ -110,7 +110,7 @@ function mapAPIPatient(p: APIPatient): Patient {
   };
 }
 
-const API = "http://localhost:3002";
+const API = import.meta.env.VITE_API_URL as string;
 
 export default function Patienten() {
   const [patients, setPatients] = useState<Patient[]>(MOCK_PATIENTS);

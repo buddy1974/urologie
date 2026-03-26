@@ -78,7 +78,7 @@ export default function Labor() {
   useEffect(() => {
     setLoading(true);
     setFetchError(null);
-    fetch("http://localhost:3002/api/lab")
+    fetch(`${import.meta.env.VITE_API_URL}/api/lab`)
       .then((r) => {
         if (!r.ok) throw new Error(`Serverfehler ${r.status}`);
         return r.json() as Promise<APILabResult[]>;
