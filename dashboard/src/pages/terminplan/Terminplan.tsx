@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { fetchAppointments as fetchAppointmentsApi, createAppointment, fetchPatients as fetchPatientsApi } from "@/lib/api";
 import {
   Calendar, User, Phone, Plus, Search, X,
   CheckCircle, XCircle, AlertCircle, Circle, ChevronLeft, ChevronRight,
@@ -96,9 +97,7 @@ export default function Terminplan() {
     setLoading(true);
     setFetchError(null);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/appointments`);
-      if (!res.ok) throw new Error(`Serverfehler ${res.status}`);
-      const data: Appointment[] = await res.json();
+      const data: Appointment[] = await fetchAppointmentsApi();
       setAppointments(data);
     } catch (err) {
       setFetchError(err instanceof Error ? err.message : "Verbindungsfehler");
@@ -111,8 +110,7 @@ export default function Terminplan() {
 
   useEffect(() => {
     if (!modalOpen) return;
-    fetch(`${import.meta.env.VITE_API_URL}/api/patients`)
-      .then((r) => (r.ok ? r.json() : []))
+    fetchPatientsApi()
       .then((data: PatientOption[]) => setPatients(data))
       .catch(() => setPatients([]));
   }, [modalOpen]);
@@ -139,15 +137,7 @@ export default function Terminplan() {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/appointments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({})) as { message?: string };
-        throw new Error(err.message ?? `Fehler ${res.status}`);
-      }
+      await createAppointment(form as unknown as Record<string, unknown>);
       closeModal();
       await fetchAppointments();
     } catch (err) {

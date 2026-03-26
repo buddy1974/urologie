@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { fetchPatients as fetchPatientsApi } from "@/lib/api";
 import {
   Search, Plus, User, Phone, Calendar, Shield,
   ChevronRight, FileText, FlaskConical, Clock, X,
@@ -110,8 +111,6 @@ function mapAPIPatient(p: APIPatient): Patient {
   };
 }
 
-const API = import.meta.env.VITE_API_URL as string;
-
 export default function Patienten() {
   const [patients, setPatients] = useState<Patient[]>(MOCK_PATIENTS);
   const [loading, setLoading] = useState(true);
@@ -128,9 +127,7 @@ export default function Patienten() {
     setLoading(true);
     setFetchError(null);
     try {
-      const res = await fetch(`${API}/api/patients`);
-      if (!res.ok) throw new Error(`Serverfehler ${res.status}`);
-      const data: APIPatient[] = await res.json();
+      const data: APIPatient[] = await fetchPatientsApi();
       if (data.length > 0) setPatients(data.map(mapAPIPatient));
     } catch (err) {
       setFetchError(err instanceof Error ? err.message : "Verbindungsfehler");

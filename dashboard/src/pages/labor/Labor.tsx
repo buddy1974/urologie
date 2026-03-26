@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { fetchLabResults } from "@/lib/api";
 import { FlaskConical, TrendingUp, TrendingDown, Minus, AlertCircle, CheckCircle, Search, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
 import OCRScanner from "@/components/ui/OCRScanner";
@@ -78,12 +79,8 @@ export default function Labor() {
   useEffect(() => {
     setLoading(true);
     setFetchError(null);
-    fetch(`${import.meta.env.VITE_API_URL}/api/lab`)
-      .then((r) => {
-        if (!r.ok) throw new Error(`Serverfehler ${r.status}`);
-        return r.json() as Promise<APILabResult[]>;
-      })
-      .then((data) => { if (data.length > 0) setResults(data.map(mapAPILabResult)); })
+    fetchLabResults()
+      .then((data: APILabResult[]) => { if (data.length > 0) setResults(data.map(mapAPILabResult)); })
       .catch((err: unknown) => setFetchError(err instanceof Error ? err.message : "Verbindungsfehler"))
       .finally(() => setLoading(false));
   }, []);
