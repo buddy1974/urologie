@@ -201,7 +201,7 @@ export default function Patienten() {
   const labelCls = "block text-xs font-semibold text-slate-600 mb-1";
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full flex-col md:flex-row">
 
       {/* Modal */}
       {showModal && (
@@ -312,7 +312,7 @@ export default function Patienten() {
 
       {/* Left — Patient list */}
       <div className={cn("flex flex-col border-r border-slate-200 bg-white transition-all",
-        selected ? "w-96 flex-shrink-0" : "flex-1"
+        selected ? "hidden md:flex md:w-96 md:flex-shrink-0" : "flex-1"
       )}>
         {/* Header */}
         <div className="p-5 border-b border-slate-100">
@@ -408,7 +408,13 @@ export default function Patienten() {
 
       {/* Right — Patient detail */}
       {selected && (
-        <div className="flex-1 overflow-y-auto bg-slate-50 p-6">
+        <div className="flex-1 overflow-y-auto bg-slate-50 p-4 md:p-6">
+            <button
+              onClick={() => setSelected(null)}
+              className="md:hidden flex items-center gap-2 text-sm text-slate-500 mb-4 hover:text-slate-800 transition-colors"
+            >
+              ← Zurück zur Liste
+            </button>
           {/* Patient header */}
           <div className="bg-white rounded-2xl p-6 mb-4 border border-slate-100">
             <div className="flex items-start justify-between mb-4">

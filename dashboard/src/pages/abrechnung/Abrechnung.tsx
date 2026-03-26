@@ -83,9 +83,10 @@ export default function Abrechnung() {
                     <span className="font-semibold text-slate-800 text-sm">{inv.patient}</span>
                     <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{backgroundColor:tCfg.bg, color:tCfg.color}}>{inv.type}</span>
                   </div>
-                  <div className="text-xs text-slate-400">{inv.codes} · {inv.date}</div>
+                  <div className="text-xs text-slate-400 truncate">{inv.date}</div>
+                  <div className="text-xs text-slate-300 hidden sm:block truncate">{inv.codes}</div>
                 </div>
-                <div className="text-lg font-bold text-slate-800">{inv.amount}</div>
+                <div className="text-sm md:text-lg font-bold text-slate-800 flex-shrink-0">{inv.amount}</div>
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold flex-shrink-0" style={{backgroundColor:cfg.bg, color:cfg.color}}>
                   <Icon size={12} />{cfg.label}
                 </div>

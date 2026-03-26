@@ -260,56 +260,35 @@ export default function Terminplan() {
           const Icon = cfg.icon;
           return (
             <div key={apt.id}
-              className="bg-white rounded-2xl border border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all overflow-hidden">
-              <div className="flex items-center gap-4 p-4">
-
+              className="bg-white rounded-2xl border border-slate-100 hover:shadow-sm transition-all overflow-hidden">
+              <div className="flex items-center gap-3 p-3 md:p-4">
                 {/* Time */}
-                <div className="text-center w-14 flex-shrink-0">
+                <div className="text-center w-12 flex-shrink-0">
                   <div className="text-sm font-bold text-slate-800">{apt.time}</div>
-                  <div className="text-xs text-slate-400">{apt.duration} Min.</div>
+                  <div className="text-xs text-slate-400">{apt.duration}m</div>
                 </div>
-
                 {/* Color bar */}
-                <div className="w-1 h-10 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: cfg.color }} />
-
+                <div className="w-1 h-10 rounded-full flex-shrink-0" style={{ backgroundColor: cfg.color }} />
                 {/* Patient info */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-0.5">
+                  <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
                     <span className="font-semibold text-slate-800 text-sm">{apt.patient}</span>
-                    <span className="text-xs px-2 py-0.5 rounded-full font-medium"
+                    <span className="text-xs px-1.5 py-0.5 rounded-full font-medium"
                       style={{ backgroundColor: `${insuranceColors[apt.insurance]}15`, color: insuranceColors[apt.insurance] }}>
                       {apt.insurance}
                     </span>
                   </div>
-                  <div className="text-xs text-slate-500 flex items-center gap-3">
-                    <span className="flex items-center gap-1">
-                      <Calendar size={11} />
-                      {apt.type}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <User size={11} />
-                      {apt.doctor}
-                    </span>
-                    {apt.room && (
-                      <span className="flex items-center gap-1">
-                        Zimmer {apt.room}
-                      </span>
-                    )}
+                  <div className="text-xs text-slate-500 flex items-center gap-2 flex-wrap">
+                    <span>{apt.type}</span>
+                    <span className="hidden sm:inline">· {apt.doctor}</span>
+                    {apt.room && <span className="hidden sm:inline">· Zi. {apt.room}</span>}
                   </div>
                 </div>
-
-                {/* Phone */}
-                <div className="hidden md:flex items-center gap-1.5 text-xs text-slate-400">
-                  <Phone size={12} />
-                  {apt.phone}
-                </div>
-
                 {/* Status badge */}
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold flex-shrink-0"
+                <div className="flex items-center gap-1 px-2 py-1.5 rounded-xl text-xs font-semibold flex-shrink-0"
                   style={{ backgroundColor: cfg.bg, color: cfg.color }}>
-                  <Icon size={13} />
-                  {cfg.label}
+                  <Icon size={12} />
+                  <span className="hidden sm:inline">{cfg.label}</span>
                 </div>
               </div>
             </div>

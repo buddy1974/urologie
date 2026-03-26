@@ -159,7 +159,7 @@ export default function Labor() {
           const cfg = statusConfig[r.status];
           const Icon = cfg.icon;
           return (
-            <div key={r.id} className="bg-white rounded-2xl border border-slate-100 hover:shadow-sm transition-all p-4 flex items-center gap-4">
+            <div key={r.id} className="bg-white rounded-2xl border border-slate-100 hover:shadow-sm transition-all p-3 md:p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{backgroundColor:cfg.bg}}>
                 <Icon size={18} style={{color:cfg.color}} />
               </div>
@@ -170,7 +170,7 @@ export default function Labor() {
                 </div>
                 <div className="text-xs text-slate-400">{r.test} · {r.doctor} · {r.date}</div>
               </div>
-              <div className="text-right">
+              <div className="text-right hidden sm:block">
                 <div className="text-lg font-bold" style={{color:cfg.color}}>{r.value} <span className="text-xs font-normal text-slate-400">{r.unit}</span></div>
               </div>
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold flex-shrink-0" style={{backgroundColor:cfg.bg, color:cfg.color}}>
