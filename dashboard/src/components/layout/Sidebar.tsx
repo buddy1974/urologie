@@ -44,12 +44,7 @@ const roleLabels: Record<string, string> = {
   azubi: "Azubi",
 };
 
-interface SidebarProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   const [collapsed, setCollapsed] = useState(false);
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
@@ -63,141 +58,116 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     navigate("/login");
   }
 
-  function handleNavClick() {
-    // Close drawer on mobile after navigation
-    onClose();
-  }
-
   return (
-    <>
-      {/* Mobile backdrop */}
-      <div
-        className={cn(
-          "fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 lg:hidden",
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        )}
-        onClick={onClose}
-      />
-
-      <aside
-        className={cn(
-          "flex flex-col flex-shrink-0 transition-all duration-300",
-          // Mobile: fixed drawer sliding in from left
-          "fixed inset-y-0 left-0 z-50",
-          // Desktop: static in flex flow, always visible
-          "lg:relative lg:inset-auto lg:z-auto lg:translate-x-0",
-          // Mobile slide toggle
-          isOpen ? "translate-x-0" : "-translate-x-full",
-          // Width
-          collapsed ? "lg:w-16 w-60" : "w-60"
-        )}
-        style={{ backgroundColor: "#1A202C", borderRight: "1px solid rgba(255,255,255,0.06)" }}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-4 flex-shrink-0"
-          style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-          {!collapsed && (
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: "#1E9FD4" }}>
-                <span className="text-white font-bold text-xs">U</span>
-              </div>
-              <div className="min-w-0">
-                <div className="text-white font-bold text-sm leading-tight truncate">PraxisOS</div>
-                <div className="text-xs truncate" style={{ color: "#5ECFEB" }}>Urologie Neuwied</div>
-              </div>
+    <aside
+      className={cn(
+        "flex flex-col h-full transition-all duration-300 flex-shrink-0",
+        collapsed ? "w-16" : "w-60"
+      )}
+      style={{ backgroundColor: "#1A202C", borderRight: "1px solid rgba(255,255,255,0.06)" }}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-4 flex-shrink-0"
+        style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+        {!collapsed && (
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: "#1E9FD4" }}>
+              <span className="text-white font-bold text-xs">U</span>
             </div>
-          )}
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="p-1.5 rounded-lg transition-colors flex-shrink-0 hidden lg:block"
-            style={{ color: "#64748b" }}
-            onMouseEnter={(e) => e.currentTarget.style.color = "#ffffff"}
-            onMouseLeave={(e) => e.currentTarget.style.color = "#64748b"}
-          >
-            {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
-          </button>
-        </div>
+            <div className="min-w-0">
+              <div className="text-white font-bold text-sm leading-tight truncate">PraxisOS</div>
+              <div className="text-xs truncate" style={{ color: "#5ECFEB" }}>Urologie Neuwied</div>
+            </div>
+          </div>
+        )}
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="p-1.5 rounded-lg transition-colors flex-shrink-0 hidden lg:block"
+          style={{ color: "#64748b" }}
+          onMouseEnter={(e) => e.currentTarget.style.color = "#ffffff"}
+          onMouseLeave={(e) => e.currentTarget.style.color = "#64748b"}
+        >
+          {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </button>
+      </div>
 
-        {/* Nav */}
-        <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
-          {visibleModules.map((mod) => {
-            const Icon = mod.icon;
-            return (
-              <NavLink
-                key={mod.id}
-                to={mod.href}
-                end={mod.href === "/"}
-                onClick={handleNavClick}
-                className={({ isActive }) =>
-                  cn(
-                    "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group",
-                    isActive
-                      ? "text-white"
-                      : "text-slate-400 hover:text-white"
-                  )
+      {/* Nav */}
+      <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+        {visibleModules.map((mod) => {
+          const Icon = mod.icon;
+          return (
+            <NavLink
+              key={mod.id}
+              to={mod.href}
+              end={mod.href === "/"}
+              onClick={() => onNavigate?.()}
+              className={({ isActive }) =>
+                cn(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group",
+                  isActive ? "text-white" : "text-slate-400 hover:text-white"
+                )
+              }
+              style={({ isActive }) => ({
+                backgroundColor: isActive ? "rgba(30,159,212,0.15)" : "transparent",
+              })}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget;
+                if (!el.classList.contains("active")) {
+                  el.style.backgroundColor = "rgba(255,255,255,0.05)";
                 }
-                style={({ isActive }) => ({
-                  backgroundColor: isActive ? "rgba(30,159,212,0.15)" : "transparent",
-                })}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget;
-                  if (!el.classList.contains("active")) {
-                    el.style.backgroundColor = "rgba(255,255,255,0.05)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget;
-                  if (!el.classList.contains("active")) {
-                    el.style.backgroundColor = "transparent";
-                  }
-                }}
-              >
-                <Icon size={17} className="flex-shrink-0" />
-                {!collapsed && <span className="truncate">{mod.label}</span>}
-              </NavLink>
-            );
-          })}
-        </nav>
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget;
+                if (!el.classList.contains("active")) {
+                  el.style.backgroundColor = "transparent";
+                }
+              }}
+            >
+              <Icon size={17} className="flex-shrink-0" />
+              {!collapsed && <span className="truncate">{mod.label}</span>}
+            </NavLink>
+          );
+        })}
+      </nav>
 
-        {/* User + logout */}
-        <div className="flex-shrink-0 p-3"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-          {!collapsed && user && (
-            <div className="flex items-center gap-2.5 px-2 py-2 rounded-xl mb-2"
-              style={{ backgroundColor: "rgba(255,255,255,0.04)" }}>
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-bold text-white"
-                style={{ backgroundColor: roleColors[user.role] ?? "#1E9FD4" }}>
-                {user.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="text-xs font-semibold text-white truncate">{user.name}</div>
-                <div className="text-xs" style={{ color: roleColors[user.role] ?? "#1E9FD4" }}>
-                  {roleLabels[user.role] ?? user.role}
-                </div>
+      {/* User + logout */}
+      <div className="flex-shrink-0 p-3"
+        style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+        {!collapsed && user && (
+          <div className="flex items-center gap-2.5 px-2 py-2 rounded-xl mb-2"
+            style={{ backgroundColor: "rgba(255,255,255,0.04)" }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-bold text-white"
+              style={{ backgroundColor: roleColors[user.role] ?? "#1E9FD4" }}>
+              {user.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-xs font-semibold text-white truncate">{user.name}</div>
+              <div className="text-xs" style={{ color: roleColors[user.role] ?? "#1E9FD4" }}>
+                {roleLabels[user.role] ?? user.role}
               </div>
             </div>
+          </div>
+        )}
+        <button
+          onClick={handleLogout}
+          className={cn(
+            "flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-sm transition-colors",
+            collapsed ? "justify-center" : ""
           )}
-          <button
-            onClick={handleLogout}
-            className={cn(
-              "flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-sm transition-colors",
-              collapsed ? "justify-center" : ""
-            )}
-            style={{ color: "#64748b" }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = "#f87171"; e.currentTarget.style.backgroundColor = "rgba(239,68,68,0.08)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = "#64748b"; e.currentTarget.style.backgroundColor = "transparent"; }}
-          >
-            <LogOut size={16} />
-            {!collapsed && <span>Abmelden</span>}
-          </button>
-          {!collapsed && (
-            <div className="text-center mt-2 text-xs" style={{ color: "#334155" }}>
-              © 2026 Urologie Neuwied · <a href="https://maxpromo.digital" target="_blank" rel="noopener noreferrer" style={{ color: "#5ECFEB" }}>maxpromo.digital</a>
-            </div>
-          )}
-        </div>
-      </aside>
-    </>
+          style={{ color: "#64748b" }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = "#f87171"; e.currentTarget.style.backgroundColor = "rgba(239,68,68,0.08)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "#64748b"; e.currentTarget.style.backgroundColor = "transparent"; }}
+        >
+          <LogOut size={16} />
+          {!collapsed && <span>Abmelden</span>}
+        </button>
+        {!collapsed && (
+          <div className="text-center mt-2 text-xs" style={{ color: "#334155" }}>
+            © 2026 Urologie Neuwied · <a href="https://maxpromo.digital" target="_blank" rel="noopener noreferrer" style={{ color: "#5ECFEB" }}>maxpromo.digital</a>
+          </div>
+        )}
+      </div>
+    </aside>
   );
 }

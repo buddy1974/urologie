@@ -71,7 +71,8 @@ export default function Dokumente() {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden">
+      {/* Desktop table */}
+      <div className="hidden md:block bg-white rounded-2xl border border-slate-100 overflow-hidden">
         <div className="grid grid-cols-12 gap-4 px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-50">
           <div className="col-span-5">Dokument</div>
           <div className="col-span-2">Patient</div>
@@ -105,6 +106,37 @@ export default function Dokumente() {
               <div className="col-span-1 flex items-center gap-2">
                 <button className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors"><Eye size={13} className="text-slate-400" /></button>
                 <button className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors"><Download size={13} className="text-slate-400" /></button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Mobile cards */}
+      <div className="md:hidden space-y-3">
+        {filtered.map((doc) => {
+          const cfg = typeConfig[doc.type];
+          return (
+            <div key={doc.id} className="bg-white rounded-2xl border border-slate-100 p-4">
+              <div className="flex items-start gap-3 mb-3">
+                <FileText size={18} style={{color:cfg.color, flexShrink:0}} className="mt-0.5" />
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-slate-800 text-sm leading-tight mb-0.5">{doc.name}</p>
+                  <p className="text-xs text-slate-400">{doc.patient} · {doc.date}</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs px-2 py-1 rounded-lg font-medium" style={{backgroundColor:cfg.bg, color:cfg.color}}>{cfg.label}</span>
+                  <span className={cn("text-xs px-2 py-1 rounded-lg font-medium",
+                    doc.signed ? "bg-green-50 text-green-600" : "bg-amber-50 text-amber-600")}>
+                    {doc.signed ? "Signiert" : "Ausstehend"}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors"><Eye size={15} className="text-slate-400" /></button>
+                  <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors"><Download size={15} className="text-slate-400" /></button>
+                </div>
               </div>
             </div>
           );

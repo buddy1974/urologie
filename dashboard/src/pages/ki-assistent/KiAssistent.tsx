@@ -130,7 +130,7 @@ export default function KiAssistent() {
   }
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full flex-col lg:flex-row">
 
       {/* Left — Chat */}
       <div className="flex-1 flex flex-col min-w-0">
@@ -235,7 +235,7 @@ export default function KiAssistent() {
       </div>
 
       {/* Right — Quick prompts */}
-      <div className="w-72 flex-shrink-0 border-l border-slate-200 bg-white p-5 overflow-y-auto">
+      <div className="w-full lg:w-72 flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 bg-white p-5 overflow-y-auto max-h-64 lg:max-h-full">
         <div className="mb-5 pb-5 border-b border-slate-100">
           <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Schreibassistent</h3>
           <p className="text-xs text-slate-400 mb-3">Stichworte ins Chat-Feld tippen, dann Feld wählen:</p>
