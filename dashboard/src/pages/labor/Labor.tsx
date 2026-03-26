@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FlaskConical, TrendingUp, TrendingDown, Minus, AlertCircle, CheckCircle, Search, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
 import OCRScanner from "@/components/ui/OCRScanner";
@@ -16,6 +16,38 @@ interface LabResult {
   status: "normal" | "high" | "low" | "critical";
   doctor: string;
   sent: boolean;
+}
+
+type APILabResult = {
+  id: string;
+  patient: string;
+  test: string;
+  value: string;
+  unit: string | null;
+  refMin: number | null;
+  refMax: number | null;
+  numericValue: number | null;
+  date: string;
+  status: "normal" | "high" | "low" | "critical";
+  doctor: string;
+  sent: boolean;
+};
+
+function mapAPILabResult(r: APILabResult): LabResult {
+  return {
+    id: r.id,
+    patient: r.patient,
+    test: r.test,
+    value: r.value,
+    unit: r.unit ?? "",
+    refMin: r.refMin ?? 0,
+    refMax: r.refMax ?? 0,
+    numericValue: r.numericValue ?? 0,
+    date: r.date,
+    status: r.status,
+    doctor: r.doctor,
+    sent: r.sent,
+  };
 }
 
 const RESULTS: LabResult[] = [
@@ -37,23 +69,39 @@ const statusConfig = {
 };
 
 export default function Labor() {
+  const [results, setResults] = useState<LabResult[]>(RESULTS);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all"|"normal"|"high"|"low"|"critical">("all");
 
-  const filtered = RESULTS.filter(r => {
+  useEffect(() => {
+    setLoading(true);
+    setFetchError(null);
+    fetch("http://localhost:3002/api/lab")
+      .then((r) => {
+        if (!r.ok) throw new Error(`Serverfehler ${r.status}`);
+        return r.json() as Promise<APILabResult[]>;
+      })
+      .then((data) => { if (data.length > 0) setResults(data.map(mapAPILabResult)); })
+      .catch((err: unknown) => setFetchError(err instanceof Error ? err.message : "Verbindungsfehler"))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const filtered = results.filter(r => {
     const matchSearch = r.patient.toLowerCase().includes(search.toLowerCase()) || r.test.toLowerCase().includes(search.toLowerCase());
     const matchFilter = filter === "all" || r.status === filter;
     return matchSearch && matchFilter;
   });
 
-  const counts = { critical: RESULTS.filter(r=>r.status==="critical").length, high: RESULTS.filter(r=>r.status==="high").length, unsent: RESULTS.filter(r=>!r.sent).length };
+  const counts = { critical: results.filter(r=>r.status==="critical").length, high: results.filter(r=>r.status==="high").length, unsent: results.filter(r=>!r.sent).length };
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Labor & Befunde</h1>
-          <p className="text-slate-500 text-sm mt-0.5">{RESULTS.length} Ergebnisse · {counts.unsent} noch nicht versendet</p>
+          <p className="text-slate-500 text-sm mt-0.5">{results.length} Ergebnisse · {counts.unsent} noch nicht versendet</p>
         </div>
       </div>
 
@@ -96,8 +144,18 @@ export default function Labor() {
         </div>
       </div>
 
+      {loading && (
+        <div className="flex items-center justify-center py-16 text-slate-400 text-sm">
+          Laden...
+        </div>
+      )}
+      {!loading && fetchError && (
+        <div className="px-4 py-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm mb-4">
+          {fetchError}
+        </div>
+      )}
       <div className="space-y-2">
-        {filtered.map(r => {
+        {!loading && !fetchError && filtered.map(r => {
           const cfg = statusConfig[r.status];
           const Icon = cfg.icon;
           return (

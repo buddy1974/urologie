@@ -114,6 +114,8 @@ const API = "http://localhost:3002";
 
 export default function Patienten() {
   const [patients, setPatients] = useState<Patient[]>(MOCK_PATIENTS);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<Patient | null>(null);
   const [filterInsurance, setFilterInsurance] = useState<string>("all");
@@ -123,14 +125,17 @@ export default function Patienten() {
   const [formError, setFormError] = useState<string | null>(null);
 
   async function fetchPatients() {
+    setLoading(true);
+    setFetchError(null);
     try {
       const res = await fetch(`${API}/api/patients`);
-      if (res.ok) {
-        const data: APIPatient[] = await res.json();
-        if (data.length > 0) setPatients(data.map(mapAPIPatient));
-      }
-    } catch {
-      // backend offline — keep mock data
+      if (!res.ok) throw new Error(`Serverfehler ${res.status}`);
+      const data: APIPatient[] = await res.json();
+      if (data.length > 0) setPatients(data.map(mapAPIPatient));
+    } catch (err) {
+      setFetchError(err instanceof Error ? err.message : "Verbindungsfehler");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -353,7 +358,17 @@ export default function Patienten() {
 
         {/* List */}
         <div className="flex-1 overflow-y-auto divide-y divide-slate-50">
-          {filtered.map((patient) => {
+          {loading && (
+            <div className="flex items-center justify-center py-16 text-slate-400 text-sm">
+              Laden...
+            </div>
+          )}
+          {!loading && fetchError && (
+            <div className="mx-4 mt-4 px-4 py-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm">
+              {fetchError}
+            </div>
+          )}
+          {!loading && !fetchError && filtered.map((patient) => {
             const ins = insuranceColors[patient.insurance] ?? insuranceColors["GKV"];
             return (
               <button key={patient.id}
