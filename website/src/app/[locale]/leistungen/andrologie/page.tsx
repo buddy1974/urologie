@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Baby, CheckCircle, ExternalLink } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -20,14 +21,24 @@ const services = [
 export default function AndrologiePage() {
   return (
     <div className="min-h-screen bg-white">
-      <div className="bg-gradient-to-br from-[#1A202C] via-[#2D3748] to-[#1A202C] py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: "rgba(20,184,166,0.15)" }}>
-            <Baby size={32} style={{ color: "#14b8a6" }} />
+      <div className="relative overflow-hidden" style={{ minHeight: "300px" }}>
+        <Image
+          src="/images/leistung/Ambulante-Operationen1.jpg"
+          alt="Andrologie & Vasektomie Neuwied"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1A202C]/90 via-[#2D3748]/85 to-[#1A202C]/90" />
+        <div className="relative z-10 py-20 px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: "rgba(20,184,166,0.15)" }}>
+              <Baby size={32} style={{ color: "#14b8a6" }} />
+            </div>
+            <span className="inline-block text-[#5ECFEB] text-sm font-semibold uppercase tracking-widest mb-3">Leistungen</span>
+            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Andrologie &amp; Vasektomie</h1>
+            <p className="text-slate-300 text-lg max-w-2xl mx-auto">Männergesundheit — kompetent und diskret.</p>
           </div>
-          <span className="inline-block text-[#5ECFEB] text-sm font-semibold uppercase tracking-widest mb-3">Leistungen</span>
-          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Andrologie &amp; Vasektomie</h1>
-          <p className="text-slate-300 text-lg max-w-2xl mx-auto">Männergesundheit — kompetent und diskret.</p>
         </div>
       </div>
       <div className="max-w-4xl mx-auto px-6 py-16">

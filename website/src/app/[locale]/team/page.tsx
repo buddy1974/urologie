@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Award, Stethoscope, GraduationCap } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -10,7 +11,7 @@ const doctors = [
   {
     name: "Dr. Walters T. Fomuki",
     role: "Facharzt für Urologie · Praxisinhaber",
-    image: null,
+    image: "/images/Dr-fomuki/fomuki_walters_002.jpg",
     initials: "WF",
     color: "#1E9FD4",
     qualifications: [
@@ -24,7 +25,7 @@ const doctors = [
   {
     name: "Dr. C. Nwankwo",
     role: "Fachärztin für Urologie · Angestellte Ärztin",
-    image: null,
+    image: "/images/team/frau-dr-nwanko.jpg",
     initials: "CN",
     color: "#5ECFEB",
     qualifications: [
@@ -38,6 +39,7 @@ const staff = [
   {
     name: "Bettina Theismann",
     role: "MFA",
+    image: "/images/team/theismann_bettina.jpg",
     initials: "BT",
     focus: ["Praxisorganisation", "Qualitätsbeauftragte"],
     color: "#1E9FD4",
@@ -45,6 +47,7 @@ const staff = [
   {
     name: "Jacqueline Elinger",
     role: "MFA",
+    image: "/images/team/ellinger_jaqueline_2021.jpg",
     initials: "JE",
     focus: ["Zusatzqualifikation Onkologie", "Anmeldung"],
     color: "#5ECFEB",
@@ -52,6 +55,7 @@ const staff = [
   {
     name: "Johanna Sikora",
     role: "MFA",
+    image: "/images/team/sikora_johanna_02.jpg",
     initials: "JS",
     focus: ["Zusatzqualifikation Onkologie", "OP-Assistenz"],
     color: "#14b8a6",
@@ -59,6 +63,7 @@ const staff = [
   {
     name: "Birgit Erhan",
     role: "MFA",
+    image: "/images/team/erhan_birgit.jpg",
     initials: "BE",
     focus: ["Zusatzqualifikation Onkologie", "Labor"],
     color: "#8b5cf6",
@@ -66,6 +71,7 @@ const staff = [
   {
     name: "Frau Jakoby",
     role: "Büroassistenz",
+    image: "/images/team/jakoby_2023.jpg",
     initials: "FJ",
     focus: ["Büroorganisation", "Administration"],
     color: "#f59e0b",
@@ -73,6 +79,7 @@ const staff = [
   {
     name: "Vivien Urmersbach",
     role: "Auszubildende MFA",
+    image: "/images/team/vivien_urmersbach_2023.jpg",
     initials: "VU",
     focus: ["In Ausbildung zur MFA"],
     color: "#1E9FD4",
@@ -80,6 +87,7 @@ const staff = [
   {
     name: "Shau Wen Wang",
     role: "Auszubildende MFA",
+    image: "/images/team/shau_wen_wang_2023.jpg",
     initials: "SW",
     focus: ["In Ausbildung zur MFA"],
     color: "#5ECFEB",
@@ -90,19 +98,29 @@ export default function TeamPage() {
   return (
     <div className="min-h-screen bg-white">
 
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-[#1A202C] via-[#2D3748] to-[#1A202C] py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <span className="inline-block text-[#5ECFEB] text-sm font-semibold uppercase tracking-widest mb-3">
-            Unser Team
-          </span>
-          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-            Erfahren. Engagiert. Persönlich.
-          </h1>
-          <p className="text-slate-300 text-lg max-w-2xl mx-auto">
-            Unser eingespieltes Team sorgt dafür, dass Sie sich von der Anmeldung
-            bis zur Behandlung gut aufgehoben fühlen.
-          </p>
+      {/* Hero with background image */}
+      <div className="relative overflow-hidden" style={{ minHeight: "300px" }}>
+        <Image
+          src="/images/team/header-team.jpg"
+          alt="Team Urologie Neuwied"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1A202C]/90 via-[#2D3748]/85 to-[#1A202C]/90" />
+        <div className="relative z-10 py-20 px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <span className="inline-block text-[#5ECFEB] text-sm font-semibold uppercase tracking-widest mb-3">
+              Unser Team
+            </span>
+            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+              Erfahren. Engagiert. Persönlich.
+            </h1>
+            <p className="text-slate-300 text-lg max-w-2xl mx-auto">
+              Unser eingespieltes Team sorgt dafür, dass Sie sich von der Anmeldung
+              bis zur Behandlung gut aufgehoben fühlen.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -123,12 +141,14 @@ export default function TeamPage() {
 
               <div className="p-8">
                 <div className="flex items-center gap-5 mb-6">
-                  {/* Avatar */}
-                  <div
-                    className="w-20 h-20 rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg flex-shrink-0"
-                    style={{ backgroundColor: doc.color }}
-                  >
-                    {doc.initials}
+                  {/* Photo */}
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden relative flex-shrink-0 shadow-lg">
+                    <Image
+                      src={doc.image}
+                      alt={doc.name}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-[#2D3748]">{doc.name}</h3>
@@ -165,11 +185,13 @@ export default function TeamPage() {
               className="group rounded-2xl border-2 border-slate-100 p-5 hover:border-[#1E9FD4]/30 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-white to-slate-50"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
-                  style={{ backgroundColor: member.color }}
-                >
-                  {member.initials}
+                <div className="w-12 h-12 rounded-xl overflow-hidden relative flex-shrink-0">
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <p className="font-bold text-[#2D3748] text-sm leading-tight">{member.name}</p>

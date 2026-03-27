@@ -1,10 +1,21 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Calendar, MessageCircle, Phone, ArrowRight, Shield, Award, Users } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { Calendar, MessageCircle, Phone, ArrowRight, Shield, Award, Users, ChevronLeft, ChevronRight } from "lucide-react";
 
 const DOCTOLIB_URL =
   "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking?speciality_id=1336&utm_source=website-hero";
+
+const slides = [
+  "/images/header.jpg",
+  "/images/header2.jpg",
+  "/images/header_praxis_01.jpg",
+  "/images/praxis_001.jpg",
+  "/images/praxis_005.jpg",
+  "/images/praxis_0012.jpg",
+];
 
 const stats = [
   { icon: Users, value: "5.000+", label: "Patienten pro Jahr" },
@@ -22,12 +33,45 @@ const fadeUp = {
 };
 
 export default function Hero() {
+  const [current, setCurrent] = useState(0);
+
+  const next = useCallback(() => setCurrent((c) => (c + 1) % slides.length), []);
+  const prev = useCallback(() => setCurrent((c) => (c - 1 + slides.length) % slides.length), []);
+
+  useEffect(() => {
+    const id = setInterval(next, 5000);
+    return () => clearInterval(id);
+  }, [next]);
+
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+    <section className="relative min-h-screen flex items-center overflow-hidden">
+
+      {/* Slider images */}
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={current}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2 }}
+          className="absolute inset-0"
+        >
+          <Image
+            src={slides[current]}
+            alt=""
+            fill
+            className="object-cover"
+            priority={current === 0}
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-blue-950/80 to-slate-900/90" />
 
       {/* Background grid */}
       <div
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-10"
         style={{
           backgroundImage:
             "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
@@ -39,6 +83,41 @@ export default function Hero() {
       <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-[#1E9FD4]/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-[#5ECFEB]/10 rounded-full blur-3xl pointer-events-none" />
 
+      {/* Prev button */}
+      <button
+        onClick={prev}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white transition-colors"
+        aria-label="Vorheriges Bild"
+      >
+        <ChevronLeft size={20} />
+      </button>
+
+      {/* Next button */}
+      <button
+        onClick={next}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white transition-colors"
+        aria-label="Nächstes Bild"
+      >
+        <ChevronRight size={20} />
+      </button>
+
+      {/* Dot indicators */}
+      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className={`rounded-full transition-all duration-300 ${
+              i === current
+                ? "w-6 h-2 bg-[#1E9FD4]"
+                : "w-2 h-2 bg-white/40 hover:bg-white/60"
+            }`}
+            aria-label={`Bild ${i + 1}`}
+          />
+        ))}
+      </div>
+
+      {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-16 items-center w-full">
 
         {/* Left — Text */}
@@ -152,8 +231,13 @@ export default function Hero() {
           <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
 
             <div className="flex items-center gap-4 mb-6 pb-6 border-b border-white/10">
-              <div className="w-14 h-14 bg-[#1E9FD4] rounded-2xl flex items-center justify-center">
-                <span className="text-white font-bold text-xl">WF</span>
+              <div className="w-14 h-14 rounded-2xl overflow-hidden relative flex-shrink-0">
+                <Image
+                  src="/images/Dr-fomuki/fomuki_walters_002.jpg"
+                  alt="Dr. Walters T. Fomuki"
+                  fill
+                  className="object-cover"
+                />
               </div>
               <div>
                 <div className="text-white font-bold text-lg">Dr. Walters T. Fomuki</div>
@@ -209,7 +293,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-500"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-500 z-10"
       >
         <span className="text-xs tracking-widest uppercase">Mehr entdecken</span>
         <motion.div
