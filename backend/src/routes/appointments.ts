@@ -4,10 +4,14 @@ import { appointments } from "../db/schema";
 import { eq } from "drizzle-orm";
 
 export async function appointmentsRoutes(fastify: FastifyInstance) {
-  // GET appointments (optionally filter by date)
-  fastify.get<{ Querystring: { date?: string } }>("/api/appointments", async (request, reply) => {
+  // GET appointments — optional ?patientId filter
+  fastify.get<{ Querystring: { date?: string; patientId?: string } }>("/api/appointments", async (request, reply) => {
     try {
-      const result = await db.select().from(appointments).orderBy(appointments.time);
+      const { patientId } = request.query;
+      const query = db.select().from(appointments).orderBy(appointments.date, appointments.time);
+      const result = patientId
+        ? await query.where(eq(appointments.patientId, patientId))
+        : await query;
       return reply.send(result);
     } catch (error) {
       return reply.status(500).send({ error: "Database error", details: String(error) });

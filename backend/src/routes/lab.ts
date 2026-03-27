@@ -4,9 +4,13 @@ import { labResults } from "../db/schema";
 import { eq } from "drizzle-orm";
 
 export async function labRoutes(fastify: FastifyInstance) {
-  fastify.get("/api/lab", async (request, reply) => {
+  fastify.get<{ Querystring: { patientId?: string } }>("/api/lab", async (request, reply) => {
     try {
-      const result = await db.select().from(labResults).orderBy(labResults.createdAt);
+      const { patientId } = request.query;
+      const query = db.select().from(labResults).orderBy(labResults.resultDate);
+      const result = patientId
+        ? await query.where(eq(labResults.patientId, patientId))
+        : await query;
       return reply.send(result);
     } catch (error) {
       return reply.status(500).send({ error: "Database error", details: String(error) });
