@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { patientsRoutes } from "./routes/patients";
 import { appointmentsRoutes } from "./routes/appointments";
 import { labRoutes } from "./routes/lab";
+import { n8nRoutes } from "./routes/n8n";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ async function main() {
   await fastify.register(patientsRoutes);
   await fastify.register(appointmentsRoutes);
   await fastify.register(labRoutes);
+  await fastify.register(n8nRoutes);
 
   fastify.get("/health", async () => ({
     status: "ok",
