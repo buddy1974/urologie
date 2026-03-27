@@ -24,8 +24,8 @@ export default function DashboardLayout() {
         />
       )}
 
-      {/* Sidebar wrapper — slides in on mobile, always visible on desktop */}
-      <div className={`fixed lg:relative z-50 h-full transition-transform duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
+      {/* Sidebar wrapper — fixed drawer on mobile, static in flow on desktop */}
+      <div className={`fixed inset-y-0 left-0 lg:relative lg:inset-auto z-50 transition-transform duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
         <Sidebar onNavigate={() => setSidebarOpen(false)} />
       </div>
 
