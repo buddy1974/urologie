@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchPatients as fetchPatientsApi } from "@/lib/api";
+import { fetchPatients as fetchPatientsApi, createPatient } from "@/lib/api";
 import {
   Search, Plus, User, Phone, Calendar, Shield,
   ChevronRight, FileText, FlaskConical, Clock, X,
@@ -159,25 +159,16 @@ export default function Patienten() {
     setSubmitting(true);
     setFormError(null);
     try {
-      const res = await fetch(`${API}/api/patients`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: form.firstName,
-          lastName: form.lastName,
-          dateOfBirth: form.dateOfBirth,
-          phone: form.phone || null,
-          email: form.email || null,
-          address: form.address || null,
-          insurance: form.insurance,
-          notes: form.insuranceNumber ? `Vers.Nr.: ${form.insuranceNumber}` : null,
-        }),
+      await createPatient({
+        firstName: form.firstName,
+        lastName: form.lastName,
+        dateOfBirth: form.dateOfBirth,
+        phone: form.phone || null,
+        email: form.email || null,
+        address: form.address || null,
+        insurance: form.insurance,
+        notes: form.insuranceNumber ? `Vers.Nr.: ${form.insuranceNumber}` : null,
       });
-      if (!res.ok) {
-        const err: { error?: string } = await res.json();
-        setFormError(err.error ?? "Fehler beim Speichern.");
-        return;
-      }
       setShowModal(false);
       setForm(EMPTY_FORM);
       await fetchPatients();
