@@ -79,6 +79,25 @@ export default function DiagnostikPage() {
           </div>
         </div>
       </div>
+
+      <div className="max-w-5xl mx-auto px-6 pb-16">
+        <h2 className="text-2xl font-bold mb-2" style={{ color: "#1E9FD4" }}>Modernste Geräteausstattung</h2>
+        <p className="text-slate-500 text-sm mb-8">Zertifizierte Medizintechnik für präzise Diagnosen und schnelle Ergebnisse.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[
+            { name: "UriSed Mini", desc: "Automatisierte Urinanalyse — erkennt Zellen, Bakterien und Kristalle digital, vernetzt mit LabCONNECT für sofortige Ergebnisübertragung" },
+            { name: "LabUReader Plus 2", desc: "Urinteststreifen-Auswertung — bis zu 10 Proben gleichzeitig, analysiert Glucose, Protein, Blut, pH und Nitrit automatisch" },
+            { name: "Thermo Scientific Multiskan FC", desc: "PSA-Analyse — hochpräzise Messung des PSA-Wertes mittels ELISA-Verfahren, für Prostatakrebs-Früherkennung und Verlaufskontrolle" },
+            { name: "Ultraschall-System", desc: "Hochauflösende Ultraschalldiagnostik — Niere, Blase, Prostata und Hoden, mehrere Schallköpfe für präzise Bildgebung bei Tumoren, Steinen und Vergrößerungen" },
+          ].map((m) => (
+            <div key={m.name} className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm hover:shadow-md transition-shadow">
+              <div className="text-2xl mb-3">🔬</div>
+              <p className="font-bold text-[#2D3748] text-sm mb-2">{m.name}</p>
+              <p className="text-slate-500 text-xs leading-relaxed">{m.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

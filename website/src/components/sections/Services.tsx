@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  Microscope, HeartPulse, Baby, Zap, Activity, Sparkles, ArrowRight,
+  Microscope, HeartPulse, Baby, Zap, Activity, Sparkles, ArrowRight, User,
 } from "lucide-react";
 
 const services = [
@@ -84,6 +84,19 @@ const services = [
     tagColor: "bg-cyan-100 text-cyan-700 border border-cyan-200",
     hoverBorder: "hover:border-cyan-200",
     accent: "#5ECFEB",
+  },
+  {
+    icon: User,
+    title: "Patientenportal",
+    description: "Befunde & Termine online einsehen — sicher, jederzeit, ohne Wartezeit am Telefon.",
+    href: "/patientenportal",
+    tags: ["Befunde", "Termine", "Sicher"],
+    gradient: "from-[#1E9FD4] to-indigo-400",
+    bg: "from-blue-50 to-indigo-50",
+    iconBg: "bg-[#1E9FD4]",
+    tagColor: "bg-blue-100 text-blue-700 border border-blue-200",
+    hoverBorder: "hover:border-blue-200",
+    accent: "#1E9FD4",
   },
 ];
 

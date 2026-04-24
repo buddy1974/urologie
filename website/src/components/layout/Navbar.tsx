@@ -126,6 +126,13 @@ export default function Navbar() {
 
         {/* CTA + mobile toggle */}
         <div className="flex items-center gap-3">
+          <Link
+            href={`/${locale}/patientenportal`}
+            className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg border-2 transition-colors hover:bg-sky-50"
+            style={{ borderColor: "#1E9FD4", color: "#1E9FD4" }}
+          >
+            Patientenportal
+          </Link>
           <a
             href={DOCTOLIB_URL}
             target="_blank"
@@ -175,7 +182,15 @@ export default function Navbar() {
               )}
             </div>
           ))}
-          <div className="pt-3 border-t border-slate-100">
+          <div className="pt-3 border-t border-slate-100 space-y-2">
+            <Link
+              href={`/${locale}/patientenportal`}
+              className="block w-full text-center text-sm font-semibold px-4 py-3 rounded-lg border-2"
+              style={{ borderColor: "#1E9FD4", color: "#1E9FD4" }}
+              onClick={() => setMobileOpen(false)}
+            >
+              Patientenportal
+            </Link>
             <a
               href={DOCTOLIB_URL}
               target="_blank"

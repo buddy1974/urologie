@@ -23,7 +23,7 @@ export default function AndrologiePage() {
     <div className="min-h-screen bg-white">
       <div className="relative overflow-hidden" style={{ minHeight: "300px" }}>
         <Image
-          src="/images/leistung/Ambulante-Operationen1.jpg"
+          src="/images/leistung/leistungen_004.jpg"
           alt="Andrologie & Vasektomie Neuwied"
           fill
           className="object-cover"
@@ -60,6 +60,22 @@ export default function AndrologiePage() {
             className="inline-flex items-center gap-2 text-sm font-semibold" style={{ color: "#14b8a6" }}>
             www.vasektomie-neuwied.de <ExternalLink size={13} />
           </a>
+        </div>
+
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mb-2" style={{ color: "#1E9FD4" }}>Modernste Geräteausstattung</h2>
+          <p className="text-slate-500 text-sm mb-6">Zertifizierte Analysetechnik für objektive Fertilitätsdiagnostik.</p>
+          <div className="grid grid-cols-1 gap-4">
+            {[
+              { name: "MES SQA-iO + SQA-VU", desc: "Spermienqualitätsanalyse — vollautomatische Messung von Konzentration, Motilität und Morphologie, mit visueller Mikroskopie-Komponente" },
+            ].map((m) => (
+              <div key={m.name} className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div className="text-2xl mb-3">🔬</div>
+                <p className="font-bold text-[#2D3748] text-sm mb-2">{m.name}</p>
+                <p className="text-slate-500 text-xs leading-relaxed">{m.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
