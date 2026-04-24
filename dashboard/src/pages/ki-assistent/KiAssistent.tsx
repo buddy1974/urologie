@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Bot, Send, Loader2, Sparkles, FileText, FlaskConical, CreditCard, Trash2 } from "lucide-react";
+import { Bot, Send, Loader2, Sparkles, FileText, FlaskConical, CreditCard, Trash2, Mic, MicOff, Copy, RefreshCw, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth";
 import AIWriteButton from "@/components/ui/AIWriteButton";
@@ -58,9 +58,26 @@ export default function KiAssistent() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { user } = useAuthStore();
 
+  // Voice dictation state
+  const [speechSupported, setSpeechSupported] = useState(true);
+  const [isRecording, setIsRecording] = useState(false);
+  const [transcript, setTranscript] = useState("");
+  const [aiResult, setAiResult] = useState("");
+  const [dictateLoading, setDictateLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const finalTranscriptRef = useRef("");
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (!(window as any).SpeechRecognition && !(window as any).webkitSpeechRecognition) {
+      setSpeechSupported(false);
+    }
+  }, []);
 
   async function sendMessage(text?: string) {
     const content = (text ?? input).trim();
@@ -120,6 +137,79 @@ export default function KiAssistent() {
       e.preventDefault();
       sendMessage();
     }
+  }
+
+  function toggleRecording() {
+    if (isRecording) {
+      recognitionRef.current?.stop();
+      return;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SR: (new () => SpeechRecognition) | undefined = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
+    if (!SR) return;
+
+    finalTranscriptRef.current = "";
+    setTranscript("");
+    setAiResult("");
+
+    const recognition = new SR();
+    recognition.lang = "de-DE";
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recognition.onresult = (e: SpeechRecognitionEvent) => {
+      let interim = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) {
+          finalTranscriptRef.current += e.results[i][0].transcript + " ";
+        } else {
+          interim += e.results[i][0].transcript;
+        }
+      }
+      setTranscript(finalTranscriptRef.current + interim);
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
+      setTranscript(finalTranscriptRef.current.trim());
+    };
+
+    recognition.onerror = () => {
+      setIsRecording(false);
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+    setIsRecording(true);
+  }
+
+  async function generateWithClaude(type: "arztbrief" | "email") {
+    if (!transcript.trim()) return;
+    setDictateLoading(true);
+    const systemPrompt =
+      type === "arztbrief"
+        ? "Du bist ein medizinischer Assistent für einen Urologen in Deutschland. Der folgende Text ist ein gesprochenes Diktat des Arztes. Formatiere es als professionellen Arztbrief auf Deutsch mit: Betreff, Anrede, medizinischem Befund, Diagnose, Therapieempfehlung und Grußformel. Halte den Inhalt exakt — nur Format und Sprache verbessern."
+        : "Du bist ein medizinischer Assistent für einen Urologen in Deutschland. Der folgende Text ist ein gesprochenes Diktat des Arztes. Formatiere es als professionelle E-Mail auf Deutsch. Korrigiere Grammatik und Struktur, behalte den Inhalt exakt bei.";
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ system: systemPrompt, messages: [{ role: "user", content: transcript }] }),
+      });
+      if (!response.ok) throw new Error("API error");
+      const data = await response.json();
+      setAiResult(data.content?.[0]?.text ?? "Fehler bei der Verarbeitung.");
+    } catch {
+      setAiResult("Fehler bei der Verbindung zur KI. Bitte erneut versuchen.");
+    } finally {
+      setDictateLoading(false);
+    }
+  }
+
+  async function handleCopy() {
+    await navigator.clipboard.writeText(aiResult);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   }
 
   function formatContent(content: string) {
@@ -236,6 +326,112 @@ export default function KiAssistent() {
 
       {/* Right — Quick prompts */}
       <div className="w-full lg:w-72 flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 bg-white p-5 overflow-y-auto max-h-64 lg:max-h-full">
+
+        {/* ── Sprachdiktat ── */}
+        <div className="mb-5 pb-5 border-b border-slate-100">
+          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Sprachdiktat</h3>
+
+          {!speechSupported ? (
+            <div className="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-xl p-3 leading-relaxed">
+              Spracherkennung wird in diesem Browser nicht unterstützt. Bitte Chrome oder Edge verwenden.
+            </div>
+          ) : (
+            <>
+              {/* Record button */}
+              <div className="flex flex-col items-center gap-2 mb-3">
+                <button
+                  onClick={toggleRecording}
+                  disabled={dictateLoading}
+                  className={cn(
+                    "w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-md disabled:opacity-50",
+                    isRecording
+                      ? "bg-red-500 hover:bg-red-600 animate-pulse"
+                      : "bg-slate-200 hover:bg-slate-300"
+                  )}
+                >
+                  {isRecording
+                    ? <MicOff size={22} className="text-white" />
+                    : <Mic size={22} className="text-slate-600" />
+                  }
+                </button>
+                <p className="text-xs text-slate-500 font-medium">
+                  {isRecording
+                    ? "Aufnahme läuft…"
+                    : dictateLoading
+                      ? "Verarbeite…"
+                      : "Zum Aufnehmen klicken"}
+                </p>
+              </div>
+
+              {/* Live transcript */}
+              {(transcript || isRecording) && (
+                <textarea
+                  readOnly
+                  value={transcript}
+                  rows={4}
+                  placeholder="Transkript erscheint hier…"
+                  className="w-full text-xs rounded-xl border border-slate-200 p-2.5 resize-none bg-slate-50 text-slate-700 mb-3 outline-none"
+                />
+              )}
+
+              {/* Action buttons — appear once transcript ready */}
+              {transcript && !isRecording && !dictateLoading && (
+                <div className="flex gap-2 mb-3">
+                  <button
+                    onClick={() => generateWithClaude("arztbrief")}
+                    className="flex-1 text-xs py-2 rounded-lg text-white font-medium transition-opacity hover:opacity-90"
+                    style={{ backgroundColor: "#7c3aed" }}
+                  >
+                    Arztbrief
+                  </button>
+                  <button
+                    onClick={() => generateWithClaude("email")}
+                    className="flex-1 text-xs py-2 rounded-lg font-medium border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
+                  >
+                    E-Mail
+                  </button>
+                </div>
+              )}
+
+              {/* Processing indicator */}
+              {dictateLoading && (
+                <div className="flex items-center gap-2 text-xs text-slate-400 mb-3">
+                  <Loader2 size={12} className="animate-spin" />
+                  Verarbeite…
+                </div>
+              )}
+
+              {/* AI result */}
+              {aiResult && (
+                <>
+                  <textarea
+                    value={aiResult}
+                    onChange={(e) => setAiResult(e.target.value)}
+                    rows={7}
+                    className="w-full text-xs rounded-xl border border-slate-200 p-2.5 resize-none text-slate-700 mb-2 outline-none focus:border-purple-400 transition-colors"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleCopy}
+                      className="flex-1 flex items-center justify-center gap-1.5 text-xs py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
+                    >
+                      {copied ? <Check size={12} className="text-green-500" /> : <Copy size={12} />}
+                      {copied ? "Kopiert!" : "Kopieren"}
+                    </button>
+                    <button
+                      onClick={() => { setTranscript(""); setAiResult(""); finalTranscriptRef.current = ""; }}
+                      className="flex-1 flex items-center justify-center gap-1.5 text-xs py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
+                    >
+                      <RefreshCw size={12} />
+                      Neu starten
+                    </button>
+                  </div>
+                </>
+              )}
+            </>
+          )}
+        </div>
+
         <div className="mb-5 pb-5 border-b border-slate-100">
           <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Schreibassistent</h3>
           <p className="text-xs text-slate-400 mb-3">Stichworte ins Chat-Feld tippen, dann Feld wählen:</p>
