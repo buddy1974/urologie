@@ -37,4 +37,16 @@ export async function labRoutes(fastify: FastifyInstance) {
       return reply.status(500).send({ error: "Database error", details: String(error) });
     }
   });
+
+  fastify.put<{ Params: { id: string }; Body: { comment: string } }>("/api/lab/:id/comment", async (request, reply) => {
+    try {
+      const result = await db.update(labResults)
+        .set({ doctorComment: request.body.comment })
+        .where(eq(labResults.id, request.params.id))
+        .returning();
+      return reply.send(result[0]);
+    } catch (error) {
+      return reply.status(500).send({ error: "Database error", details: String(error) });
+    }
+  });
 }

@@ -47,3 +47,13 @@ export async function updateAppointmentStatus(id: string, status: string) {
   if (!res.ok) throw new Error("Failed to update appointment");
   return res.json();
 }
+
+export async function saveLabComment(id: string, comment: string) {
+  const res = await fetch(`${API_BASE}/api/lab/${id}/comment`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ comment }),
+  });
+  if (!res.ok) throw new Error("Failed to save comment");
+  return res.json();
+}

@@ -7,6 +7,7 @@ export const patients = pgTable("patients", {
   lastName: varchar("last_name", { length: 100 }).notNull(),
   dateOfBirth: date("date_of_birth"),
   insurance: varchar("insurance", { length: 20 }).notNull().default("GKV"),
+  insuranceNumber: varchar("insurance_number", { length: 50 }),
   phone: varchar("phone", { length: 30 }),
   email: varchar("email", { length: 255 }),
   address: text("address"),
@@ -49,6 +50,16 @@ export const labResults = pgTable("lab_results", {
   doctor: varchar("doctor", { length: 100 }),
   resultDate: date("result_date").notNull(),
   sent: boolean("sent").notNull().default(false),
+  doctorComment: text("doctor_comment"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const patientOtp = pgTable("patient_otp", {
+  id: text("id").primaryKey().default(sql`gen_random_uuid()`),
+  patientId: text("patient_id").references(() => patients.id),
+  otpCode: text("otp_code").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  used: boolean("used").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
