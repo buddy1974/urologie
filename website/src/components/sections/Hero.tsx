@@ -1,268 +1,194 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { useLocale } from "next-intl";
-import {
-  Calendar, MessageCircle, Phone, ArrowRight, Award, Users,
-  ChevronLeft, ChevronRight, User, Star, Sparkles,
-} from "lucide-react";
+import { motion } from "framer-motion";
+import { Calendar, Phone, ArrowRight, Shield, Award, Users } from "lucide-react";
 
 const DOCTOLIB_URL =
   "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking?speciality_id=1336&utm_source=website-hero";
-
-const slides = [
-  "/images/header.jpg",
-  "/images/header2.jpg",
-  "/images/header_praxis_01.jpg",
-  "/images/praxis_001.jpg",
-  "/images/praxis_005.jpg",
-  "/images/praxis_0012.jpg",
-];
-
-const stats = [
-  { icon: Users, value: "5.000+", label: "Patienten / Jahr" },
-  { icon: Award, value: "15+", label: "Jahre Erfahrung" },
-  { icon: Star, value: "4.9★", label: "Bewertungen" },
-];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.12, duration: 0.6, ease: "easeOut" as const },
+    transition: { delay: i * 0.12, duration: 0.5, ease: "easeOut" as const },
   }),
 };
 
-export default function Hero() {
-  const locale = useLocale();
-  const [current, setCurrent] = useState(0);
+const hours = [
+  { key: "monday",    de: "Montag",     en: "Monday",    fr: "Lundi",    tr: "Pazartesi", hours: "08:00–12:00, 14:00–17:00" },
+  { key: "tuesday",   de: "Dienstag",   en: "Tuesday",   fr: "Mardi",    tr: "Salı",      hours: "08:00–12:00, 14:00–17:00" },
+  { key: "wednesday", de: "Mittwoch",   en: "Wednesday", fr: "Mercredi", tr: "Çarşamba",  hours: "08:00–12:00" },
+  { key: "thursday",  de: "Donnerstag", en: "Thursday",  fr: "Jeudi",    tr: "Perşembe",  hours: "08:00–12:00, 14:00–17:00" },
+  { key: "friday",    de: "Freitag",    en: "Friday",    fr: "Vendredi", tr: "Cuma",      hours: "08:00–12:00" },
+];
 
-  const next = useCallback(() => setCurrent((c) => (c + 1) % slides.length), []);
-  const prev = useCallback(() => setCurrent((c) => (c - 1 + slides.length) % slides.length), []);
+export default function Hero({ locale }: { locale?: string }) {
+  const getDayName = (h: typeof hours[0]) => {
+    if (locale === "en") return h.en;
+    if (locale === "fr") return h.fr;
+    if (locale === "tr") return h.tr;
+    return h.de;
+  };
 
-  useEffect(() => {
-    const id = setInterval(next, 5000);
-    return () => clearInterval(id);
-  }, [next]);
+  const hoursLabel = locale === "en" ? "Opening Hours" : locale === "fr" ? "Horaires" : locale === "tr" ? "Muayene Saatleri" : "Sprechstunden";
+  const servicesLabel = locale === "en" ? "Our Services" : locale === "fr" ? "Nos Prestations" : locale === "tr" ? "Hizmetlerimiz" : "Unsere Leistungen";
+  const bookLabel = locale === "en" ? "Book Appointment" : locale === "fr" ? "Prendre RDV" : locale === "tr" ? "Randevu Al" : "Termin buchen";
+  const reviewsLabel = locale === "en" ? "Reviews" : locale === "fr" ? "Avis" : locale === "tr" ? "Değerlendirmeler" : "Bewertungen";
+  const perYearLabel = locale === "en" ? "Patients / Year" : locale === "fr" ? "Patients / An" : locale === "tr" ? "Hasta / Yıl" : "Patienten / Jahr";
+  const experienceLabel = locale === "en" ? "Years Experience" : locale === "fr" ? "Ans d'expérience" : locale === "tr" ? "Yıl Deneyim" : "Jahre Erfahrung";
+
+  const services = [
+    locale === "en" ? "Diagnostics & Lab" : locale === "fr" ? "Diagnostique & Labo" : locale === "tr" ? "Tanı & Laboratuvar" : "Diagnostik & Labor",
+    locale === "en" ? "Oncology & Follow-up" : locale === "fr" ? "Oncologie & Suivi" : locale === "tr" ? "Onkoloji & Takip" : "Onkologie & Nachsorge",
+    locale === "en" ? "Andrology & Vasectomy" : locale === "fr" ? "Andrologie & Vasectomie" : locale === "tr" ? "Androloji & Vazektomi" : "Andrologie & Vasektomie",
+    "UroLift® bei BPH",
+    locale === "en" ? "Magnetic Stimulation" : locale === "fr" ? "Stimulation Magnétique" : locale === "tr" ? "Manyetik Stimülasyon" : "Magnetstimulation",
+    locale === "en" ? "Urodynamics" : locale === "fr" ? "Urodynamique" : locale === "tr" ? "Ürodinamik" : "Urodynamik",
+  ];
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-hero noise">
-      {/* Slider images */}
-      <AnimatePresence initial={false}>
-        <motion.div
-          key={current}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2 }}
-          className="absolute inset-0"
-        >
-          <Image
-            src={slides[current]}
-            alt=""
-            fill
-            className="object-cover opacity-20"
-            priority={current === 0}
-          />
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Gradient orbs */}
-      <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px] animate-float" />
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
       <div
-        className="pointer-events-none absolute top-40 -right-32 h-[500px] w-[500px] rounded-full bg-accent/20 blur-[140px] animate-float"
-        style={{ animationDelay: "2s" }}
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
       />
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Prev / Next */}
-      <button
-        onClick={prev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass hover:bg-white/15 flex items-center justify-center text-foreground transition-colors"
-        aria-label="Vorheriges Bild"
-      >
-        <ChevronLeft size={18} />
-      </button>
-      <button
-        onClick={next}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass hover:bg-white/15 flex items-center justify-center text-foreground transition-colors"
-        aria-label="Nächstes Bild"
-      >
-        <ChevronRight size={18} />
-      </button>
-
-      {/* Dot indicators */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className={`rounded-full transition-all duration-300 ${
-              i === current
-                ? "w-6 h-2 bg-primary-gradient"
-                : "w-2 h-2 bg-white/30 hover:bg-white/60"
-            }`}
-            aria-label={`Bild ${i + 1}`}
-          />
-        ))}
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-36 pb-24 md:pt-44 md:pb-32 grid lg:grid-cols-2 gap-16 items-center w-full">
-
-        {/* Left — Text */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-16 items-center w-full">
+        {/* Left */}
         <div>
-          {/* Badge */}
-          <motion.div
-            custom={0}
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-            className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 text-xs uppercase tracking-widest text-accent mb-8"
-          >
-            <Sparkles size={12} />
-            Facharztpraxis · Neuwied · seit 2009
+          <motion.div custom={0} initial="hidden" animate="visible" variants={fadeUp}
+            className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-400/30 text-blue-300 text-xs font-semibold px-4 py-2 rounded-full mb-6 tracking-wide uppercase">
+            <Shield size={12} />
+            {locale === "en" ? "Specialist Urology · Neuwied" : locale === "fr" ? "Urologue Spécialiste · Neuwied" : locale === "tr" ? "Üroloji Uzmanı · Neuwied" : "Facharzt für Urologie · Neuwied"}
           </motion.div>
 
-          {/* Heading */}
-          <motion.h1
-            custom={1}
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-            className="font-display text-5xl sm:text-6xl lg:text-7xl leading-[0.95] tracking-tight text-foreground"
-          >
-            Moderne Urologie.
-            <br />
-            <span className="text-gradient italic">Persönliche</span> Betreuung.
+          <motion.h1 custom={1} initial="hidden" animate="visible" variants={fadeUp}
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+            {locale === "en" ? <>Modern Urology.<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E9FD4] to-[#5ECFEB]">Personal Care.</span></> :
+             locale === "fr" ? <>Urologie Moderne.<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E9FD4] to-[#5ECFEB]">Suivi Personnalisé.</span></> :
+             locale === "tr" ? <>Modern Üroloji.<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E9FD4] to-[#5ECFEB]">Kişisel Bakım.</span></> :
+             <>Moderne Urologie.<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E9FD4] to-[#5ECFEB]">Persönliche Betreuung.</span></>}
           </motion.h1>
 
-          {/* Subtext */}
-          <motion.p
-            custom={2}
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-            className="mt-8 text-muted-foreground text-lg leading-relaxed max-w-xl"
-          >
-            Dr. Walters T. Fomuki und sein Team bieten modernste urologische Diagnostik und Therapie —
-            von Vorsorge bis Onkologie, von Andrologie bis UroLift®.
+          <motion.p custom={2} initial="hidden" animate="visible" variants={fadeUp}
+            className="text-slate-300 text-lg leading-relaxed mb-10 max-w-xl">
+            {locale === "en" ? "Dr. Walters T. Fomuki and his team offer state-of-the-art urological diagnostics and therapy — from prevention to oncology, andrology to UroLift®." :
+             locale === "fr" ? "Dr. Walters T. Fomuki et son équipe offrent des diagnostics et thérapies urologiques de pointe — de la prévention à l'oncologie." :
+             locale === "tr" ? "Dr. Walters T. Fomuki ve ekibi, önlemden onkolojiye, androlojiden UroLift®'e kadar en modern ürolojik tanı ve tedavi hizmetleri sunar." :
+             "Dr. Walters T. Fomuki und sein Team bieten Ihnen modernste urologische Diagnostik und Therapie — von Vorsorge bis Onkologie, von Andrologie bis UroLift®."}
           </motion.p>
 
-          {/* CTA Buttons */}
-          <motion.div
-            custom={3}
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-            className="mt-10 flex flex-wrap gap-4"
-          >
-            <a
-              href={DOCTOLIB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-3 rounded-full bg-primary-gradient px-7 py-4 text-base font-semibold text-primary-foreground shadow-glow transition-all hover:scale-105 animate-pulse-glow"
-            >
+          <motion.div custom={3} initial="hidden" animate="visible" variants={fadeUp}
+            className="flex flex-col sm:flex-row gap-4 mb-12">
+            <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 text-white font-semibold px-6 py-4 rounded-xl transition-all hover:shadow-lg hover:-translate-y-0.5"
+              style={{ backgroundColor: "#1E9FD4" }}>
               <Calendar size={18} />
-              Termin online buchen
-              <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+              {bookLabel}
+              <ArrowRight size={16} />
             </a>
-            <Link
-              href={`/${locale}/patientenportal`}
-              className="inline-flex items-center gap-3 rounded-full glass-strong px-7 py-4 text-base font-semibold transition-all hover:bg-white/10"
-            >
-              <User size={18} />
-              Befunde einsehen
-            </Link>
-            <button
-              onClick={() => {
-                const chatEl = document.getElementById("ai-chat");
-                if (chatEl) chatEl.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="inline-flex items-center gap-2 glass px-5 py-4 text-sm font-medium text-muted-foreground hover:text-foreground rounded-full transition-all"
-            >
-              <MessageCircle size={16} />
-              KI-Assistent
-            </button>
-            <a
-              href="tel:+49263123351"
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground font-medium px-4 py-4 transition-colors text-sm"
-            >
-              <Phone size={15} />
+            <a href={`/${locale ?? "de"}/patientenportal`}
+              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-6 py-4 rounded-xl transition-all backdrop-blur-sm">
+              <Users size={18} />
+              {locale === "en" ? "View Results" : locale === "fr" ? "Voir Résultats" : locale === "tr" ? "Sonuçları Gör" : "Befunde einsehen"}
+            </a>
+            <a href="tel:+49263123351"
+              className="inline-flex items-center justify-center gap-2 text-slate-300 hover:text-white font-medium px-4 py-4 transition-colors">
+              <Phone size={16} />
               02631 - 23351
             </a>
           </motion.div>
 
-          {/* Stats */}
-          <motion.div
-            custom={4}
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-            className="mt-14 grid grid-cols-3 gap-6 max-w-sm"
-          >
-            {stats.map(({ icon: Icon, value, label }) => (
-              <div key={label}>
-                <div className="font-display text-3xl md:text-4xl text-gradient">{value}</div>
-                <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">{label}</div>
+          <motion.div custom={4} initial="hidden" animate="visible" variants={fadeUp}
+            className="flex flex-wrap gap-8">
+            {[
+              { icon: Users, value: "5.000+", label: perYearLabel },
+              { icon: Award, value: "15+", label: experienceLabel },
+              { icon: Shield, value: "4.9★", label: reviewsLabel },
+            ].map(({ icon: Icon, value, label }) => (
+              <div key={label} className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(30,159,212,0.2)" }}>
+                  <Icon size={18} style={{ color: "#1E9FD4" }} />
+                </div>
+                <div>
+                  <div className="text-white font-bold text-lg leading-tight">{value}</div>
+                  <div className="text-slate-400 text-xs">{label}</div>
+                </div>
               </div>
             ))}
           </motion.div>
         </div>
 
-        {/* Right — Info card */}
-        <motion.div
-          custom={5}
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-          className="hidden lg:block relative"
-        >
-          <div className="absolute -inset-6 rounded-[2.5rem] bg-primary-gradient opacity-25 blur-3xl" />
-          <div className="relative glass-strong rounded-[2rem] p-3 shadow-elegant">
-            <div className="rounded-[1.5rem] overflow-hidden relative">
-              <Image
-                src="/images/Dr-fomuki/fomuki_walters_002.jpg"
-                alt="Dr. Walters T. Fomuki"
-                width={600}
-                height={520}
-                className="h-[480px] w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="font-display text-2xl text-foreground">Dr. Walters T. Fomuki</div>
-                <div className="text-sm text-accent">Facharzt für Urologie · Onkologisch qualifiziert</div>
+        {/* Right — Info card only, no overlapping elements */}
+        <motion.div custom={5} initial="hidden" animate="visible" variants={fadeUp}
+          className="hidden lg:block">
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+            <div className="flex items-center gap-4 mb-6 pb-6 border-b border-white/10">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: "#1E9FD4" }}>
+                <span className="text-white font-bold text-xl">WF</span>
               </div>
-            </div>
-
-            {/* Floating availability badge */}
-            <div className="absolute bottom-3 left-3 z-10 glass-strong rounded-2xl p-4 shadow-elegant animate-float">
-              <div className="flex items-center gap-3">
-                <span className="relative flex h-3 w-3">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-75 animate-ping" />
-                  <span className="relative inline-flex h-3 w-3 rounded-full bg-accent" />
-                </span>
-                <div>
-                  <div className="text-xs text-muted-foreground">Heute verfügbar</div>
-                  <div className="text-sm font-semibold text-foreground">Termin buchen</div>
+              <div>
+                <div className="text-white font-bold text-lg">Dr. Walters T. Fomuki</div>
+                <div className="text-sm mt-0.5" style={{ color: "#5ECFEB" }}>
+                  {locale === "en" ? "Specialist in Urology" : locale === "fr" ? "Spécialiste en Urologie" : locale === "tr" ? "Üroloji Uzmanı" : "Facharzt für Urologie"}
+                </div>
+                <div className="text-slate-400 text-xs mt-0.5">
+                  {locale === "en" ? "Oncology certified · DRK Hospital Consultant" : locale === "fr" ? "Certifié Oncologie · Médecin consultant DRK" : locale === "tr" ? "Onkoloji sertifikalı · DRK Danışmanı" : "Onkologisch qualifiziert · Konsiliararzt DRK Neuwied"}
                 </div>
               </div>
             </div>
 
-            {/* Rating badge */}
-            <div className="absolute top-3 right-3 z-10 glass-strong rounded-2xl px-4 py-3 shadow-elegant">
-              <div className="flex items-center gap-2">
-                <Star className="h-4 w-4 fill-accent text-accent" />
-                <span className="font-semibold text-sm text-foreground">4.9</span>
-                <span className="text-xs text-muted-foreground">· 312 Reviews</span>
+            {/* Opening hours */}
+            <div className="mb-6">
+              <div className="text-slate-400 text-xs uppercase tracking-wider font-semibold mb-3">{hoursLabel}</div>
+              <div className="space-y-2">
+                {hours.map((h) => (
+                  <div key={h.key} className="flex justify-between items-center py-1.5 border-b border-white/5 last:border-0">
+                    <span className="text-slate-300 text-sm w-28 flex-shrink-0">{getDayName(h)}</span>
+                    <span className="text-white text-sm font-medium text-right whitespace-nowrap">{h.hours}</span>
+                  </div>
+                ))}
               </div>
             </div>
+
+            {/* Services */}
+            <div className="mb-6">
+              <div className="text-slate-400 text-xs uppercase tracking-wider font-semibold mb-3">{servicesLabel}</div>
+              <div className="space-y-1.5">
+                {services.map((service) => (
+                  <div key={service} className="flex items-center gap-2 text-sm text-slate-300">
+                    <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#1E9FD4" }} />
+                    {service}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer"
+              className="block w-full text-center text-white font-semibold py-3.5 rounded-xl transition-colors hover:opacity-90"
+              style={{ backgroundColor: "#1E9FD4" }}>
+              {bookLabel}
+            </a>
           </div>
         </motion.div>
       </div>
+
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-500">
+        <span className="text-xs tracking-widest uppercase">
+          {locale === "en" ? "Discover more" : locale === "fr" ? "Découvrir" : locale === "tr" ? "Keşfet" : "Mehr entdecken"}
+        </span>
+        <motion.div animate={{ y: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}
+          className="w-px h-8 bg-gradient-to-b from-slate-500 to-transparent" />
+      </motion.div>
     </section>
   );
 }
