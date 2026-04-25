@@ -65,7 +65,8 @@ export default function KiAssistent() {
   const [aiResult, setAiResult] = useState("");
   const [dictateLoading, setDictateLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const recognitionRef = useRef<any>(null);
   const finalTranscriptRef = useRef("");
 
   useEffect(() => {
@@ -145,7 +146,7 @@ export default function KiAssistent() {
       return;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const SR: (new () => SpeechRecognition) | undefined = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
+    const SR: ((new () => any) | undefined) = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
     if (!SR) return;
 
     finalTranscriptRef.current = "";
@@ -157,7 +158,8 @@ export default function KiAssistent() {
     recognition.continuous = true;
     recognition.interimResults = true;
 
-    recognition.onresult = (e: SpeechRecognitionEvent) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    recognition.onresult = (e: any) => {
       let interim = "";
       for (let i = e.resultIndex; i < e.results.length; i++) {
         if (e.results[i].isFinal) {
