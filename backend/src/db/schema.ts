@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, varchar, date, boolean, integer, serial } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, varchar, date, boolean, integer, serial, jsonb } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 export const patients = pgTable("patients", {
@@ -72,4 +72,47 @@ export const auditLog = pgTable("audit_log", {
   resourceId: varchar("resource_id", { length: 100 }),
   ipAddress: varchar("ip_address", { length: 50 }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// ── CMS ─────────────────────────────────────────────────────────────────────
+
+export const pages = pgTable("pages", {
+  id: text("id").primaryKey().default(sql`gen_random_uuid()`),
+  slug: text("slug").notNull().unique(),
+  title: text("title").notNull(),
+  content: jsonb("content").notNull().$defaultFn(() => ({})),
+  metaTitle: text("meta_title"),
+  metaDescription: text("meta_description"),
+  metaKeywords: text("meta_keywords"),
+  updatedAt: timestamp("updated_at").defaultNow(),
+  updatedBy: text("updated_by"),
+});
+
+export const blogPosts = pgTable("blog_posts", {
+  id: text("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  excerpt: text("excerpt"),
+  content: text("content").notNull(),
+  coverImage: text("cover_image"),
+  metaTitle: text("meta_title"),
+  metaDescription: text("meta_description"),
+  metaKeywords: text("meta_keywords"),
+  status: text("status").notNull().default("draft"),
+  scheduledAt: timestamp("scheduled_at"),
+  publishedAt: timestamp("published_at"),
+  authorName: text("author_name").default("Dr. Walters T. Fomuki"),
+  category: text("category").default("Allgemein"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const media = pgTable("media", {
+  id: text("id").primaryKey().default(sql`gen_random_uuid()`),
+  filename: text("filename").notNull(),
+  url: text("url").notNull(),
+  mimeType: text("mime_type"),
+  size: integer("size"),
+  uploadedAt: timestamp("uploaded_at").defaultNow(),
+  uploadedBy: text("uploaded_by"),
 });

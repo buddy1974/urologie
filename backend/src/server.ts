@@ -1,11 +1,16 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import multipart from "@fastify/multipart";
+import fastifyStatic from "@fastify/static";
 import dotenv from "dotenv";
+import path from "path";
+import fs from "fs";
 import { patientsRoutes } from "./routes/patients";
 import { appointmentsRoutes } from "./routes/appointments";
 import { labRoutes } from "./routes/lab";
 import { n8nRoutes } from "./routes/n8n";
 import { portalRoutes } from "./routes/portal";
+import { cmsRoutes } from "./routes/cms";
 
 dotenv.config();
 
@@ -30,11 +35,27 @@ async function main() {
     credentials: true,
   });
 
+  // Multipart support for file uploads
+  await fastify.register(multipart, {
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+  });
+
+  // Static file serving for uploaded media
+  const uploadsDir = path.join(__dirname, "..", "uploads");
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
+  await fastify.register(fastifyStatic, {
+    root: uploadsDir,
+    prefix: "/uploads/",
+  });
+
   await fastify.register(patientsRoutes);
   await fastify.register(appointmentsRoutes);
   await fastify.register(labRoutes);
   await fastify.register(n8nRoutes);
   await fastify.register(portalRoutes);
+  await fastify.register(cmsRoutes);
 
   fastify.get("/health", async () => ({
     status: "ok",
