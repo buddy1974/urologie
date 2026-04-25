@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, MessageCircle, Phone, ArrowRight, Shield, Award, Users, ChevronLeft, ChevronRight } from "lucide-react";
+import { useLocale } from "next-intl";
+import { Calendar, MessageCircle, Phone, ArrowRight, Shield, Award, Users, ChevronLeft, ChevronRight, User } from "lucide-react";
 
 const DOCTOLIB_URL =
   "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking?speciality_id=1336&utm_source=website-hero";
@@ -33,6 +35,7 @@ const fadeUp = {
 };
 
 export default function Hero() {
+  const locale = useLocale();
   const [current, setCurrent] = useState(0);
 
   const next = useCallback(() => setCurrent((c) => (c + 1) % slides.length), []);
@@ -179,6 +182,13 @@ export default function Hero() {
               Termin online buchen
               <ArrowRight size={16} />
             </a>
+            <Link
+              href={`/${locale}/patientenportal`}
+              className="inline-flex items-center justify-center gap-2 border-2 border-white text-white font-semibold px-6 py-4 rounded-xl transition-all hover:bg-white hover:text-[#2D3748] backdrop-blur-sm"
+            >
+              <User size={18} />
+              Befunde online einsehen
+            </Link>
             <button
               onClick={() => {
                 const chatEl = document.getElementById("ai-chat");

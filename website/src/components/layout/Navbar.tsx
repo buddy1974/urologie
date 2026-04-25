@@ -128,8 +128,10 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href={`/${locale}/patientenportal`}
-            className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg border-2 transition-colors hover:bg-sky-50"
-            style={{ borderColor: "#1E9FD4", color: "#1E9FD4" }}
+            className="hidden sm:inline-flex items-center gap-2 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            style={{ backgroundColor: "#1E9FD4" }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1480AB")}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#1E9FD4")}
           >
             Patientenportal
           </Link>
@@ -185,8 +187,8 @@ export default function Navbar() {
           <div className="pt-3 border-t border-slate-100 space-y-2">
             <Link
               href={`/${locale}/patientenportal`}
-              className="block w-full text-center text-sm font-semibold px-4 py-3 rounded-lg border-2"
-              style={{ borderColor: "#1E9FD4", color: "#1E9FD4" }}
+              className="block w-full text-center text-white text-sm font-semibold px-4 py-3 rounded-lg"
+              style={{ backgroundColor: "#1E9FD4" }}
               onClick={() => setMobileOpen(false)}
             >
               Patientenportal
