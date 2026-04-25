@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useLocale } from "next-intl";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 const benefits = [
   "Befunde sofort online",
@@ -14,45 +14,52 @@ export default function PatientenportalBanner() {
   const locale = useLocale();
 
   return (
-    <section className="py-16 px-6" style={{ backgroundColor: "#2D3748" }}>
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+    <section className="relative py-32 overflow-hidden">
+      {/* Background */}
+      <div className="pointer-events-none absolute inset-0 bg-hero opacity-40" />
+      <div className="pointer-events-none absolute top-1/2 -translate-y-1/2 left-1/4 h-96 w-96 rounded-full bg-primary/20 blur-[120px]" />
 
-        {/* Left — text + CTA */}
-        <div className="max-w-xl text-center md:text-left">
-          <span className="inline-block text-[#5ECFEB] text-xs font-bold uppercase tracking-widest mb-3">
-            Für Patienten
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 leading-tight">
-            Ihre Befunde.<br />Jederzeit. Sicher.
-          </h2>
-          <p className="text-slate-300 text-base leading-relaxed mb-7">
-            Keine Warteschleife mehr. Loggen Sie sich ein und sehen Sie Ihre Laborergebnisse
-            und Termine direkt online — geschützt durch SMS-Verifizierung.
-          </p>
-          <Link
-            href={`/${locale}/patientenportal`}
-            className="inline-flex items-center gap-2 text-white font-semibold px-6 py-3.5 rounded-xl transition-all hover:opacity-90 hover:shadow-lg hover:shadow-[#1E9FD4]/40 hover:-translate-y-0.5"
-            style={{ backgroundColor: "#1E9FD4" }}
-          >
-            Zum Patientenportal
-            <ArrowRight size={16} />
-          </Link>
-        </div>
+      <div className="relative max-w-6xl mx-auto px-6">
+        <div className="glass-strong rounded-[2rem] p-10 md:p-16 shadow-elegant">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
 
-        {/* Right — benefit pills */}
-        <div className="flex flex-col gap-3 w-full md:w-auto">
-          {benefits.map((benefit) => (
-            <div
-              key={benefit}
-              className="flex items-center gap-3 rounded-xl px-5 py-3.5 border border-white/10"
-              style={{ backgroundColor: "rgba(255,255,255,0.07)" }}
-            >
-              <span className="text-lg leading-none">✅</span>
-              <span className="text-white font-medium text-sm">{benefit}</span>
+            {/* Left — text + CTA */}
+            <div>
+              <div className="text-xs uppercase tracking-widest text-accent mb-4">Für Patienten</div>
+              <h2 className="font-display text-4xl md:text-5xl leading-tight text-foreground mb-6">
+                Ihre Befunde.
+                <br />
+                <span className="text-gradient italic">Jederzeit. Sicher.</span>
+              </h2>
+              <p className="text-muted-foreground text-lg leading-relaxed mb-8">
+                Keine Warteschleife mehr. Loggen Sie sich ein und sehen Sie Ihre Laborergebnisse
+                und Termine direkt online — geschützt durch SMS-Verifizierung.
+              </p>
+              <Link
+                href={`/${locale}/patientenportal`}
+                className="inline-flex items-center gap-3 rounded-full bg-primary-gradient px-8 py-4 text-base font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105"
+              >
+                Zum Patientenportal
+                <ArrowRight size={16} />
+              </Link>
             </div>
-          ))}
-        </div>
 
+            {/* Right — benefit pills */}
+            <div className="space-y-4">
+              {benefits.map((benefit) => (
+                <div
+                  key={benefit}
+                  className="glass rounded-2xl px-6 py-4 flex items-center gap-4 hover:border-accent/30 transition-colors"
+                >
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-gradient shadow-glow flex-shrink-0">
+                    <Check size={13} className="text-primary-foreground" strokeWidth={3} />
+                  </div>
+                  <span className="text-foreground font-medium">{benefit}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -13,7 +13,6 @@ const doctors = [
     role: "Facharzt für Urologie · Praxisinhaber",
     image: "/images/Dr-fomuki/fomuki_walters_002.jpg",
     initials: "WF",
-    color: "#1E9FD4",
     qualifications: [
       "Onkologisch qualifizierter Arzt",
       "Medikamentöse Tumortherapie",
@@ -27,7 +26,6 @@ const doctors = [
     role: "Fachärztin für Urologie · Angestellte Ärztin",
     image: "/images/team/frau-dr-nwanko.jpg",
     initials: "CN",
-    color: "#5ECFEB",
     qualifications: [
       "Fachärztin für Urologie",
       "Angestellte Ärztin",
@@ -42,7 +40,6 @@ const staff = [
     image: "/images/team/theismann_bettina.jpg",
     initials: "BT",
     focus: ["Praxisorganisation", "Qualitätsbeauftragte"],
-    color: "#1E9FD4",
   },
   {
     name: "Jacqueline Elinger",
@@ -50,7 +47,6 @@ const staff = [
     image: "/images/team/ellinger_jaqueline_2021.jpg",
     initials: "JE",
     focus: ["Zusatzqualifikation Onkologie", "Anmeldung"],
-    color: "#5ECFEB",
   },
   {
     name: "Johanna Sikora",
@@ -58,7 +54,6 @@ const staff = [
     image: "/images/team/sikora_johanna_02.jpg",
     initials: "JS",
     focus: ["Zusatzqualifikation Onkologie", "OP-Assistenz"],
-    color: "#14b8a6",
   },
   {
     name: "Birgit Erhan",
@@ -66,7 +61,6 @@ const staff = [
     image: "/images/team/erhan_birgit.jpg",
     initials: "BE",
     focus: ["Zusatzqualifikation Onkologie", "Labor"],
-    color: "#8b5cf6",
   },
   {
     name: "Frau Jakoby",
@@ -74,7 +68,6 @@ const staff = [
     image: "/images/team/jakoby_2023.jpg",
     initials: "FJ",
     focus: ["Büroorganisation", "Administration"],
-    color: "#f59e0b",
   },
   {
     name: "Vivien Urmersbach",
@@ -82,7 +75,6 @@ const staff = [
     image: "/images/team/vivien_urmersbach_2023.jpg",
     initials: "VU",
     focus: ["In Ausbildung zur MFA"],
-    color: "#1E9FD4",
   },
   {
     name: "Shau Wen Wang",
@@ -90,142 +82,152 @@ const staff = [
     image: "/images/team/shau_wen_wang_2023.jpg",
     initials: "SW",
     focus: ["In Ausbildung zur MFA"],
-    color: "#5ECFEB",
   },
 ];
 
 export default function TeamPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
 
-      {/* Hero with background image */}
-      <div className="relative overflow-hidden" style={{ minHeight: "300px" }}>
+      {/* Hero */}
+      <section className="relative overflow-hidden">
         <Image
           src="/images/team/header-team.jpg"
           alt="Team Urologie Neuwied"
           fill
-          className="object-cover"
+          className="object-cover opacity-20"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1A202C]/90 via-[#2D3748]/85 to-[#1A202C]/90" />
-        <div className="relative z-10 py-20 px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <span className="inline-block text-[#5ECFEB] text-sm font-semibold uppercase tracking-widest mb-3">
+        <div className="relative z-10 bg-hero noise pt-36 pb-24 px-6" style={{ minHeight: "380px" }}>
+          <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px]" />
+          <div className="relative z-10 max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 text-xs uppercase tracking-widest text-accent mb-6">
               Unser Team
-            </span>
-            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-              Erfahren. Engagiert. Persönlich.
+            </div>
+            <h1 className="font-display text-5xl md:text-6xl leading-tight text-foreground mb-6">
+              Erfahren. <span className="text-gradient italic">Engagiert.</span> Persönlich.
             </h1>
-            <p className="text-slate-300 text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Unser eingespieltes Team sorgt dafür, dass Sie sich von der Anmeldung
               bis zur Behandlung gut aufgehoben fühlen.
             </p>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Doctors */}
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-2xl font-bold text-[#2D3748] mb-10 flex items-center gap-3">
-          <Stethoscope size={24} style={{ color: "#1E9FD4" }} />
-          Ärztliches Team
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-          {doctors.map((doc) => (
-            <div
-              key={doc.name}
-              className="rounded-2xl border-2 border-slate-100 overflow-hidden hover:border-[#1E9FD4]/30 hover:shadow-xl transition-all duration-300"
-            >
-              {/* Top color bar */}
-              <div className="h-2 w-full" style={{ backgroundColor: doc.color }} />
+      <section className="py-24 px-6">
+        <div className="max-w-7xl mx-auto space-y-24">
 
-              <div className="p-8">
-                <div className="flex items-center gap-5 mb-6">
-                  {/* Photo */}
-                  <div className="w-20 h-20 rounded-2xl overflow-hidden relative flex-shrink-0 shadow-lg">
-                    <Image
-                      src={doc.image}
-                      alt={doc.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-[#2D3748]">{doc.name}</h3>
-                    <p className="text-sm mt-1" style={{ color: doc.color }}>{doc.role}</p>
-                  </div>
-                </div>
+          {/* Doctors */}
+          <div>
+            <div className="flex items-center gap-3 mb-10">
+              <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow">
+                <Stethoscope size={20} className="text-primary-foreground" />
+              </div>
+              <h2 className="font-display text-3xl text-foreground">Ärztliches Team</h2>
+            </div>
 
-                <div className="space-y-2.5">
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                    <GraduationCap size={14} />
-                    Qualifikationen & Schwerpunkte
-                  </p>
-                  {doc.qualifications.map((q) => (
-                    <div key={q} className="flex items-center gap-2.5 text-sm text-slate-600">
-                      <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: doc.color }} />
-                      {q}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {doctors.map((doc) => (
+                <div
+                  key={doc.name}
+                  className="group glass rounded-3xl overflow-hidden hover:-translate-y-1 hover:shadow-glow hover:border-primary/40 transition-all duration-500"
+                >
+                  <div className="h-1 w-full bg-primary-gradient" />
+                  <div className="p-8">
+                    <div className="flex items-center gap-5 mb-6">
+                      <div className="w-20 h-20 rounded-2xl overflow-hidden relative flex-shrink-0 shadow-glow ring-2 ring-primary/30">
+                        <Image
+                          src={doc.image}
+                          alt={doc.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div>
+                        <h3 className="font-display text-xl text-foreground">{doc.name}</h3>
+                        <p className="text-sm text-accent mt-1">{doc.role}</p>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Staff */}
-        <h2 className="text-2xl font-bold text-[#2D3748] mb-10 flex items-center gap-3">
-          <Award size={24} style={{ color: "#1E9FD4" }} />
-          Medizinisches Fachpersonal
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {staff.map((member) => (
-            <div
-              key={member.name}
-              className="group rounded-2xl border-2 border-slate-100 p-5 hover:border-[#1E9FD4]/30 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-white to-slate-50"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-xl overflow-hidden relative flex-shrink-0">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <p className="font-bold text-[#2D3748] text-sm leading-tight">{member.name}</p>
-                  <p className="text-xs text-slate-400 mt-0.5">{member.role}</p>
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                {member.focus.map((f) => (
-                  <div key={f} className="flex items-center gap-2 text-xs text-slate-500">
-                    <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: member.color }} />
-                    {f}
+                    <div className="space-y-2.5">
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2 mb-3">
+                        <GraduationCap size={13} />
+                        Qualifikationen & Schwerpunkte
+                      </p>
+                      {doc.qualifications.map((q) => (
+                        <div key={q} className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                          <div className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
+                          {q}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
 
-        {/* Join CTA */}
-        <div className="mt-16 rounded-2xl p-8 text-center" style={{ backgroundColor: "#1E9FD4" }}>
-          <h3 className="text-2xl font-bold text-white mb-2">Wir stellen ein!</h3>
-          <p className="text-blue-100 mb-6 max-w-xl mx-auto">
-            Wir suchen MFA, Ärztin/Arzt in Weiterbildung und Bürokauffrau/-mann.
-            Werden Sie Teil unseres Teams.
-          </p>
-          <a
-            href="/stellenangebote"
-            className="inline-block bg-white font-semibold px-6 py-3 rounded-xl transition-colors hover:bg-blue-50"
-            style={{ color: "#1E9FD4" }}
-          >
-            Stellenangebote ansehen →
-          </a>
+          {/* Staff */}
+          <div>
+            <div className="flex items-center gap-3 mb-10">
+              <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow">
+                <Award size={20} className="text-primary-foreground" />
+              </div>
+              <h2 className="font-display text-3xl text-foreground">Medizinisches Fachpersonal</h2>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              {staff.map((member) => (
+                <div
+                  key={member.name}
+                  className="glass rounded-3xl p-6 hover:-translate-y-1 hover:shadow-glow hover:border-primary/40 transition-all duration-500"
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-xl overflow-hidden relative flex-shrink-0 ring-1 ring-white/10">
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground text-sm leading-tight">{member.name}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{member.role}</p>
+                    </div>
+                  </div>
+                  <div className="space-y-1.5">
+                    {member.focus.map((f) => (
+                      <div key={f} className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <div className="w-1 h-1 rounded-full bg-accent flex-shrink-0" />
+                        {f}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Join CTA */}
+          <div className="relative overflow-hidden glass-strong rounded-[2rem] p-10 text-center shadow-elegant">
+            <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-64 w-64 rounded-full bg-primary/20 blur-[80px]" />
+            <div className="relative">
+              <h3 className="font-display text-3xl text-foreground mb-3">Wir stellen ein!</h3>
+              <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
+                Wir suchen MFA, Ärztin/Arzt in Weiterbildung und Bürokauffrau/-mann.
+                Werden Sie Teil unseres Teams.
+              </p>
+              <a
+                href="/stellenangebote"
+                className="inline-flex items-center gap-3 rounded-full bg-primary-gradient px-8 py-4 text-base font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105"
+              >
+                Stellenangebote ansehen →
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

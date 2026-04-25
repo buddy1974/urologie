@@ -107,7 +107,7 @@ export default function ChatWidget() {
       <motion.button
         onClick={() => setOpen(true)}
         className={cn(
-          "fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-blue-700 hover:bg-blue-600 text-white font-semibold px-5 py-3.5 rounded-2xl shadow-xl shadow-blue-900/30 transition-colors",
+          "fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-primary-gradient text-primary-foreground font-semibold px-5 py-3.5 rounded-2xl shadow-glow transition-transform hover:scale-105",
           open && "hidden"
         )}
         initial={{ scale: 0, opacity: 0 }}
@@ -117,7 +117,7 @@ export default function ChatWidget() {
       >
         <MessageCircle size={20} />
         KI-Assistent
-        <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+        <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
       </motion.button>
 
       {/* Chat panel */}
@@ -129,33 +129,33 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-6 right-6 z-50 w-[370px] max-w-[calc(100vw-24px)] flex flex-col bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden"
+            className="fixed bottom-6 right-6 z-50 w-[370px] max-w-[calc(100vw-24px)] flex flex-col glass-strong rounded-3xl shadow-elegant overflow-hidden"
             style={{ height: "520px" }}
           >
             {/* Header */}
-            <div className="bg-blue-700 px-5 py-4 flex items-center justify-between flex-shrink-0">
+            <div className="bg-primary-gradient px-5 py-4 flex items-center justify-between flex-shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center">
-                  <Bot size={18} className="text-white" />
+                  <Bot size={18} className="text-primary-foreground" />
                 </div>
                 <div>
-                  <div className="text-white font-semibold text-sm">KI-Assistent</div>
+                  <div className="text-primary-foreground font-semibold text-sm">KI-Assistent</div>
                   <div className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-blue-200 text-xs">Urologie Neuwied</span>
+                    <span className="w-1.5 h-1.5 bg-primary-foreground/60 rounded-full animate-pulse" />
+                    <span className="text-primary-foreground/70 text-xs">Urologie Neuwied</span>
                   </div>
                 </div>
               </div>
               <button
                 onClick={() => setOpen(false)}
-                className="text-blue-200 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors"
+                className="text-primary-foreground/70 hover:text-primary-foreground p-1.5 rounded-lg hover:bg-white/10 transition-colors"
               >
                 <X size={18} />
               </button>
             </div>
 
             {/* Disclaimer */}
-            <div className="bg-amber-50 border-b border-amber-100 px-4 py-2 text-xs text-amber-700 flex-shrink-0">
+            <div className="border-b border-white/5 px-4 py-2 text-xs text-muted-foreground bg-muted/30 flex-shrink-0">
               {DISCLAIMER}
             </div>
 
@@ -173,13 +173,13 @@ export default function ChatWidget() {
                   <div
                     className={cn(
                       "w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5",
-                      msg.role === "user" ? "bg-blue-100" : "bg-blue-700"
+                      msg.role === "user" ? "bg-primary/20" : "bg-primary-gradient"
                     )}
                   >
                     {msg.role === "user" ? (
-                      <User size={13} className="text-blue-700" />
+                      <User size={13} className="text-accent" />
                     ) : (
-                      <Bot size={13} className="text-white" />
+                      <Bot size={13} className="text-primary-foreground" />
                     )}
                   </div>
 
@@ -188,8 +188,8 @@ export default function ChatWidget() {
                     className={cn(
                       "max-w-[80%] px-4 py-3 rounded-2xl text-sm leading-relaxed",
                       msg.role === "user"
-                        ? "bg-blue-700 text-white rounded-tr-sm"
-                        : "bg-slate-100 text-slate-800 rounded-tl-sm"
+                        ? "bg-primary-gradient text-primary-foreground rounded-tr-sm"
+                        : "glass text-foreground rounded-tl-sm"
                     )}
                   >
                     {msg.content}
@@ -200,11 +200,11 @@ export default function ChatWidget() {
               {/* Loading */}
               {loading && (
                 <div className="flex gap-2.5">
-                  <div className="w-7 h-7 rounded-full bg-blue-700 flex items-center justify-center flex-shrink-0">
-                    <Bot size={13} className="text-white" />
+                  <div className="w-7 h-7 rounded-full bg-primary-gradient flex items-center justify-center flex-shrink-0">
+                    <Bot size={13} className="text-primary-foreground" />
                   </div>
-                  <div className="bg-slate-100 px-4 py-3 rounded-2xl rounded-tl-sm">
-                    <Loader2 size={16} className="text-slate-400 animate-spin" />
+                  <div className="glass px-4 py-3 rounded-2xl rounded-tl-sm">
+                    <Loader2 size={16} className="text-muted-foreground animate-spin" />
                   </div>
                 </div>
               )}
@@ -212,7 +212,7 @@ export default function ChatWidget() {
             </div>
 
             {/* Input */}
-            <div className="border-t border-slate-100 px-4 py-3 flex items-center gap-2 flex-shrink-0 bg-white">
+            <div className="border-t border-white/5 px-4 py-3 flex items-center gap-2 flex-shrink-0">
               <input
                 ref={inputRef}
                 type="text"
@@ -220,13 +220,13 @@ export default function ChatWidget() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKey}
                 placeholder="Ihre Frage..."
-                className="flex-1 text-sm bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 transition-all"
+                className="flex-1 text-sm glass rounded-xl px-4 py-2.5 outline-none focus:border-primary/40 transition-all text-foreground placeholder:text-muted-foreground bg-transparent"
                 maxLength={500}
               />
               <button
                 onClick={sendMessage}
                 disabled={!input.trim() || loading}
-                className="w-10 h-10 bg-blue-700 hover:bg-blue-600 disabled:bg-slate-200 disabled:cursor-not-allowed text-white rounded-xl flex items-center justify-center transition-colors flex-shrink-0"
+                className="w-10 h-10 bg-primary-gradient disabled:opacity-30 disabled:cursor-not-allowed text-primary-foreground rounded-xl flex items-center justify-center transition-transform hover:scale-105 flex-shrink-0"
               >
                 <Send size={15} />
               </button>

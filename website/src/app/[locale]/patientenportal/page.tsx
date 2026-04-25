@@ -43,10 +43,10 @@ interface Appointment {
 }
 
 const labStatusColor: Record<string, string> = {
-  normal: "bg-green-100 text-green-700",
-  high: "bg-orange-100 text-orange-700",
-  low: "bg-blue-100 text-blue-700",
-  critical: "bg-red-100 text-red-700",
+  normal: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30",
+  high: "bg-orange-500/20 text-orange-300 border border-orange-500/30",
+  low: "bg-blue-400/20 text-blue-300 border border-blue-400/30",
+  critical: "bg-red-500/20 text-red-300 border border-red-500/30",
 };
 
 const labStatusLabel: Record<string, string> = {
@@ -57,11 +57,11 @@ const labStatusLabel: Record<string, string> = {
 };
 
 const apptStatusColor: Record<string, string> = {
-  scheduled: "bg-blue-100 text-blue-700",
-  confirmed: "bg-green-100 text-green-700",
-  completed: "bg-slate-100 text-slate-600",
-  cancelled: "bg-red-100 text-red-600",
-  "no-show": "bg-orange-100 text-orange-600",
+  scheduled: "bg-blue-500/20 text-blue-300 border border-blue-500/30",
+  confirmed: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30",
+  completed: "bg-white/10 text-muted-foreground border border-white/10",
+  cancelled: "bg-red-500/20 text-red-300 border border-red-500/30",
+  "no-show": "bg-orange-500/20 text-orange-300 border border-orange-500/30",
 };
 
 const apptStatusLabel: Record<string, string> = {
@@ -76,14 +76,12 @@ export default function PatientenportalPage() {
   const [step, setStep] = useState<Step>(1);
   const [activeTab, setActiveTab] = useState<DashTab>("befunde");
 
-  // Step 1 state
   const [birthDate, setBirthDate] = useState("");
   const [insuranceNumber, setInsuranceNumber] = useState("");
   const [phone, setPhone] = useState("");
   const [step1Error, setStep1Error] = useState("");
   const [step1Loading, setStep1Loading] = useState(false);
 
-  // Step 2 state
   const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
   const [step2Error, setStep2Error] = useState("");
   const [step2Loading, setStep2Loading] = useState(false);
@@ -97,13 +95,11 @@ export default function PatientenportalPage() {
     useRef<HTMLInputElement>(null),
   ];
 
-  // Step 3 state
   const [patient, setPatient] = useState<PatientSession | null>(null);
   const [labResults, setLabResults] = useState<LabResult[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [dashLoading, setDashLoading] = useState(false);
 
-  // Countdown timer for step 2
   useEffect(() => {
     if (step !== 2) return;
     setSecondsLeft(600);
@@ -226,83 +222,83 @@ export default function PatientenportalPage() {
     .filter((a) => a.date < today)
     .sort((a, b) => `${b.date}${b.time}`.localeCompare(`${a.date}${a.time}`));
 
-  // ── STEP 1 ────────────────────────────────────────────────────────
+  const inputClass = "w-full px-4 py-3 glass rounded-xl text-foreground placeholder:text-muted-foreground bg-transparent outline-none focus:border-primary/50 transition-all text-sm";
+  const labelClass = "block text-sm font-medium text-muted-foreground mb-1.5";
+
+  // ── STEP 1 ──
   if (step === 1) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#1A202C] via-[#2D3748] to-[#1A202C] flex items-center justify-center px-4 py-20">
-        <div className="w-full max-w-md">
+      <div className="min-h-screen bg-hero noise flex items-center justify-center px-4 py-20">
+        <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px]" />
+        <div className="pointer-events-none absolute bottom-0 right-0 h-96 w-96 rounded-full bg-accent/20 blur-[120px]" />
+        <div className="relative w-full max-w-md">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-              style={{ backgroundColor: "rgba(30,159,212,0.2)" }}>
-              <Lock size={28} style={{ color: "#1E9FD4" }} />
+            <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-gradient shadow-glow mx-auto mb-4">
+              <Lock size={28} className="text-primary-foreground" />
             </div>
-            <h1 className="text-3xl font-bold text-white mb-1">Patientenportal</h1>
-            <p className="text-slate-400 text-sm">Urologie Neuwied — sicherer Zugang</p>
+            <h1 className="font-display text-3xl text-foreground mb-1">Patientenportal</h1>
+            <p className="text-muted-foreground text-sm">Urologie Neuwied — sicherer Zugang</p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <h2 className="text-lg font-bold text-[#2D3748] mb-1">Identitätsprüfung</h2>
-            <p className="text-slate-500 text-sm mb-6">
+          <div className="glass-strong rounded-3xl shadow-elegant p-8">
+            <h2 className="font-display text-xl text-foreground mb-1">Identitätsprüfung</h2>
+            <p className="text-muted-foreground text-sm mb-6">
               Geben Sie Ihre Daten ein. Ein Einmalcode wird an Ihr Telefon gesendet.
             </p>
 
             <form onSubmit={handleRequestOtp} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Geburtsdatum</label>
+                <label className={labelClass}>Geburtsdatum</label>
                 <input
                   type="date"
                   required
                   value={birthDate}
                   onChange={(e) => setBirthDate(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:border-transparent text-sm"
-                  style={{ "--tw-ring-color": "#1E9FD4" } as React.CSSProperties}
+                  className={inputClass}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Versicherungsnummer</label>
+                <label className={labelClass}>Versicherungsnummer</label>
                 <input
                   type="text"
                   required
                   placeholder="z. B. A123456789"
                   value={insuranceNumber}
                   onChange={(e) => setInsuranceNumber(e.target.value.toUpperCase())}
-                  className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:border-transparent text-sm uppercase"
-                  style={{ "--tw-ring-color": "#1E9FD4" } as React.CSSProperties}
+                  className={inputClass + " uppercase"}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Mobilnummer</label>
+                <label className={labelClass}>Mobilnummer</label>
                 <input
                   type="tel"
                   required
                   placeholder="+49 151 12345678"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:border-transparent text-sm"
-                  style={{ "--tw-ring-color": "#1E9FD4" } as React.CSSProperties}
+                  className={inputClass}
                 />
               </div>
 
               {step1Error && (
-                <div className="flex items-start gap-2.5 p-3 rounded-xl bg-red-50 border border-red-100">
-                  <AlertCircle size={15} className="text-red-500 flex-shrink-0 mt-0.5" />
-                  <p className="text-red-600 text-sm">{step1Error}</p>
+                <div className="flex items-start gap-2.5 glass rounded-xl p-3 border-red-500/30">
+                  <AlertCircle size={15} className="text-red-400 flex-shrink-0 mt-0.5" />
+                  <p className="text-red-400 text-sm">{step1Error}</p>
                 </div>
               )}
 
               <button
                 type="submit"
                 disabled={step1Loading}
-                className="w-full py-3 rounded-xl text-white font-semibold transition-opacity disabled:opacity-60 mt-2"
-                style={{ backgroundColor: "#1E9FD4" }}
+                className="w-full py-3.5 rounded-full bg-primary-gradient text-primary-foreground font-semibold shadow-glow transition-transform hover:scale-[1.02] disabled:opacity-60 mt-2"
               >
                 {step1Loading ? "Wird geprüft…" : "Code anfordern"}
               </button>
             </form>
 
-            <p className="text-xs text-slate-400 text-center mt-6 leading-relaxed">
+            <p className="text-xs text-muted-foreground text-center mt-6 leading-relaxed">
               Probleme beim Zugang? Rufen Sie uns an:{" "}
-              <a href="tel:+492631233510" className="underline" style={{ color: "#1E9FD4" }}>
+              <a href="tel:+492631233510" className="text-accent hover:text-foreground transition-colors underline underline-offset-2">
                 02631 - 23351
               </a>
             </p>
@@ -312,35 +308,35 @@ export default function PatientenportalPage() {
     );
   }
 
-  // ── STEP 2 ────────────────────────────────────────────────────────
+  // ── STEP 2 ──
   if (step === 2) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#1A202C] via-[#2D3748] to-[#1A202C] flex items-center justify-center px-4 py-20">
-        <div className="w-full max-w-md">
+      <div className="min-h-screen bg-hero noise flex items-center justify-center px-4 py-20">
+        <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px]" />
+        <div className="relative w-full max-w-md">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-              style={{ backgroundColor: "rgba(30,159,212,0.2)" }}>
-              <Lock size={28} style={{ color: "#1E9FD4" }} />
+            <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-gradient shadow-glow mx-auto mb-4">
+              <Lock size={28} className="text-primary-foreground" />
             </div>
-            <h1 className="text-3xl font-bold text-white mb-1">Patientenportal</h1>
-            <p className="text-slate-400 text-sm">Urologie Neuwied — sicherer Zugang</p>
+            <h1 className="font-display text-3xl text-foreground mb-1">Patientenportal</h1>
+            <p className="text-muted-foreground text-sm">Urologie Neuwied — sicherer Zugang</p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <h2 className="text-lg font-bold text-[#2D3748] mb-1">SMS-Verifizierung</h2>
-            <p className="text-slate-500 text-sm mb-2">
+          <div className="glass-strong rounded-3xl shadow-elegant p-8">
+            <h2 className="font-display text-xl text-foreground mb-1">SMS-Verifizierung</h2>
+            <p className="text-muted-foreground text-sm mb-3">
               Ein Einmalcode wurde an Ihr Telefon gesendet.
             </p>
             <div className="flex items-center gap-1.5 mb-6">
-              <Timer size={14} style={{ color: secondsLeft <= 60 ? "#ef4444" : "#1E9FD4" }} />
-              <span className="text-sm font-medium" style={{ color: secondsLeft <= 60 ? "#ef4444" : "#1E9FD4" }}>
+              <Timer size={14} className={secondsLeft <= 60 ? "text-red-400" : "text-accent"} />
+              <span className={`text-sm font-medium ${secondsLeft <= 60 ? "text-red-400" : "text-accent"}`}>
                 Code läuft ab in: {countdownDisplay}
               </span>
             </div>
 
             <form onSubmit={handleVerifyOtp} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-3 text-center">6-stelliger Code</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-3 text-center">6-stelliger Code</label>
                 <div className="flex gap-2 justify-center" onPaste={handleOtpPaste}>
                   {otpDigits.map((digit, i) => (
                     <input
@@ -352,28 +348,25 @@ export default function PatientenportalPage() {
                       value={digit}
                       onChange={(e) => handleOtpDigit(i, e.target.value)}
                       onKeyDown={(e) => handleOtpKeyDown(i, e)}
-                      className="w-12 h-14 text-center text-2xl font-bold border-2 rounded-xl outline-none transition-colors text-[#2D3748]"
-                      style={{
-                        borderColor: digit ? "#1E9FD4" : "#e2e8f0",
-                        backgroundColor: digit ? "rgba(30,159,212,0.05)" : "white",
-                      }}
+                      className={`w-12 h-14 text-center text-2xl font-bold rounded-xl outline-none transition-all text-foreground glass ${
+                        digit ? "border-primary/60 bg-primary/10" : ""
+                      }`}
                     />
                   ))}
                 </div>
               </div>
 
               {step2Error && (
-                <div className="flex items-start gap-2.5 p-3 rounded-xl bg-red-50 border border-red-100">
-                  <AlertCircle size={15} className="text-red-500 flex-shrink-0 mt-0.5" />
-                  <p className="text-red-600 text-sm">{step2Error}</p>
+                <div className="flex items-start gap-2.5 glass rounded-xl p-3 border-red-500/30">
+                  <AlertCircle size={15} className="text-red-400 flex-shrink-0 mt-0.5" />
+                  <p className="text-red-400 text-sm">{step2Error}</p>
                 </div>
               )}
 
               <button
                 type="submit"
                 disabled={step2Loading || secondsLeft === 0 || otpCode.length < 6}
-                className="w-full py-3 rounded-xl text-white font-semibold transition-opacity disabled:opacity-50"
-                style={{ backgroundColor: "#1E9FD4" }}
+                className="w-full py-3.5 rounded-full bg-primary-gradient text-primary-foreground font-semibold shadow-glow transition-transform hover:scale-[1.02] disabled:opacity-50"
               >
                 {step2Loading ? "Wird geprüft…" : "Bestätigen"}
               </button>
@@ -382,7 +375,7 @@ export default function PatientenportalPage() {
             <p className="text-center mt-5">
               <button
                 onClick={() => { setStep(1); setOtpDigits(["", "", "", "", "", ""]); setStep2Error(""); }}
-                className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-600 transition-colors"
+                className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ChevronLeft size={14} />
                 Keinen Code erhalten? Zurück
@@ -394,7 +387,7 @@ export default function PatientenportalPage() {
     );
   }
 
-  // ── STEP 3: Dashboard ─────────────────────────────────────────────
+  // ── STEP 3: Dashboard ──
   if (!patient) return null;
 
   const tabs: { id: DashTab; label: string; icon: React.ReactNode }[] = [
@@ -404,18 +397,19 @@ export default function PatientenportalPage() {
   ];
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#f1f5f9" }}>
-      <div className="bg-white border-b border-slate-200 px-4 sm:px-6 py-4">
+    <div className="min-h-screen bg-background pt-20">
+      {/* Dashboard header */}
+      <div className="glass-strong border-b border-white/5 px-4 sm:px-6 py-4 sticky top-[4.5rem] z-40">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div>
-            <p className="text-xs text-slate-400 uppercase tracking-widest mb-0.5">Patientenportal</p>
-            <h1 className="text-lg font-bold text-[#2D3748]">
+            <p className="text-xs text-muted-foreground uppercase tracking-widest mb-0.5">Patientenportal</p>
+            <h1 className="font-display text-xl text-foreground">
               Willkommen, {patient.firstName}
             </h1>
           </div>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-red-500 transition-colors px-3 py-2 rounded-lg hover:bg-red-50"
+            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-red-400 transition-colors px-3 py-2 rounded-xl hover:bg-red-500/10"
           >
             <LogOut size={15} />
             Abmelden
@@ -423,16 +417,18 @@ export default function PatientenportalPage() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
-        <div className="flex gap-1 bg-white rounded-xl p-1 border border-slate-200 mb-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        {/* Tab bar */}
+        <div className="flex gap-1 glass rounded-2xl p-1 mb-6">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                activeTab === tab.id ? "text-white shadow-sm" : "text-slate-500 hover:text-slate-700"
+              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                activeTab === tab.id
+                  ? "bg-primary-gradient text-primary-foreground shadow-glow"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
-              style={activeTab === tab.id ? { backgroundColor: "#1E9FD4" } : {}}
             >
               {tab.icon}
               <span className="hidden sm:inline">{tab.label}</span>
@@ -441,7 +437,7 @@ export default function PatientenportalPage() {
         </div>
 
         {dashLoading && (
-          <div className="flex items-center justify-center py-16 text-slate-400 text-sm">Laden…</div>
+          <div className="flex items-center justify-center py-16 text-muted-foreground text-sm">Laden…</div>
         )}
 
         {/* ── BEFUNDE ── */}
@@ -452,43 +448,42 @@ export default function PatientenportalPage() {
                 {labResults
                   .sort((a, b) => b.resultDate.localeCompare(a.resultDate))
                   .map((l) => (
-                    <div key={l.id} className="bg-white rounded-xl border border-slate-200 p-4">
+                    <div key={l.id} className="glass rounded-2xl p-4">
                       <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-4 min-w-0">
-                          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                            style={{ backgroundColor: "rgba(30,159,212,0.08)" }}>
-                            <FlaskConical size={18} style={{ color: "#1E9FD4" }} />
+                          <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow flex-shrink-0">
+                            <FlaskConical size={16} className="text-primary-foreground" />
                           </div>
                           <div className="min-w-0">
-                            <p className="font-semibold text-[#2D3748] text-sm truncate">{l.test}</p>
-                            <p className="text-slate-400 text-xs mt-0.5">
+                            <p className="font-semibold text-foreground text-sm truncate">{l.test}</p>
+                            <p className="text-muted-foreground text-xs mt-0.5">
                               {new Date(l.resultDate).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })}
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center gap-3 flex-shrink-0">
-                          <span className="font-bold text-[#2D3748] text-sm">
+                          <span className="font-bold text-foreground text-sm">
                             {l.value}{l.unit ? ` ${l.unit}` : ""}
                           </span>
-                          <span className={`px-2.5 py-1 rounded-lg text-xs font-medium ${labStatusColor[l.status] ?? "bg-slate-100 text-slate-600"}`}>
+                          <span className={`px-2.5 py-1 rounded-lg text-xs font-medium ${labStatusColor[l.status] ?? "bg-white/10 text-muted-foreground"}`}>
                             {labStatusLabel[l.status] ?? l.status}
                           </span>
                         </div>
                       </div>
                       {l.doctorComment && (
                         <div className="mt-3 flex items-start gap-2 px-1">
-                          <MessageSquare size={13} className="text-slate-400 flex-shrink-0 mt-0.5" />
-                          <p className="text-xs text-slate-500 leading-relaxed">{l.doctorComment}</p>
+                          <MessageSquare size={13} className="text-muted-foreground flex-shrink-0 mt-0.5" />
+                          <p className="text-xs text-muted-foreground leading-relaxed">{l.doctorComment}</p>
                         </div>
                       )}
                     </div>
                   ))}
               </div>
             ) : (
-              <div className="bg-white rounded-xl border border-slate-200 p-10 text-center">
-                <FlaskConical size={32} className="text-slate-300 mx-auto mb-3" />
-                <p className="text-slate-500 font-medium">Keine Befunde verfügbar</p>
-                <p className="text-slate-400 text-sm mt-1">Befunde werden nach der Auswertung hier angezeigt.</p>
+              <div className="glass rounded-3xl p-10 text-center">
+                <FlaskConical size={32} className="text-muted-foreground/30 mx-auto mb-3" />
+                <p className="text-muted-foreground font-medium">Keine Befunde verfügbar</p>
+                <p className="text-muted-foreground/60 text-sm mt-1">Befunde werden nach der Auswertung hier angezeigt.</p>
               </div>
             )}
           </div>
@@ -499,23 +494,22 @@ export default function PatientenportalPage() {
           <div className="space-y-6">
             {upcomingAppts.length > 0 && (
               <div>
-                <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Bevorstehende Termine</h2>
+                <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Bevorstehende Termine</h2>
                 <div className="space-y-3">
                   {upcomingAppts.map((a) => (
-                    <div key={a.id} className="bg-white rounded-xl border border-slate-200 p-4 flex items-center justify-between gap-4">
+                    <div key={a.id} className="glass rounded-2xl p-4 flex items-center justify-between gap-4">
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                          style={{ backgroundColor: "rgba(30,159,212,0.1)" }}>
-                          <Calendar size={18} style={{ color: "#1E9FD4" }} />
+                        <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow flex-shrink-0">
+                          <Calendar size={16} className="text-primary-foreground" />
                         </div>
                         <div>
-                          <p className="font-semibold text-[#2D3748] text-sm">{a.type}</p>
-                          <p className="text-slate-400 text-xs mt-0.5">
+                          <p className="font-semibold text-foreground text-sm">{a.type}</p>
+                          <p className="text-muted-foreground text-xs mt-0.5">
                             {new Date(a.date).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })} · {a.time} Uhr · {a.doctor}
                           </p>
                         </div>
                       </div>
-                      <span className={`px-2.5 py-1 rounded-lg text-xs font-medium flex-shrink-0 ${apptStatusColor[a.status] ?? "bg-slate-100 text-slate-600"}`}>
+                      <span className={`px-2.5 py-1 rounded-lg text-xs font-medium flex-shrink-0 ${apptStatusColor[a.status] ?? "bg-white/10 text-muted-foreground"}`}>
                         {apptStatusLabel[a.status] ?? a.status}
                       </span>
                     </div>
@@ -525,22 +519,22 @@ export default function PatientenportalPage() {
             )}
             {pastAppts.length > 0 && (
               <div>
-                <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Vergangene Termine</h2>
-                <div className="space-y-3">
+                <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Vergangene Termine</h2>
+                <div className="space-y-3 opacity-60">
                   {pastAppts.map((a) => (
-                    <div key={a.id} className="bg-white rounded-xl border border-slate-200 p-4 flex items-center justify-between gap-4 opacity-70">
+                    <div key={a.id} className="glass rounded-2xl p-4 flex items-center justify-between gap-4">
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-slate-100">
-                          <Calendar size={18} className="text-slate-400" />
+                        <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl glass flex-shrink-0">
+                          <Calendar size={16} className="text-muted-foreground" />
                         </div>
                         <div>
-                          <p className="font-semibold text-[#2D3748] text-sm">{a.type}</p>
-                          <p className="text-slate-400 text-xs mt-0.5">
+                          <p className="font-semibold text-foreground text-sm">{a.type}</p>
+                          <p className="text-muted-foreground text-xs mt-0.5">
                             {new Date(a.date).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })} · {a.time} Uhr · {a.doctor}
                           </p>
                         </div>
                       </div>
-                      <span className={`px-2.5 py-1 rounded-lg text-xs font-medium flex-shrink-0 ${apptStatusColor[a.status] ?? "bg-slate-100 text-slate-600"}`}>
+                      <span className={`px-2.5 py-1 rounded-lg text-xs font-medium flex-shrink-0 ${apptStatusColor[a.status] ?? "bg-white/10 text-muted-foreground"}`}>
                         {apptStatusLabel[a.status] ?? a.status}
                       </span>
                     </div>
@@ -549,10 +543,10 @@ export default function PatientenportalPage() {
               </div>
             )}
             {appointments.length === 0 && (
-              <div className="bg-white rounded-xl border border-slate-200 p-10 text-center">
-                <Calendar size={32} className="text-slate-300 mx-auto mb-3" />
-                <p className="text-slate-500 font-medium">Keine Termine gefunden</p>
-                <p className="text-slate-400 text-sm mt-1">Buchen Sie Ihren nächsten Termin telefonisch.</p>
+              <div className="glass rounded-3xl p-10 text-center">
+                <Calendar size={32} className="text-muted-foreground/30 mx-auto mb-3" />
+                <p className="text-muted-foreground font-medium">Keine Termine gefunden</p>
+                <p className="text-muted-foreground/60 text-sm mt-1">Buchen Sie Ihren nächsten Termin telefonisch.</p>
               </div>
             )}
           </div>
@@ -560,7 +554,7 @@ export default function PatientenportalPage() {
 
         {/* ── DATEN ── */}
         {!dashLoading && activeTab === "daten" && (
-          <div className="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100">
+          <div className="glass rounded-2xl divide-y divide-white/5">
             {[
               { label: "Name", value: `${patient.firstName} ${patient.lastName}` },
               { label: "Geburtsdatum", value: patient.dateOfBirth ? new Date(patient.dateOfBirth).toLocaleDateString("de-DE") : "—" },
@@ -572,14 +566,16 @@ export default function PatientenportalPage() {
               { label: "Behandelnder Arzt", value: patient.doctor ?? "—" },
             ].map(({ label, value }) => (
               <div key={label} className="flex items-center justify-between px-5 py-4 gap-4">
-                <span className="text-sm text-slate-500 flex-shrink-0 w-40">{label}</span>
-                <span className="text-sm font-medium text-[#2D3748] text-right">{value}</span>
+                <span className="text-sm text-muted-foreground flex-shrink-0 w-40">{label}</span>
+                <span className="text-sm font-medium text-foreground text-right">{value}</span>
               </div>
             ))}
             <div className="px-5 py-4">
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 Für Änderungen Ihrer Daten kontaktieren Sie bitte die Praxis unter{" "}
-                <a href="tel:+492631233510" className="underline" style={{ color: "#1E9FD4" }}>02631 - 23351</a>.
+                <a href="tel:+492631233510" className="text-accent hover:text-foreground transition-colors underline underline-offset-2">
+                  02631 - 23351
+                </a>.
               </p>
             </div>
           </div>
