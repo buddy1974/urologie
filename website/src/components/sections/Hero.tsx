@@ -239,7 +239,7 @@ export default function Hero() {
             </div>
 
             {/* Floating availability badge */}
-            <div className="absolute -bottom-6 -left-6 glass-strong rounded-2xl p-4 shadow-elegant animate-float">
+            <div className="absolute bottom-3 left-3 z-10 glass-strong rounded-2xl p-4 shadow-elegant animate-float">
               <div className="flex items-center gap-3">
                 <span className="relative flex h-3 w-3">
                   <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-75 animate-ping" />
@@ -253,7 +253,7 @@ export default function Hero() {
             </div>
 
             {/* Rating badge */}
-            <div className="absolute -top-4 -right-4 glass-strong rounded-2xl px-4 py-3 shadow-elegant">
+            <div className="absolute top-3 right-3 z-10 glass-strong rounded-2xl px-4 py-3 shadow-elegant">
               <div className="flex items-center gap-2">
                 <Star className="h-4 w-4 fill-accent text-accent" />
                 <span className="font-semibold text-sm text-foreground">4.9</span>

@@ -78,8 +78,8 @@ export default function Footer() {
               { day: "Freitag", hours: "08:00–12:00" },
             ].map(({ day, hours }) => (
               <li key={day} className="flex justify-between gap-4">
-                <span className="text-muted-foreground w-24 flex-shrink-0">{day}</span>
-                <span className="text-foreground/70">{hours}</span>
+                <span className="text-muted-foreground flex-shrink-0 min-w-[100px]">{day}</span>
+                <span className="text-foreground/70 text-right whitespace-nowrap">{hours}</span>
               </li>
             ))}
           </ul>
