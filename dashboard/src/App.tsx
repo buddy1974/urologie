@@ -17,6 +17,7 @@ import Analytics from "@/pages/analytics/Analytics";
 import HR from "@/pages/hr/HR";
 import Compliance from "@/pages/compliance/Compliance";
 import Einstellungen from "@/pages/einstellungen/Einstellungen";
+import CMS from "@/pages/cms/CMS";
 
 export default function App() {
   return (
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/hr" element={<HR />} />
           <Route path="/compliance" element={<Compliance />} />
+          <Route path="/cms" element={<CMS />} />
           <Route path="/einstellungen" element={<Einstellungen />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

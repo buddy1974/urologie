@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Calendar, Users, Bot, FlaskConical,
   FolderOpen, CreditCard, MessageSquare, UserCheck, ClipboardCheck,
-  FileText, Video, BarChart3, Briefcase, Shield, Settings,
+  FileText, Video, BarChart3, Briefcase, Shield, Settings, Globe,
   LogOut, ChevronLeft, ChevronRight,
 } from "lucide-react";
 import { useAuthStore } from "@/store/auth";
@@ -25,6 +25,7 @@ const modules = [
   { id: "analytics", label: "Analytics", icon: BarChart3, href: "/analytics", roles: ["inhaber"] },
   { id: "hr", label: "Stellen & HR", icon: Briefcase, href: "/hr", roles: ["inhaber", "buero"] },
   { id: "compliance", label: "Compliance", icon: Shield, href: "/compliance", roles: ["inhaber"] },
+  { id: "cms", label: "Website", icon: Globe, href: "/cms", roles: ["inhaber", "arzt"] },
   { id: "einstellungen", label: "Einstellungen", icon: Settings, href: "/einstellungen", roles: ["inhaber"] },
 ];
 
