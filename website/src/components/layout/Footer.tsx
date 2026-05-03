@@ -129,6 +129,14 @@ export default function Footer() {
             <Link href="/impressum" className="hover:text-foreground transition-colors">Impressum</Link>
             <Link href="/datenschutz" className="hover:text-foreground transition-colors">Datenschutz</Link>
             <Link href="/kontakt" className="hover:text-foreground transition-colors">Kontakt</Link>
+            <a
+              href="https://urologie-dashboard-one.vercel.app/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground transition-colors"
+            >
+              PraxisOS
+            </a>
           </div>
         </div>
       </div>

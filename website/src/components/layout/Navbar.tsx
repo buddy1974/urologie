@@ -11,10 +11,10 @@ const DOCTOLIB_URL =
   "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking?speciality_id=1336&utm_source=website";
 
 const locales = [
-  { code: "de", flag: "🇩🇪", label: "Deutsch" },
-  { code: "en", flag: "🇬🇧", label: "English" },
-  { code: "fr", flag: "🇫🇷", label: "Français" },
-  { code: "tr", flag: "🇹🇷", label: "Türkçe" },
+  { code: "de", label: "Deutsch" },
+  { code: "en", label: "English" },
+  { code: "fr", label: "Français" },
+  { code: "tr", label: "Türkçe" },
 ];
 
 const navLinks = [
@@ -106,21 +106,20 @@ export default function Navbar() {
             )}
 
             {/* Language switcher */}
-            <div className="flex items-center gap-1 border-l border-white/10 pl-4">
+            <div className="flex items-center gap-0.5 border-l border-white/10 pl-4">
               {locales.map((loc) => (
                 <Link
                   key={loc.code}
                   href={`/${loc.code}`}
                   title={loc.label}
                   className={cn(
-                    "flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all",
+                    "px-2.5 py-1 rounded-lg text-xs font-semibold tracking-wide transition-all",
                     locale === loc.code
                       ? "bg-white/20 text-white ring-1 ring-white/30"
                       : "text-slate-400 hover:text-white hover:bg-white/10"
                   )}
                 >
-                  <span className="text-base leading-none">{loc.flag}</span>
-                  <span className="hidden sm:inline text-xs">{loc.code.toUpperCase()}</span>
+                  {loc.code.toUpperCase()}
                 </Link>
               ))}
             </div>
@@ -201,19 +200,19 @@ export default function Navbar() {
             </div>
 
             {/* Language switcher mobile */}
-            <div className="flex items-center justify-center gap-2 pt-2">
+            <div className="flex items-center justify-center gap-1 pt-2">
               {locales.map((loc) => (
                 <Link
                   key={loc.code}
                   href={`/${loc.code}`}
                   title={loc.label}
                   className={cn(
-                    "px-2 py-1 rounded-lg text-base transition-all",
-                    locale === loc.code ? "bg-white/10" : "opacity-50 hover:opacity-100"
+                    "px-2.5 py-1 rounded-lg text-xs font-semibold tracking-wide transition-all",
+                    locale === loc.code ? "bg-white/20 text-white ring-1 ring-white/30" : "text-slate-400 hover:text-white hover:bg-white/10"
                   )}
                   onClick={() => setMobileOpen(false)}
                 >
-                  {loc.flag}
+                  {loc.code.toUpperCase()}
                 </Link>
               ))}
             </div>
