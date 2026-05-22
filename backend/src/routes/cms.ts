@@ -202,12 +202,8 @@ export async function cmsRoutes(fastify: FastifyInstance) {
 
   fastify.post<{ Body: { type: string; rawText: string; context?: string } }>(
     "/api/cms/ai-enhance",
+    { preHandler: [fastify.authenticate] },
     async (request, reply) => {
-      const secret = request.headers["x-webhook-secret"];
-      if (!secret || secret !== process.env.N8N_WEBHOOK_SECRET) {
-        return reply.status(401).send({ error: "Unauthorized" });
-      }
-
       const { type, rawText, context } = request.body;
       const systemPrompt = SYSTEM_PROMPTS[type];
       if (!systemPrompt) return reply.status(400).send({ error: `Invalid type: ${type}` });
@@ -238,13 +234,25 @@ export async function cmsRoutes(fastify: FastifyInstance) {
 
   // ── MEDIA ────────────────────────────────────────────────────────────────
 
+  const ALLOWED_MIME = new Set([
+    "image/jpeg", "image/png", "image/webp",
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ]);
+  const ALLOWED_EXT = new Set([".jpg", ".jpeg", ".png", ".webp", ".pdf", ".doc", ".docx"]);
+
   fastify.post("/api/cms/media/upload", { preHandler: [fastify.authenticate] }, async (request, reply) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = await (request as any).file();
     if (!data) return reply.status(400).send({ error: "No file provided" });
 
+    const ext = path.extname((data.filename as string) || "").toLowerCase();
+    if (!ALLOWED_MIME.has(data.mimetype as string) || !ALLOWED_EXT.has(ext)) {
+      return reply.status(400).send({ error: "File type not allowed" });
+    }
+
     const buf: Buffer = await data.toBuffer();
-    const ext = path.extname(data.filename as string) || ".bin";
     const safeName = `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;
     const filepath = path.join(uploadsDir, safeName);
 

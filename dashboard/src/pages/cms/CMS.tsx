@@ -7,7 +7,6 @@ import {
 import { useAuthStore } from "@/store/auth";
 
 const API_BASE = import.meta.env.VITE_API_URL ?? "https://urologie-backend.onrender.com";
-const WEBHOOK_SECRET = import.meta.env.VITE_WEBHOOK_SECRET ?? "";
 const SITE_BASE = "https://urologie-six.vercel.app";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -132,11 +131,17 @@ function fmtSize(bytes?: number | null) {
 function uploadWithProgress(
   url: string,
   file: File,
-  onProgress: (pct: number) => void
+  onProgress: (pct: number) => void,
+  headers?: Record<string, string>
 ): Promise<MediaItem> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open("POST", url);
+    if (headers) {
+      for (const [key, val] of Object.entries(headers)) {
+        xhr.setRequestHeader(key, val);
+      }
+    }
     xhr.upload.addEventListener("progress", (e: ProgressEvent) => {
       if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
     });
@@ -157,7 +162,9 @@ function uploadWithProgress(
 // ── Component ──────────────────────────────────────────────────────────────────
 
 export default function CMS() {
-  const { user } = useAuthStore();
+  const { user, token } = useAuthStore();
+  const ah = (): Record<string, string> =>
+    token ? { Authorization: `Bearer ${token}` } : {};
   const [tab, setTab] = useState<"pages" | "blog" | "media">("pages");
   const [toast, setToast] = useState<{ type: "success" | "error"; msg: string } | null>(null);
 
@@ -201,7 +208,7 @@ export default function CMS() {
   async function loadPages() {
     setPagesLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/cms/pages`);
+      const res = await fetch(`${API_BASE}/api/cms/pages`, { headers: ah() });
       if (!res.ok) throw new Error();
       const data = (await res.json()) as CMSPage[];
       setPagesList(data);
@@ -239,7 +246,7 @@ export default function CMS() {
     try {
       const res = await fetch(`${API_BASE}/api/cms/pages/${selectedSlug}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...ah() },
         body: JSON.stringify({ ...pageForm, content: parsedContent, updatedBy: user?.name }),
       });
       if (!res.ok) throw new Error();
@@ -261,7 +268,7 @@ export default function CMS() {
     try {
       const res = await fetch(`${API_BASE}/api/cms/ai-enhance`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-webhook-secret": WEBHOOK_SECRET },
+        headers: { "Content-Type": "application/json", ...ah() },
         body: JSON.stringify({ type: "page", rawText: pageForm.content }),
       });
       if (!res.ok) throw new Error();
@@ -279,7 +286,7 @@ export default function CMS() {
     try {
       const res = await fetch(`${API_BASE}/api/cms/ai-enhance`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-webhook-secret": WEBHOOK_SECRET },
+        headers: { "Content-Type": "application/json", ...ah() },
         body: JSON.stringify({ type: "meta", rawText: pageForm.content }),
       });
       if (!res.ok) throw new Error();
@@ -304,7 +311,7 @@ export default function CMS() {
     setImgUploading(true);
     setImgUploadPct(0);
     try {
-      const item = await uploadWithProgress(`${API_BASE}/api/cms/media/upload`, file, setImgUploadPct);
+      const item = await uploadWithProgress(`${API_BASE}/api/cms/media/upload`, file, setImgUploadPct, ah());
       setImgUrl(item.url);
       showToast("success", "Bild hochgeladen.");
     } catch {
@@ -342,7 +349,7 @@ export default function CMS() {
   async function loadPosts() {
     setBlogLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/cms/blog`);
+      const res = await fetch(`${API_BASE}/api/cms/blog`, { headers: ah() });
       if (!res.ok) throw new Error();
       setPosts((await res.json()) as BlogPost[]);
     } catch {
@@ -403,7 +410,7 @@ export default function CMS() {
       const url = editingId ? `${API_BASE}/api/cms/blog/${editingId}` : `${API_BASE}/api/cms/blog`;
       const res = await fetch(url, {
         method: editingId ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...ah() },
         body: JSON.stringify(body),
       });
       if (!res.ok) throw new Error();
@@ -420,7 +427,7 @@ export default function CMS() {
     try {
       const res = await fetch(`${API_BASE}/api/cms/blog/${post.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...ah() },
         body: JSON.stringify({ status: newStatus }),
       });
       if (!res.ok) throw new Error();
@@ -434,7 +441,7 @@ export default function CMS() {
   async function deletePost(id: string) {
     if (!confirm("Artikel wirklich löschen?")) return;
     try {
-      await fetch(`${API_BASE}/api/cms/blog/${id}`, { method: "DELETE" });
+      await fetch(`${API_BASE}/api/cms/blog/${id}`, { method: "DELETE", headers: ah() });
       showToast("success", "Artikel gelöscht.");
       setPosts((prev) => prev.filter((p) => p.id !== id));
       if (showEditor && editingId === id) setShowEditor(false);
@@ -449,7 +456,7 @@ export default function CMS() {
     try {
       const res = await fetch(`${API_BASE}/api/cms/ai-enhance`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-webhook-secret": WEBHOOK_SECRET },
+        headers: { "Content-Type": "application/json", ...ah() },
         body: JSON.stringify({ type: "blog", rawText: blogForm.content }),
       });
       if (!res.ok) throw new Error();
@@ -467,7 +474,7 @@ export default function CMS() {
     try {
       const res = await fetch(`${API_BASE}/api/cms/ai-enhance`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-webhook-secret": WEBHOOK_SECRET },
+        headers: { "Content-Type": "application/json", ...ah() },
         body: JSON.stringify({ type: "meta", rawText: blogForm.content }),
       });
       if (!res.ok) throw new Error();
@@ -492,7 +499,7 @@ export default function CMS() {
     setCoverUploading(true);
     setCoverUploadPct(0);
     try {
-      const item = await uploadWithProgress(`${API_BASE}/api/cms/media/upload`, file, setCoverUploadPct);
+      const item = await uploadWithProgress(`${API_BASE}/api/cms/media/upload`, file, setCoverUploadPct, ah());
       setBlogForm((f) => ({ ...f, coverImageUrl: item.url }));
       showToast("success", "Cover-Bild hochgeladen.");
     } catch {
@@ -513,7 +520,7 @@ export default function CMS() {
   async function loadMedia() {
     setMediaLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/cms/media`);
+      const res = await fetch(`${API_BASE}/api/cms/media`, { headers: ah() });
       if (!res.ok) throw new Error();
       setMediaItems((await res.json()) as MediaItem[]);
     } catch {
@@ -526,7 +533,7 @@ export default function CMS() {
     setMediaUploading(true);
     setMediaUploadPct(0);
     try {
-      const item = await uploadWithProgress(`${API_BASE}/api/cms/media/upload`, file, setMediaUploadPct);
+      const item = await uploadWithProgress(`${API_BASE}/api/cms/media/upload`, file, setMediaUploadPct, ah());
       setMediaItems((prev) => [item, ...prev]);
       showToast("success", "Bild hochgeladen.");
     } catch {
@@ -537,7 +544,7 @@ export default function CMS() {
   async function deleteMedia(id: string) {
     if (!confirm("Bild wirklich löschen?")) return;
     try {
-      await fetch(`${API_BASE}/api/cms/media/${id}`, { method: "DELETE" });
+      await fetch(`${API_BASE}/api/cms/media/${id}`, { method: "DELETE", headers: ah() });
       setMediaItems((prev) => prev.filter((m) => m.id !== id));
       showToast("success", "Bild gelöscht.");
     } catch {

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { fetchAppointments as fetchAppointmentsApi, createAppointment, fetchPatients as fetchPatientsApi } from "@/lib/api";
 import {
-  Calendar, User, Phone, Plus, Search, X,
+  Calendar, Plus, Search, X,
   CheckCircle, XCircle, AlertCircle, Circle, ChevronLeft, ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";

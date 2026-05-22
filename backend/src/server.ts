@@ -44,8 +44,12 @@ async function main() {
     redis: undefined,
   });
 
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET environment variable is required — refusing to start");
+  }
+
   await fastify.register(jwt, {
-    secret: process.env.JWT_SECRET ?? "fallback-dev-only",
+    secret: process.env.JWT_SECRET,
   });
 
   fastify.decorate("authenticate", async (request, reply) => {

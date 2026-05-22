@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { db } from "../db/index";
 import { patients } from "../db/schema";
-import { eq, and, ilike } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export async function patientsRoutes(fastify: FastifyInstance) {
   // GET all patients
@@ -38,52 +38,13 @@ export async function patientsRoutes(fastify: FastifyInstance) {
     }
   });
 
-  // POST login (Patientenportal)
-  fastify.post<{ Body: { birthDate: string; insuranceNumber: string } }>(
-    "/api/patients/login",
-    async (request, reply) => {
-      const { birthDate, insuranceNumber } = request.body;
-      if (!birthDate || !insuranceNumber) {
-        return reply.status(400).send({ error: "birthDate and insuranceNumber required" });
-      }
-
-      try {
-        const result = await db
-          .select()
-          .from(patients)
-          .where(
-            and(
-              eq(patients.dateOfBirth, birthDate),
-              ilike(patients.notes, `%Vers.Nr.: ${insuranceNumber}%`)
-            )
-          );
-
-        if (result.length === 0) {
-          return reply.status(401).send({ error: "Patient nicht gefunden" });
-        }
-
-        const patient = result[0];
-        return reply.send({
-          success: true,
-          patient: {
-            id: patient.id,
-            firstName: patient.firstName,
-            lastName: patient.lastName,
-            dateOfBirth: patient.dateOfBirth,
-            insurance: patient.insurance,
-            phone: patient.phone,
-            email: patient.email,
-            address: patient.address,
-            conditions: patient.conditions,
-            doctor: patient.doctor,
-          },
-        });
-      } catch (error) {
-        fastify.log.error(error);
-      return reply.status(500).send({ error: "Internal server error" });
-      }
-    }
-  );
+  // POST /api/patients/login — removed (insecure legacy auth)
+  // Patient portal login now uses OTP flow via /api/portal/
+  fastify.post("/api/patients/login", async (_request, reply) => {
+    return reply.status(410).send({
+      error: "This endpoint has been removed. Please use the OTP patient portal.",
+    });
+  });
 
   // PUT update patient
   fastify.put<{ Params: { id: string }; Body: Partial<typeof patients.$inferInsert> }>("/api/patients/:id", { preHandler: [fastify.authenticate] }, async (request, reply) => {
