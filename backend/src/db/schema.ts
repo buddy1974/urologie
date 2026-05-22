@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, varchar, date, boolean, integer, serial, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, varchar, date, boolean, integer, serial, jsonb, uuid } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 export const patients = pgTable("patients", {
@@ -116,3 +116,17 @@ export const media = pgTable("media", {
   uploadedAt: timestamp("uploaded_at").defaultNow(),
   uploadedBy: text("uploaded_by"),
 });
+
+export const staff = pgTable("staff", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: text("email").notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
+  name: text("name").notNull(),
+  role: text("role").notNull(),
+  active: boolean("active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export type Staff = typeof staff.$inferSelect;
+export type NewStaff = typeof staff.$inferInsert;

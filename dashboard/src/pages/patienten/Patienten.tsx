@@ -62,14 +62,14 @@ const MOCK_PATIENTS: Patient[] = [
   { id: "1", firstName: "Hans", lastName: "Müller", dob: "15.03.1958", age: 68, insurance: "GKV", phone: "0172-1234567", email: "h.mueller@email.de", lastVisit: "23.03.2026", conditions: ["BPH", "PSA erhöht"], doctor: "Dr. Fomuki" },
   { id: "2", firstName: "Klaus", lastName: "Weber", dob: "22.07.1952", age: 73, insurance: "PKV", phone: "0163-2345678", lastVisit: "23.03.2026", conditions: ["Prostatakarzinom Nachsorge"], doctor: "Dr. Fomuki" },
   { id: "3", firstName: "Thomas", lastName: "Schmidt", dob: "08.11.1975", age: 50, insurance: "GKV", phone: "0151-3456789", lastVisit: "23.03.2026", nextVisit: "15.04.2026", conditions: ["Vasektomie geplant"], doctor: "Dr. Fomuki" },
-  { id: "4", firstName: "Mehmet", lastName: "Yilmaz", dob: "03.05.1968", age: 57, insurance: "GKV", phone: "0176-4567890", lastVisit: "23.03.2026", conditions: ["Harnwegsinfekt", "Diabetes"], doctor: "Dr. Nwankwo" },
+  { id: "4", firstName: "Mehmet", lastName: "Yilmaz", dob: "03.05.1968", age: 57, insurance: "GKV", phone: "0176-4567890", lastVisit: "23.03.2026", conditions: ["Harnwegsinfekt", "Diabetes"], doctor: "Dr. Fomuki" },
   { id: "5", firstName: "Peter", lastName: "Hoffmann", dob: "19.09.1955", age: 70, insurance: "PKV", phone: "0170-5678901", lastVisit: "10.03.2026", nextVisit: "23.03.2026", conditions: ["UroLift post-OP"], doctor: "Dr. Fomuki" },
-  { id: "6", firstName: "Andreas", lastName: "Klein", dob: "14.02.1971", age: 55, insurance: "GKV", phone: "0152-6789012", lastVisit: "23.03.2026", conditions: ["Harnsteine"], doctor: "Dr. Nwankwo" },
+  { id: "6", firstName: "Andreas", lastName: "Klein", dob: "14.02.1971", age: 55, insurance: "GKV", phone: "0152-6789012", lastVisit: "23.03.2026", conditions: ["Harnsteine"], doctor: "Dr. Fomuki" },
   { id: "7", firstName: "Stefan", lastName: "Wagner", dob: "30.06.1983", age: 42, insurance: "Selbstzahler", phone: "0178-7890123", lastVisit: "23.03.2026", conditions: ["Erektionsstörung", "Andrologie"], doctor: "Dr. Fomuki" },
   { id: "8", firstName: "Jürgen", lastName: "Fischer", dob: "11.12.1949", age: 76, insurance: "PKV", phone: "0172-9012345", lastVisit: "05.03.2026", nextVisit: "23.03.2026", conditions: ["Blasenkarzinom Nachsorge"], doctor: "Dr. Fomuki" },
   { id: "9", firstName: "Dimitri", lastName: "Papadopoulos", dob: "25.08.1961", age: 64, insurance: "GKV", phone: "0151-1234560", lastVisit: "15.02.2026", nextVisit: "23.03.2026", conditions: ["PSA 6.2 — Biopsie"], doctor: "Dr. Fomuki" },
-  { id: "10", firstName: "Robert", lastName: "Zimmermann", dob: "07.04.1978", age: 47, insurance: "PKV", phone: "0176-2345601", lastVisit: "23.03.2026", conditions: ["Inkontinenz", "Magnetstimulation"], doctor: "Dr. Nwankwo" },
-  { id: "11", firstName: "Frank", lastName: "Becker", dob: "18.10.1965", age: 60, insurance: "GKV", phone: "0164-8901234", lastVisit: "01.03.2026", conditions: ["Vorsorge", "PSA normal"], doctor: "Dr. Nwankwo" },
+  { id: "10", firstName: "Robert", lastName: "Zimmermann", dob: "07.04.1978", age: 47, insurance: "PKV", phone: "0176-2345601", lastVisit: "23.03.2026", conditions: ["Inkontinenz", "Magnetstimulation"], doctor: "Dr. Fomuki" },
+  { id: "11", firstName: "Frank", lastName: "Becker", dob: "18.10.1965", age: 60, insurance: "GKV", phone: "0164-8901234", lastVisit: "01.03.2026", conditions: ["Vorsorge", "PSA normal"], doctor: "Dr. Fomuki" },
   { id: "12", firstName: "Martin", lastName: "Schulz", dob: "29.01.1970", age: 56, insurance: "GKV", phone: "0163-0123456", lastVisit: "23.03.2026", conditions: ["Kontrolltermin"], doctor: "Dr. Fomuki" },
 ];
 

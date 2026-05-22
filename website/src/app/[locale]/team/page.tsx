@@ -21,16 +21,6 @@ const doctors = [
       "Mitglied Vasektomie-Experten Netzwerk",
     ],
   },
-  {
-    name: "Dr. C. Nwankwo",
-    role: "Fachärztin für Urologie · Angestellte Ärztin",
-    image: "/images/team/frau-dr-nwanko.jpg",
-    initials: "CN",
-    qualifications: [
-      "Fachärztin für Urologie",
-      "Angestellte Ärztin",
-    ],
-  },
 ];
 
 const staff = [

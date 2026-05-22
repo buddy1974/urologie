@@ -1,10 +1,12 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import jwt from "@fastify/jwt";
 import multipart from "@fastify/multipart";
 import fastifyStatic from "@fastify/static";
 import dotenv from "dotenv";
 import path from "path";
 import fs from "fs";
+import { authRoutes } from "./routes/auth";
 import { patientsRoutes } from "./routes/patients";
 import { appointmentsRoutes } from "./routes/appointments";
 import { labRoutes } from "./routes/lab";
@@ -27,12 +29,31 @@ const fastify = Fastify({
 async function main() {
   await fastify.register(cors, {
     origin: [
-      "http://localhost:3001",
+      "http://localhost:3000",
       "http://localhost:5173",
+      "https://urologie-neuwied.de",
+      "https://www.urologie-neuwied.de",
       "https://urologie-six.vercel.app",
       /\.vercel\.app$/,
     ],
     credentials: true,
+  });
+
+  await fastify.register(import("@fastify/rate-limit"), {
+    global: false,
+    redis: undefined,
+  });
+
+  await fastify.register(jwt, {
+    secret: process.env.JWT_SECRET ?? "fallback-dev-only",
+  });
+
+  fastify.decorate("authenticate", async (request, reply) => {
+    try {
+      await request.jwtVerify();
+    } catch {
+      return reply.status(401).send({ error: "Unauthorized" });
+    }
   });
 
   // Multipart support for file uploads
@@ -50,6 +71,7 @@ async function main() {
     prefix: "/uploads/",
   });
 
+  await fastify.register(authRoutes);
   await fastify.register(patientsRoutes);
   await fastify.register(appointmentsRoutes);
   await fastify.register(labRoutes);

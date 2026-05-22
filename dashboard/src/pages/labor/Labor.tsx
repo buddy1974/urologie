@@ -59,10 +59,10 @@ const RESULTS: LabResult[] = [
   { id:"2", patient:"Weber, Klaus", test:"PSA", value:"0.12", unit:"ng/ml", refMin:0, refMax:4, numericValue:0.12, date:"23.03.2026", status:"normal", doctor:"Dr. Fomuki", sent:true, doctorComment:"" },
   { id:"3", patient:"Papadopoulos, Dimitri", test:"PSA", value:"6.2", unit:"ng/ml", refMin:0, refMax:4, numericValue:6.2, date:"23.03.2026", status:"critical", doctor:"Dr. Fomuki", sent:false, doctorComment:"" },
   { id:"4", patient:"Fischer, Jürgen", test:"Kreatinin", value:"1.1", unit:"mg/dl", refMin:0.7, refMax:1.2, numericValue:1.1, date:"23.03.2026", status:"normal", doctor:"Dr. Fomuki", sent:true, doctorComment:"" },
-  { id:"5", patient:"Yilmaz, Mehmet", test:"Leukozyten Urin", value:"+++", unit:"", refMin:0, refMax:0, numericValue:3, date:"23.03.2026", status:"high", doctor:"Dr. Nwankwo", sent:false, doctorComment:"" },
+  { id:"5", patient:"Yilmaz, Mehmet", test:"Leukozyten Urin", value:"+++", unit:"", refMin:0, refMax:0, numericValue:3, date:"23.03.2026", status:"high", doctor:"Dr. Fomuki", sent:false, doctorComment:"" },
   { id:"6", patient:"Wagner, Stefan", test:"Testosteron", value:"2.1", unit:"ng/ml", refMin:2.8, refMax:8.0, numericValue:2.1, date:"23.03.2026", status:"low", doctor:"Dr. Fomuki", sent:false, doctorComment:"" },
   { id:"7", patient:"Schmidt, Thomas", test:"Spermiogramm", value:"18 Mio/ml", unit:"", refMin:0, refMax:0, numericValue:18, date:"22.03.2026", status:"normal", doctor:"Dr. Fomuki", sent:true, doctorComment:"" },
-  { id:"8", patient:"Klein, Andreas", test:"Urinkultur", value:"E.coli >100.000", unit:"KBE/ml", refMin:0, refMax:0, numericValue:3, date:"22.03.2026", status:"critical", doctor:"Dr. Nwankwo", sent:false, doctorComment:"" },
+  { id:"8", patient:"Klein, Andreas", test:"Urinkultur", value:"E.coli >100.000", unit:"KBE/ml", refMin:0, refMax:0, numericValue:3, date:"22.03.2026", status:"critical", doctor:"Dr. Fomuki", sent:false, doctorComment:"" },
 ];
 
 const statusConfig = {

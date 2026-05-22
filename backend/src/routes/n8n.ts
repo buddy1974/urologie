@@ -50,7 +50,7 @@ export async function n8nRoutes(fastify: FastifyInstance) {
       return reply.send({ success: true, workflow, result });
     } catch (error) {
       fastify.log.error({ workflow, error }, "n8n workflow failed");
-      return reply.status(500).send({ error: "Workflow execution failed", details: String(error) });
+      return reply.status(500).send({ error: "Internal server error" });
     }
   });
 }

@@ -6,7 +6,22 @@ import { eq, and, gt, asc } from "drizzle-orm";
 export async function portalRoutes(fastify: FastifyInstance) {
   fastify.post<{ Body: { birthDate: string; insuranceNumber: string; phone: string } }>(
     "/api/portal/request-otp",
+    {
+      config: {
+        rateLimit: {
+          max: 3,
+          timeWindow: "10 minutes",
+          errorResponseBuilder: () => ({
+            error: "Zu viele Versuche. Bitte warten Sie 10 Minuten.",
+          }),
+        },
+      },
+    },
     async (request, reply) => {
+      if (!process.env.SEVEN_API_KEY) {
+        return reply.status(503).send({ error: "SMS-Dienst nicht konfiguriert" });
+      }
+
       const { birthDate, insuranceNumber, phone } = request.body;
       if (!birthDate || !insuranceNumber || !phone) {
         return reply.status(400).send({ error: "Alle Felder sind erforderlich" });
@@ -31,11 +46,11 @@ export async function portalRoutes(fastify: FastifyInstance) {
 
         await db.insert(patientOtp).values({ patientId: patient.id, otpCode: otp, expiresAt });
 
-        await fetch("https://gateway.seven.io/api/sms", {
+        const smsResponse = await fetch("https://gateway.seven.io/api/sms", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-Api-Key": process.env.SEVEN_API_KEY ?? "",
+            "X-Api-Key": process.env.SEVEN_API_KEY,
           },
           body: JSON.stringify({
             to: patient.phone,
@@ -44,15 +59,31 @@ export async function portalRoutes(fastify: FastifyInstance) {
           }),
         });
 
+        if (!smsResponse.ok) {
+          return reply.status(500).send({ error: "SMS konnte nicht gesendet werden" });
+        }
+
         return reply.send({ success: true, message: "Code gesendet" });
       } catch (error) {
-        return reply.status(500).send({ error: "Fehler beim Senden des Codes", details: String(error) });
+        fastify.log.error(error);
+        return reply.status(500).send({ error: "Internal server error" });
       }
     }
   );
 
   fastify.post<{ Body: { birthDate: string; insuranceNumber: string; otp: string } }>(
     "/api/portal/verify-otp",
+    {
+      config: {
+        rateLimit: {
+          max: 5,
+          timeWindow: "10 minutes",
+          errorResponseBuilder: () => ({
+            error: "Zu viele Versuche. Bitte warten Sie 10 Minuten.",
+          }),
+        },
+      },
+    },
     async (request, reply) => {
       const { birthDate, insuranceNumber, otp } = request.body;
       if (!birthDate || !insuranceNumber || !otp) {
@@ -88,8 +119,14 @@ export async function portalRoutes(fastify: FastifyInstance) {
 
         await db.update(patientOtp).set({ used: true }).where(eq(patientOtp.id, otpResult[0].id));
 
+        const token = fastify.jwt.sign(
+          { patientId: patient.id },
+          { expiresIn: "1h" }
+        );
+
         return reply.send({
           success: true,
+          token,
           patient: {
             id: patient.id,
             firstName: patient.firstName,
@@ -104,15 +141,18 @@ export async function portalRoutes(fastify: FastifyInstance) {
           },
         });
       } catch (error) {
-        return reply.status(500).send({ error: "Datenbankfehler", details: String(error) });
+        fastify.log.error(error);
+        return reply.status(500).send({ error: "Internal server error" });
       }
     }
   );
 
-  fastify.get<{ Params: { patientId: string } }>(
-    "/api/portal/results/:patientId",
+  fastify.get(
+    "/api/portal/results",
+    { preHandler: [fastify.authenticate] },
     async (request, reply) => {
       try {
+        const { patientId } = request.user as { patientId: string };
         const result = await db.select({
           id: labResults.id,
           test: labResults.test,
@@ -124,19 +164,22 @@ export async function portalRoutes(fastify: FastifyInstance) {
           doctorComment: labResults.doctorComment,
         })
           .from(labResults)
-          .where(eq(labResults.patientId, request.params.patientId))
+          .where(eq(labResults.patientId, patientId))
           .orderBy(asc(labResults.resultDate));
         return reply.send(result);
       } catch (error) {
-        return reply.status(500).send({ error: "Datenbankfehler", details: String(error) });
+        fastify.log.error(error);
+        return reply.status(500).send({ error: "Internal server error" });
       }
     }
   );
 
-  fastify.get<{ Params: { patientId: string } }>(
-    "/api/portal/appointments/:patientId",
+  fastify.get(
+    "/api/portal/appointments",
+    { preHandler: [fastify.authenticate] },
     async (request, reply) => {
       try {
+        const { patientId } = request.user as { patientId: string };
         const result = await db.select({
           id: appointments.id,
           date: appointments.date,
@@ -147,11 +190,12 @@ export async function portalRoutes(fastify: FastifyInstance) {
           room: appointments.room,
         })
           .from(appointments)
-          .where(eq(appointments.patientId, request.params.patientId))
+          .where(eq(appointments.patientId, patientId))
           .orderBy(asc(appointments.date), asc(appointments.time));
         return reply.send(result);
       } catch (error) {
-        return reply.status(500).send({ error: "Datenbankfehler", details: String(error) });
+        fastify.log.error(error);
+        return reply.status(500).send({ error: "Internal server error" });
       }
     }
   );

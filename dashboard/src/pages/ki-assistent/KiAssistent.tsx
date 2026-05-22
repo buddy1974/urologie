@@ -100,7 +100,7 @@ export default function KiAssistent() {
         .filter((m) => m.id !== "0")
         .map((m) => ({ role: m.role, content: m.content }));
 
-      const response = await fetch("/api/chat", {
+      const response = await fetch("https://urologie-neuwied.de/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -193,7 +193,7 @@ export default function KiAssistent() {
         ? "Du bist ein medizinischer Assistent für einen Urologen in Deutschland. Der folgende Text ist ein gesprochenes Diktat des Arztes. Formatiere es als professionellen Arztbrief auf Deutsch mit: Betreff, Anrede, medizinischem Befund, Diagnose, Therapieempfehlung und Grußformel. Halte den Inhalt exakt — nur Format und Sprache verbessern."
         : "Du bist ein medizinischer Assistent für einen Urologen in Deutschland. Der folgende Text ist ein gesprochenes Diktat des Arztes. Formatiere es als professionelle E-Mail auf Deutsch. Korrigiere Grammatik und Struktur, behalte den Inhalt exakt bei.";
     try {
-      const response = await fetch("/api/chat", {
+      const response = await fetch("https://urologie-neuwied.de/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ system: systemPrompt, messages: [{ role: "user", content: transcript }] }),

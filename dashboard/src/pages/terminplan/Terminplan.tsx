@@ -40,15 +40,15 @@ const MOCK_APPOINTMENTS: Appointment[] = [
   { id: "1", time: "08:00", duration: 30, patient: "Hans Müller", type: "Erstvorstellung", doctor: "Dr. Fomuki", status: "done", phone: "0172-1234567", insurance: "GKV", room: "1" },
   { id: "2", time: "08:30", duration: 15, patient: "Klaus Weber", type: "PSA-Kontrolle", doctor: "Dr. Fomuki", status: "done", phone: "0163-2345678", insurance: "PKV", room: "1" },
   { id: "3", time: "09:00", duration: 30, patient: "Thomas Schmidt", type: "Vasektomie-Beratung", doctor: "Dr. Fomuki", status: "in-progress", phone: "0151-3456789", insurance: "GKV", room: "2" },
-  { id: "4", time: "09:30", duration: 20, patient: "Mehmet Yilmaz", type: "Kontrolltermin", doctor: "Dr. Nwankwo", status: "arrived", phone: "0176-4567890", insurance: "GKV", room: "3" },
+  { id: "4", time: "09:30", duration: 20, patient: "Mehmet Yilmaz", type: "Kontrolltermin", doctor: "Dr. Fomuki", status: "arrived", phone: "0176-4567890", insurance: "GKV", room: "3" },
   { id: "5", time: "10:00", duration: 30, patient: "Peter Hoffmann", type: "UroLift Nachsorge", doctor: "Dr. Fomuki", status: "scheduled", phone: "0170-5678901", insurance: "PKV" },
-  { id: "6", time: "10:30", duration: 15, patient: "Andreas Klein", type: "Laborergebnis", doctor: "Dr. Nwankwo", status: "scheduled", phone: "0152-6789012", insurance: "GKV" },
+  { id: "6", time: "10:30", duration: 15, patient: "Andreas Klein", type: "Laborergebnis", doctor: "Dr. Fomuki", status: "scheduled", phone: "0152-6789012", insurance: "GKV" },
   { id: "7", time: "11:00", duration: 30, patient: "Stefan Wagner", type: "Andrologie", doctor: "Dr. Fomuki", status: "scheduled", phone: "0178-7890123", insurance: "Selbstzahler" },
-  { id: "8", time: "11:30", duration: 20, patient: "Frank Becker", type: "Vorsorge Mann", doctor: "Dr. Nwankwo", status: "scheduled", phone: "0164-8901234", insurance: "GKV" },
+  { id: "8", time: "11:30", duration: 20, patient: "Frank Becker", type: "Vorsorge Mann", doctor: "Dr. Fomuki", status: "scheduled", phone: "0164-8901234", insurance: "GKV" },
   { id: "9", time: "14:00", duration: 30, patient: "Jürgen Fischer", type: "Zystoskopie", doctor: "Dr. Fomuki", status: "scheduled", phone: "0172-9012345", insurance: "PKV" },
   { id: "10", time: "14:30", duration: 15, patient: "Martin Schulz", type: "Kontrolltermin", doctor: "Dr. Fomuki", status: "no-show", phone: "0163-0123456", insurance: "GKV" },
   { id: "11", time: "15:00", duration: 30, patient: "Dimitri Papadopoulos", type: "Prostatabiopsie", doctor: "Dr. Fomuki", status: "scheduled", phone: "0151-1234560", insurance: "GKV" },
-  { id: "12", time: "15:30", duration: 20, patient: "Robert Zimmermann", type: "Magnetstimulation", doctor: "Dr. Nwankwo", status: "scheduled", phone: "0176-2345601", insurance: "PKV" },
+  { id: "12", time: "15:30", duration: 20, patient: "Robert Zimmermann", type: "Magnetstimulation", doctor: "Dr. Fomuki", status: "scheduled", phone: "0176-2345601", insurance: "PKV" },
 ];
 
 const statusConfig: Record<AppointmentStatus, { label: string; color: string; bg: string; icon: typeof Circle }> = {

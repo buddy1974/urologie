@@ -2,14 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 import { useAuthStore } from "@/store/auth";
-import type { UserRole } from "@/types";
 
-const DEMO_USERS = [
-  { email: "dr.fomuki@urologie-neuwied.de", password: "praxis2024", name: "Dr. Walters T. Fomuki", role: "inhaber" as UserRole },
-  { email: "dr.nwankwo@urologie-neuwied.de", password: "praxis2024", name: "Dr. C. Nwankwo", role: "arzt" as UserRole },
-  { email: "theismann@urologie-neuwied.de", password: "praxis2024", name: "Bettina Theismann", role: "mfa" as UserRole },
-  { email: "jakoby@urologie-neuwied.de", password: "praxis2024", name: "Frau Jakoby", role: "buero" as UserRole },
-];
+const API_BASE = import.meta.env.VITE_API_URL ?? "https://urologie-backend.onrender.com";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -24,16 +18,27 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    await new Promise((r) => setTimeout(r, 600));
-    const user = DEMO_USERS.find(
-      (u) => u.email === email && u.password === password
-    );
-    if (user) {
-      login({ id: user.email, name: user.name, role: user.role, email: user.email });
+
+    try {
+      const res = await fetch(`${API_BASE}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) {
+        setError("E-Mail oder Passwort ist falsch.");
+        setLoading(false);
+        return;
+      }
+
+      const data = await res.json();
+      login(data.user, data.token);
       navigate("/");
-    } else {
-      setError("E-Mail oder Passwort ist falsch.");
+    } catch {
+      setError("Verbindungsfehler. Bitte erneut versuchen.");
     }
+
     setLoading(false);
   }
 
@@ -122,25 +127,6 @@ export default function Login() {
               {loading ? "Anmelden..." : "Anmelden"}
             </button>
           </form>
-          <div className="mt-6 pt-5 border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-            <p className="text-xs text-center mb-3" style={{ color: "#64748b" }}>Demo-Zugänge (Passwort: praxis2024)</p>
-            <div className="space-y-1.5">
-              {DEMO_USERS.map((u) => (
-                <button
-                  key={u.email}
-                  onClick={() => { setEmail(u.email); setPassword(u.password); }}
-                  className="w-full text-left px-3 py-2 rounded-lg text-xs transition-colors hover:bg-white/5"
-                  style={{ color: "#94a3b8" }}
-                >
-                  <span className="font-medium text-white">{u.name}</span>
-                  <span className="ml-2 px-1.5 py-0.5 rounded"
-                    style={{ backgroundColor: "rgba(30,159,212,0.15)", color: "#5ECFEB" }}>
-                    {u.role}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
         <p className="text-center text-xs mt-6" style={{ color: "#475569" }}>
           © 2026 Urologische Praxis Neuwied · Nur für autorisiertes Personal

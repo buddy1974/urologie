@@ -5,33 +5,36 @@ import { eq, and, ilike } from "drizzle-orm";
 
 export async function patientsRoutes(fastify: FastifyInstance) {
   // GET all patients
-  fastify.get("/api/patients", async (request, reply) => {
+  fastify.get("/api/patients", { preHandler: [fastify.authenticate] }, async (request, reply) => {
     try {
       const result = await db.select().from(patients).orderBy(patients.lastName);
       return reply.send(result);
     } catch (error) {
-      return reply.status(500).send({ error: "Database error", details: String(error) });
+      fastify.log.error(error);
+      return reply.status(500).send({ error: "Internal server error" });
     }
   });
 
   // GET single patient
-  fastify.get<{ Params: { id: string } }>("/api/patients/:id", async (request, reply) => {
+  fastify.get<{ Params: { id: string } }>("/api/patients/:id", { preHandler: [fastify.authenticate] }, async (request, reply) => {
     try {
       const result = await db.select().from(patients).where(eq(patients.id, request.params.id));
       if (result.length === 0) return reply.status(404).send({ error: "Patient not found" });
       return reply.send(result[0]);
     } catch (error) {
-      return reply.status(500).send({ error: "Database error", details: String(error) });
+      fastify.log.error(error);
+      return reply.status(500).send({ error: "Internal server error" });
     }
   });
 
   // POST create patient
-  fastify.post<{ Body: typeof patients.$inferInsert }>("/api/patients", async (request, reply) => {
+  fastify.post<{ Body: typeof patients.$inferInsert }>("/api/patients", { preHandler: [fastify.authenticate] }, async (request, reply) => {
     try {
       const result = await db.insert(patients).values(request.body).returning();
       return reply.status(201).send(result[0]);
     } catch (error) {
-      return reply.status(500).send({ error: "Database error", details: String(error) });
+      fastify.log.error(error);
+      return reply.status(500).send({ error: "Internal server error" });
     }
   });
 
@@ -76,13 +79,14 @@ export async function patientsRoutes(fastify: FastifyInstance) {
           },
         });
       } catch (error) {
-        return reply.status(500).send({ error: "Database error", details: String(error) });
+        fastify.log.error(error);
+      return reply.status(500).send({ error: "Internal server error" });
       }
     }
   );
 
   // PUT update patient
-  fastify.put<{ Params: { id: string }; Body: Partial<typeof patients.$inferInsert> }>("/api/patients/:id", async (request, reply) => {
+  fastify.put<{ Params: { id: string }; Body: Partial<typeof patients.$inferInsert> }>("/api/patients/:id", { preHandler: [fastify.authenticate] }, async (request, reply) => {
     try {
       const result = await db.update(patients)
         .set({ ...request.body, updatedAt: new Date() })
@@ -91,7 +95,8 @@ export async function patientsRoutes(fastify: FastifyInstance) {
       if (result.length === 0) return reply.status(404).send({ error: "Patient not found" });
       return reply.send(result[0]);
     } catch (error) {
-      return reply.status(500).send({ error: "Database error", details: String(error) });
+      fastify.log.error(error);
+      return reply.status(500).send({ error: "Internal server error" });
     }
   });
 }

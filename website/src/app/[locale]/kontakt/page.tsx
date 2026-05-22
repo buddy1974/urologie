@@ -128,7 +128,7 @@ export default function KontaktPage() {
             <div className="space-y-6">
               <div className="glass rounded-3xl overflow-hidden" style={{ minHeight: "400px" }}>
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2499.8!2d7.4698!3d50.4267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47be6b4e4e4e4e4e%3A0x1!2sDierdorfer+Str.+115%2C+56564+Neuwied!5e0!3m2!1sde!2sde!4v1234567890"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2541.0419331261096!2d7.470150976828824!3d50.440319588092734!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47be8a0ab01c0a65%3A0xc9a8fa9d6dcf0e64!2sDierdorfer%20Str.%20115%2C%2056564%20Neuwied!5e0!3m2!1sen!2sde!4v1777716475779!5m2!1sen!2sde"
                   width="100%"
                   height="400"
                   style={{ border: 0 }}

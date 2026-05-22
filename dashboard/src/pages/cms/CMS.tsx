@@ -7,7 +7,7 @@ import {
 import { useAuthStore } from "@/store/auth";
 
 const API_BASE = import.meta.env.VITE_API_URL ?? "https://urologie-backend.onrender.com";
-const WEBHOOK_SECRET = import.meta.env.VITE_WEBHOOK_SECRET ?? "urologie-n8n-secret-2026";
+const WEBHOOK_SECRET = import.meta.env.VITE_WEBHOOK_SECRET ?? "";
 const SITE_BASE = "https://urologie-six.vercel.app";
 
 // ── Types ──────────────────────────────────────────────────────────────────────

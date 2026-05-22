@@ -1,5 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const ipRequests = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 20;
+const RATE_WINDOW = 60_000;
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = ipRequests.get(ip);
+  if (!entry || now > entry.resetAt) {
+    ipRequests.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
+    return true;
+  }
+  if (entry.count >= RATE_LIMIT) return false;
+  entry.count++;
+  return true;
+}
+
 const SYSTEM_PROMPT = `Du bist der freundliche KI-Assistent der Urologischen Praxis Neuwied von Dr. Walters T. Fomuki.
 
 WICHTIGE REGELN:
@@ -32,10 +48,17 @@ LEISTUNGEN:
 
 TEAM:
 - Dr. Walters T. Fomuki: Facharzt Urologie, onkologisch qualifiziert, Konsiliararzt DRK Neuwied
-- Dr. C. Nwankwo: Fachärztin Urologie
 - Erfahrenes MFA-Team`;
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+  if (!checkRateLimit(ip)) {
+    return NextResponse.json(
+      { error: "Zu viele Anfragen. Bitte warten Sie einen Moment." },
+      { status: 429 }
+    );
+  }
+
   try {
     const { messages } = await req.json();
 

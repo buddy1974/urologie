@@ -95,6 +95,7 @@ export default function PatientenportalPage() {
     useRef<HTMLInputElement>(null),
   ];
 
+  const [portalToken, setPortalToken] = useState<string | null>(null);
   const [patient, setPatient] = useState<PatientSession | null>(null);
   const [labResults, setLabResults] = useState<LabResult[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -183,13 +184,17 @@ export default function PatientenportalPage() {
         return;
       }
       const data = await res.json();
+      setPortalToken(data.token);
       setPatient(data.patient);
       setDashLoading(true);
       setStep(3);
-      const pid = data.patient.id;
       const [labRes, apptRes] = await Promise.all([
-        fetch(`${API_BASE}/api/portal/results/${encodeURIComponent(pid)}`),
-        fetch(`${API_BASE}/api/portal/appointments/${encodeURIComponent(pid)}`),
+        fetch(`${API_BASE}/api/portal/results`, {
+          headers: { Authorization: `Bearer ${portalToken ?? data.token}` },
+        }),
+        fetch(`${API_BASE}/api/portal/appointments`, {
+          headers: { Authorization: `Bearer ${portalToken ?? data.token}` },
+        }),
       ]);
       setLabResults(labRes.ok ? await labRes.json() : []);
       setAppointments(apptRes.ok ? await apptRes.json() : []);
@@ -202,6 +207,7 @@ export default function PatientenportalPage() {
 
   function handleLogout() {
     setStep(1);
+    setPortalToken(null);
     setPatient(null);
     setBirthDate("");
     setInsuranceNumber("");

@@ -55,7 +55,7 @@ const defaultPages = [
     },
     metaTitle: "Unser Team | Urologie Neuwied",
     metaDescription: "Das Team der Urologischen Praxis Neuwied — Dr. Walters T. Fomuki und seine erfahrenen Mitarbeiterinnen.",
-    metaKeywords: "Team Urologie Neuwied, Dr. Fomuki, Dr. Nwankwo",
+    metaKeywords: "Team Urologie Neuwied, Dr. Fomuki",
   },
   {
     slug: "diagnostik",

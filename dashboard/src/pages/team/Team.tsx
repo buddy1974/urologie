@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 
 const staff = [
   { id:"1", name:"Dr. Walters T. Fomuki", role:"Inhaber", color:"#1E9FD4", initials:"WF", status:"present", today:"08:00–17:00" },
-  { id:"2", name:"Dr. C. Nwankwo", role:"Ärztin", color:"#5ECFEB", initials:"CN", status:"present", today:"08:00–14:00" },
   { id:"3", name:"Bettina Theismann", role:"MFA · QM", color:"#16a34a", initials:"BT", status:"present", today:"08:00–16:00" },
   { id:"4", name:"Jacqueline Elinger", role:"MFA · Anmeldung", color:"#7c3aed", initials:"JE", status:"present", today:"08:00–16:00" },
   { id:"5", name:"Johanna Sikora", role:"MFA · OP-Assistenz", color:"#d97706", initials:"JS", status:"absent", today:"Urlaub" },
