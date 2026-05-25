@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { CreditCard, Info, ArrowRight, Stethoscope } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -74,20 +75,29 @@ export default function IndividuelleLeistungenPage() {
     <div className="min-h-screen bg-background">
 
       {/* Hero */}
-      <section className="relative bg-hero noise overflow-hidden pt-36 pb-24 px-6">
-        <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px]" />
-        <div className="pointer-events-none absolute bottom-0 right-0 h-80 w-80 rounded-full bg-accent/20 blur-[120px]" />
-        <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 text-xs uppercase tracking-widest text-accent mb-6">
-            Leistungen
+      <section className="relative overflow-hidden">
+        <Image
+          src="/images/leistung/IndividuelleGesundheitsleistungen-header.jpg"
+          alt="Individuelle Gesundheitsleistungen Urologie Neuwied"
+          fill
+          className="object-cover opacity-20"
+          priority
+        />
+        <div className="relative z-10 bg-hero noise pt-36 pb-24 px-6" style={{ minHeight: "380px" }}>
+          <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px]" />
+          <div className="pointer-events-none absolute bottom-0 right-0 h-80 w-80 rounded-full bg-accent/20 blur-[120px]" />
+          <div className="relative z-10 max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 text-xs uppercase tracking-widest text-accent mb-6">
+              Leistungen
+            </div>
+            <h1 className="font-display text-5xl md:text-6xl leading-tight text-foreground mb-6">
+              Individuelle <span className="text-gradient italic">Gesundheitsleistungen</span>
+            </h1>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Investieren Sie in Ihre Gesundheit — mit IGeL-Leistungen, die über den
+              gesetzlichen Leistungskatalog hinausgehen.
+            </p>
           </div>
-          <h1 className="font-display text-5xl md:text-6xl leading-tight text-foreground mb-6">
-            Individuelle <span className="text-gradient italic">Gesundheitsleistungen</span>
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Investieren Sie in Ihre Gesundheit — mit IGeL-Leistungen, die über den
-            gesetzlichen Leistungskatalog hinausgehen.
-          </p>
         </div>
       </section>
 

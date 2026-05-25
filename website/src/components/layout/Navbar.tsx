@@ -18,6 +18,7 @@ const locales = [
 ];
 
 const navLinks = [
+  { key: "home", href: "" },
   { key: "practice", href: "/praxis" },
   { key: "team", href: "/team" },
   {
