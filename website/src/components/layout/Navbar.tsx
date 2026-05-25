@@ -53,7 +53,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
         scrolled ? "py-3" : "py-5"
       }`}
     >
@@ -161,13 +161,19 @@ export default function Navbar() {
           <div className="lg:hidden mt-2 glass-strong rounded-2xl px-4 py-4 space-y-1 shadow-elegant">
             {navLinks.map((link) => (
               <div key={link.key}>
-                <Link
-                  href={`/${locale}${link.href}`}
-                  className="block px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-xl transition-colors"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {t(link.key)}
-                </Link>
+                {link.children ? (
+                  <div className="px-3 py-2 text-xs font-semibold uppercase tracking-widest text-accent/70 mt-2">
+                    {t(link.key)}
+                  </div>
+                ) : (
+                  <Link
+                    href={`/${locale}${link.href}`}
+                    className="block px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-xl transition-colors"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {t(link.key)}
+                  </Link>
+                )}
                 {link.children && (
                   <div className="ml-4 mt-1 space-y-0.5">
                     {link.children.map((child) => (
