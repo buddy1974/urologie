@@ -9,9 +9,9 @@ const DOCTOLIB_URL =
   "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking?speciality_id=1336&utm_source=website-hero";
 
 const heroImages = [
-  "/images/header.jpg",
-  "/images/header2.jpg",
-  "/images/praxis_005.jpg",
+  "/images/pics/header_01.jpg",
+  "/images/pics/praxis_003.jpg",
+  "/images/pics/praxis_004.jpg",
 ];
 
 const fadeUp = {

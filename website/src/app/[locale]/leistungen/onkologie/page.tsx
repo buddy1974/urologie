@@ -24,7 +24,7 @@ export default function OnkologiePage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <Image
-          src="/images/leistung/leistungen_002.jpg"
+          src="/images/pics/leistungen_007.jpg"
           alt="Onkologie Urologie Neuwied"
           fill
           className="object-cover opacity-20"

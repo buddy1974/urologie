@@ -41,7 +41,7 @@ export default function DiagnostikPage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <Image
-          src="/images/leistung/header_leistungen_01.jpg"
+          src="/images/pics/header_leistungen_02.jpg"
           alt="Diagnostik Urologie Neuwied"
           fill
           className="object-cover opacity-20"

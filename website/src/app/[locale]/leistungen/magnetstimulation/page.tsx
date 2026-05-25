@@ -14,7 +14,7 @@ export default function MagnetstimulationPage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <Image
-          src="/images/leistung/magnetstimulanz_01.jpg"
+          src="/images/pics/magnetstimulanz_quad.jpg"
           alt="Magnetstimulation Beckenboden Neuwied"
           fill
           className="object-cover opacity-20"

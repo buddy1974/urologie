@@ -91,7 +91,7 @@ export default function TeamPage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <Image
-          src="/images/team/header-team.jpg"
+          src="/images/pics/gruppenbild_2023.jpg"
           alt="Team Urologie Neuwied"
           fill
           className="object-cover opacity-20"

@@ -19,7 +19,7 @@ export default function UrodynamikPage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <Image
-          src="/images/leistung/urodynamik.jpg"
+          src="/images/pics/urodynamik.jpg"
           alt="Urodynamik Blasendruckmessung Neuwied"
           fill
           className="object-cover opacity-20"

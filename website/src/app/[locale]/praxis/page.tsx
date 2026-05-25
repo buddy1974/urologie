@@ -24,7 +24,7 @@ export default function PraxisPage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <Image
-          src="/images/header_praxis_01.jpg"
+          src="/images/pics/praxis_001.jpg"
           alt="Urologische Praxis Neuwied"
           fill
           className="object-cover opacity-20"

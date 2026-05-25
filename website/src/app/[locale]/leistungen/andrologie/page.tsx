@@ -25,7 +25,7 @@ export default function AndrologiePage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <Image
-          src="/images/leistung/leistungen_004.jpg"
+          src="/images/pics/leistungen_005.jpg"
           alt="Andrologie & Vasektomie Neuwied"
           fill
           className="object-cover opacity-20"

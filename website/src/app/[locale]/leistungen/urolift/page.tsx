@@ -45,7 +45,7 @@ export default function UroliftPage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <Image
-          src="/images/leistung/Ambulante-Operationen1.jpg"
+          src="/images/pics/header_leistungen_01.jpg"
           alt="UroLift BPH Behandlung Neuwied"
           fill
           className="object-cover opacity-20"
