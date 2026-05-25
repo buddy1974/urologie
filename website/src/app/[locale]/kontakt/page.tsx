@@ -1,10 +1,17 @@
-import type { Metadata } from "next";
-import { Phone, Printer, MapPin, Clock, ExternalLink } from "lucide-react";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Kontakt & Anfahrt",
-  description: "Kontaktieren Sie die Urologische Praxis Neuwied. Adresse, Telefon, Öffnungszeiten und Anfahrt.",
-};
+import { useState, FormEvent } from "react";
+import {
+  Phone,
+  Printer,
+  MapPin,
+  Clock,
+  ExternalLink,
+  Send,
+  CheckCircle,
+  AlertCircle,
+  Accessibility,
+} from "lucide-react";
 
 const hours = [
   { day: "Montag", hours: "08:00–12:00 Uhr, 14:00–17:00 Uhr" },
@@ -14,7 +21,63 @@ const hours = [
   { day: "Freitag", hours: "08:00–12:00 Uhr" },
 ];
 
+type FormState = {
+  anrede: string;
+  vorname: string;
+  nachname: string;
+  telefon: string;
+  email: string;
+  nachricht: string;
+};
+
+const INITIAL: FormState = {
+  anrede: "keine",
+  vorname: "",
+  nachname: "",
+  telefon: "",
+  email: "",
+  nachricht: "",
+};
+
 export default function KontaktPage() {
+  const [form, setForm] = useState<FormState>(INITIAL);
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setStatus("sending");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrorMsg(data.error ?? "Ein Fehler ist aufgetreten.");
+        setStatus("error");
+        return;
+      }
+      setStatus("success");
+      setForm(INITIAL);
+    } catch {
+      setErrorMsg("Netzwerkfehler. Bitte versuchen Sie es erneut.");
+      setStatus("error");
+    }
+  }
+
+  const charCount = form.nachricht.length;
+
   return (
     <div className="min-h-screen bg-background">
 
@@ -30,18 +93,20 @@ export default function KontaktPage() {
             Wir sind <span className="text-gradient italic">für Sie da</span>
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Erreichen Sie uns telefonisch, per Fax oder buchen Sie Ihren Termin
-            bequem online über Doctolib.
+            Erreichen Sie uns telefonisch, per Fax, über das Kontaktformular oder buchen Sie
+            Ihren Termin bequem online über Doctolib.
           </p>
         </div>
       </section>
 
       {/* Content */}
       <section className="py-24 px-6">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto space-y-8">
+
+          {/* Top grid: contact info + hours + map */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-            {/* Left — Contact Info */}
+            {/* Left — Contact Info + Hours */}
             <div className="space-y-6">
 
               {/* Contact card */}
@@ -80,6 +145,17 @@ export default function KontaktPage() {
                       <div>
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Fax</p>
                         <p className="text-foreground font-medium">02631 - 941845</p>
+                      </div>
+                    </div>
+
+                    {/* Accessibility */}
+                    <div className="flex items-start gap-4">
+                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow flex-shrink-0">
+                        <Accessibility size={16} className="text-primary-foreground" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Barrierefreiheit</p>
+                        <p className="text-foreground font-medium">Rollstuhlgerecht · Aufzug vorhanden</p>
                       </div>
                     </div>
                   </div>
@@ -146,6 +222,7 @@ export default function KontaktPage() {
                   <p><span className="font-semibold text-foreground">🚗 Auto:</span> Parkplätze direkt vor der Praxis vorhanden</p>
                   <p><span className="font-semibold text-foreground">🚌 Bus:</span> Haltestelle Dierdorfer Straße (Linien 5, 12)</p>
                   <p><span className="font-semibold text-foreground">🚂 Bahn:</span> Bahnhof Neuwied — ca. 10 Min. mit dem Bus</p>
+                  <p><span className="font-semibold text-foreground">♿ Zugang:</span> Rollstuhlgerechter Eingang · Aufzug im Gebäude</p>
                 </div>
                 <a
                   href="https://maps.google.com/?q=Dierdorfer+Str.+115,+56564+Neuwied"
@@ -159,6 +236,179 @@ export default function KontaktPage() {
               </div>
             </div>
           </div>
+
+          {/* Contact Form */}
+          <div className="glass rounded-3xl overflow-hidden">
+            <div className="h-1 w-full bg-primary-gradient" />
+            <div className="p-8 md:p-12">
+              <h2 className="font-display text-2xl text-foreground mb-2">Kontaktformular</h2>
+              <p className="text-muted-foreground text-sm mb-8">
+                Schreiben Sie uns — wir antworten schnellstmöglich.
+              </p>
+
+              {status === "success" ? (
+                <div className="flex flex-col items-center justify-center py-16 text-center">
+                  <CheckCircle size={56} className="text-accent mb-6" />
+                  <h3 className="font-display text-2xl text-foreground mb-3">
+                    Nachricht gesendet!
+                  </h3>
+                  <p className="text-muted-foreground max-w-sm mb-8">
+                    Vielen Dank für Ihre Anfrage. Wir melden uns in Kürze bei Ihnen.
+                  </p>
+                  <button
+                    onClick={() => setStatus("idle")}
+                    className="rounded-full glass px-6 py-2.5 text-sm font-semibold text-foreground hover:bg-white/10 transition-all"
+                  >
+                    Weitere Nachricht senden
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} noValidate className="space-y-6">
+
+                  {/* Error banner */}
+                  {status === "error" && (
+                    <div className="flex items-start gap-3 glass rounded-2xl px-4 py-3 border border-red-400/30 text-red-400">
+                      <AlertCircle size={18} className="flex-shrink-0 mt-0.5" />
+                      <p className="text-sm">{errorMsg}</p>
+                    </div>
+                  )}
+
+                  {/* Row 1: Anrede + Name */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                        Anrede
+                      </label>
+                      <select
+                        name="anrede"
+                        value={form.anrede}
+                        onChange={handleChange}
+                        className="w-full glass rounded-xl px-4 py-3 text-sm text-foreground bg-transparent border border-white/10 focus:border-accent/50 focus:outline-none transition-colors"
+                      >
+                        <option value="keine">–</option>
+                        <option value="Herr">Herr</option>
+                        <option value="Frau">Frau</option>
+                        <option value="Dr.">Dr.</option>
+                        <option value="Prof.">Prof.</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                        Vorname <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="vorname"
+                        value={form.vorname}
+                        onChange={handleChange}
+                        required
+                        autoComplete="given-name"
+                        placeholder="Max"
+                        className="w-full glass rounded-xl px-4 py-3 text-sm text-foreground bg-transparent border border-white/10 focus:border-accent/50 focus:outline-none transition-colors placeholder:text-muted-foreground/40"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                        Nachname <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="nachname"
+                        value={form.nachname}
+                        onChange={handleChange}
+                        required
+                        autoComplete="family-name"
+                        placeholder="Mustermann"
+                        className="w-full glass rounded-xl px-4 py-3 text-sm text-foreground bg-transparent border border-white/10 focus:border-accent/50 focus:outline-none transition-colors placeholder:text-muted-foreground/40"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 2: Telefon + Email */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                        Telefon <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        name="telefon"
+                        value={form.telefon}
+                        onChange={handleChange}
+                        required
+                        autoComplete="tel"
+                        placeholder="02631 12345"
+                        className="w-full glass rounded-xl px-4 py-3 text-sm text-foreground bg-transparent border border-white/10 focus:border-accent/50 focus:outline-none transition-colors placeholder:text-muted-foreground/40"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                        E-Mail <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={form.email}
+                        onChange={handleChange}
+                        required
+                        autoComplete="email"
+                        placeholder="max@beispiel.de"
+                        className="w-full glass rounded-xl px-4 py-3 text-sm text-foreground bg-transparent border border-white/10 focus:border-accent/50 focus:outline-none transition-colors placeholder:text-muted-foreground/40"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Nachricht */}
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                        Nachricht <span className="text-red-400">*</span>
+                      </label>
+                      <span className={`text-xs ${charCount > 1800 ? "text-red-400" : "text-muted-foreground"}`}>
+                        {charCount}/2000
+                      </span>
+                    </div>
+                    <textarea
+                      name="nachricht"
+                      value={form.nachricht}
+                      onChange={handleChange}
+                      required
+                      rows={6}
+                      maxLength={2000}
+                      placeholder="Ihr Anliegen..."
+                      className="w-full glass rounded-xl px-4 py-3 text-sm text-foreground bg-transparent border border-white/10 focus:border-accent/50 focus:outline-none transition-colors placeholder:text-muted-foreground/40 resize-none"
+                    />
+                  </div>
+
+                  {/* Privacy note + Submit */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+                    <p className="text-xs text-muted-foreground max-w-sm">
+                      Ihre Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet
+                      und nicht an Dritte weitergegeben.
+                    </p>
+                    <button
+                      type="submit"
+                      disabled={status === "sending"}
+                      className="inline-flex items-center gap-2 rounded-full bg-primary-gradient px-7 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-all hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 flex-shrink-0"
+                    >
+                      {status === "sending" ? (
+                        <>
+                          <span className="inline-block h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                          Wird gesendet…
+                        </>
+                      ) : (
+                        <>
+                          <Send size={14} />
+                          Nachricht senden
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+
         </div>
       </section>
     </div>

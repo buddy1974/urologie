@@ -1,10 +1,11 @@
 import Image from "next/image";
-import { Award, Stethoscope, GraduationCap } from "lucide-react";
+import { Award, Stethoscope, GraduationCap, Users } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Unser Team",
-  description: "Das Team der Urologischen Praxis Neuwied — Dr. Walters T. Fomuki und seine erfahrenen Mitarbeiterinnen.",
+  description:
+    "Das Team der Urologischen Praxis Neuwied — Dr. Walters T. Fomuki und seine erfahrenen Mitarbeiterinnen.",
 };
 
 const doctors = [
@@ -14,12 +15,20 @@ const doctors = [
     image: "/images/Dr-fomuki/fomuki_walters_002.jpg",
     initials: "WF",
     qualifications: [
+      "Facharzt für Urologie seit 2013",
       "Onkologisch qualifizierter Arzt",
       "Medikamentöse Tumortherapie",
       "Ambulantes Operieren",
       "Konsiliararzt DRK Krankenhaus Neuwied",
-      "Mitglied Vasektomie-Experten Netzwerk",
+      "Weiterbildungsermächtigung zum Facharzt für Urologie (12 Monate)",
+      "Mitglied Vasektomie-Experten-Netzwerk",
     ],
+    memberships: [
+      "Deutsche Gesellschaft für Urologie (DGU)",
+      "Deutsche Gesellschaft für Andrologie (DGA)",
+      "Camfomedics e.V.",
+    ],
+    bio: "Gebürtig aus dem westafrikanischen Kamerun (geboren 1972) kam Dr. Fomuki nach dem Abitur am Sacred Heart College zum Medizinstudium nach Heidelberg. Seine Facharztweiterbildung absolvierte er im Nordwest Krankenhaus Frankfurt am Main bei Professor E. W. Becht. Seit 2006 ist er als Arzt tätig, seit 2013 als Facharzt für Urologie — seit 2014 in seiner eigenen Praxis in Neuwied.",
   },
 ];
 
@@ -117,39 +126,79 @@ export default function TeamPage() {
               <h2 className="font-display text-3xl text-foreground">Ärztliches Team</h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               {doctors.map((doc) => (
                 <div
                   key={doc.name}
                   className="group glass rounded-3xl overflow-hidden hover:-translate-y-1 hover:shadow-glow hover:border-primary/40 transition-all duration-500"
                 >
                   <div className="h-1 w-full bg-primary-gradient" />
-                  <div className="p-8">
-                    <div className="flex items-center gap-5 mb-6">
-                      <div className="w-20 h-20 rounded-2xl overflow-hidden relative flex-shrink-0 shadow-glow ring-2 ring-primary/30">
-                        <Image
-                          src={doc.image}
-                          alt={doc.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <div>
-                        <h3 className="font-display text-xl text-foreground">{doc.name}</h3>
-                        <p className="text-sm text-accent mt-1">{doc.role}</p>
-                      </div>
-                    </div>
-                    <div className="space-y-2.5">
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2 mb-3">
-                        <GraduationCap size={13} />
-                        Qualifikationen & Schwerpunkte
-                      </p>
-                      {doc.qualifications.map((q) => (
-                        <div key={q} className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                          <div className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                          {q}
+                  <div className="p-8 md:p-10">
+                    <div className="flex flex-col md:flex-row gap-8">
+
+                      {/* Photo + badge */}
+                      <div className="flex flex-col items-center gap-4 flex-shrink-0">
+                        <div className="w-28 h-28 rounded-2xl overflow-hidden relative shadow-glow ring-2 ring-primary/30">
+                          <Image
+                            src={doc.image}
+                            alt={doc.name}
+                            fill
+                            className="object-cover"
+                          />
                         </div>
-                      ))}
+                        {/* Vasektomie badge */}
+                        <div className="w-20 h-20 rounded-xl overflow-hidden relative ring-1 ring-white/10">
+                          <Image
+                            src="/images/team/siegel_vasektomie_experten.jpg"
+                            alt="Vasektomie-Experten-Netzwerk"
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Details */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-display text-2xl text-foreground mb-1">{doc.name}</h3>
+                        <p className="text-sm text-accent mb-5">{doc.role}</p>
+
+                        {/* Biography */}
+                        <p className="text-muted-foreground text-sm leading-relaxed mb-7">{doc.bio}</p>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                          {/* Qualifications */}
+                          <div>
+                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2 mb-3">
+                              <GraduationCap size={13} />
+                              Qualifikationen &amp; Schwerpunkte
+                            </p>
+                            <div className="space-y-2">
+                              {doc.qualifications.map((q) => (
+                                <div key={q} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0 mt-1.5" />
+                                  {q}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Memberships */}
+                          <div>
+                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2 mb-3">
+                              <Users size={13} />
+                              Fachgesellschaften
+                            </p>
+                            <div className="space-y-2">
+                              {doc.memberships.map((m) => (
+                                <div key={m} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0 mt-1.5" />
+                                  {m}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -199,7 +248,7 @@ export default function TeamPage() {
             </div>
           </div>
 
-          {/* Join CTA */}
+          {/* Join CTA — link fixed to /kontakt instead of broken /stellenangebote */}
           <div className="relative overflow-hidden glass-strong rounded-[2rem] p-10 text-center shadow-elegant">
             <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-64 w-64 rounded-full bg-primary/20 blur-[80px]" />
             <div className="relative">
@@ -209,13 +258,14 @@ export default function TeamPage() {
                 Werden Sie Teil unseres Teams.
               </p>
               <a
-                href="/stellenangebote"
+                href="/kontakt"
                 className="inline-flex items-center gap-3 rounded-full bg-primary-gradient px-8 py-4 text-base font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105"
               >
-                Stellenangebote ansehen →
+                Jetzt Kontakt aufnehmen →
               </a>
             </div>
           </div>
+
         </div>
       </section>
     </div>

@@ -30,6 +30,9 @@ const navLinks = [
       { label: "UroLift®", href: "/leistungen/urolift" },
       { label: "Magnetstimulation", href: "/leistungen/magnetstimulation" },
       { label: "Urodynamik", href: "/leistungen/urodynamik" },
+      { label: "Ambulante OPs", href: "/leistungen/ambulante-op" },
+      { label: "Kinderurologie", href: "/leistungen/kinderurologie" },
+      { label: "Individuelle Leistungen", href: "/leistungen/individuelle-leistungen" },
     ],
   },
   { key: "contact", href: "/kontakt" },
@@ -80,7 +83,7 @@ export default function Navbar() {
                     {t(link.key)}
                     <ChevronDown size={13} className="group-hover:rotate-180 transition-transform duration-200" />
                   </button>
-                  <div className="absolute top-full left-0 mt-3 w-56 glass-strong rounded-2xl shadow-elegant opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div className="absolute top-full left-0 mt-3 w-64 glass-strong rounded-2xl shadow-elegant opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                     <div className="py-2 px-2">
                       {link.children.map((child) => (
                         <Link

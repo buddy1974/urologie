@@ -12,7 +12,7 @@ interface Appointment {
   id: string;
   time: string;
   duration: number;
-  patient: string;
+  patientName: string;
   type: string;
   doctor: string;
   status: AppointmentStatus;
@@ -23,32 +23,32 @@ interface Appointment {
 
 interface PatientOption {
   id: string;
-  vorname: string;
-  nachname: string;
+  firstName: string;
+  lastName: string;
 }
 
 interface AppointmentFormData {
   patientId: string;
-  datum: string;
-  uhrzeit: string;
-  dauer: "15" | "30" | "45" | "60";
-  typ: "Erstvorstellung" | "Kontrolltermin" | "Ultraschall" | "Labor" | "Beratung" | "Eingriff";
-  notizen: string;
+  date: string;
+  time: string;
+  duration: "15" | "30" | "45" | "60";
+  type: "Erstvorstellung" | "Kontrolltermin" | "Ultraschall" | "Labor" | "Beratung" | "Eingriff";
+  notes: string;
 }
 
 const MOCK_APPOINTMENTS: Appointment[] = [
-  { id: "1", time: "08:00", duration: 30, patient: "Hans Müller", type: "Erstvorstellung", doctor: "Dr. Fomuki", status: "done", phone: "0172-1234567", insurance: "GKV", room: "1" },
-  { id: "2", time: "08:30", duration: 15, patient: "Klaus Weber", type: "PSA-Kontrolle", doctor: "Dr. Fomuki", status: "done", phone: "0163-2345678", insurance: "PKV", room: "1" },
-  { id: "3", time: "09:00", duration: 30, patient: "Thomas Schmidt", type: "Vasektomie-Beratung", doctor: "Dr. Fomuki", status: "in-progress", phone: "0151-3456789", insurance: "GKV", room: "2" },
-  { id: "4", time: "09:30", duration: 20, patient: "Mehmet Yilmaz", type: "Kontrolltermin", doctor: "Dr. Fomuki", status: "arrived", phone: "0176-4567890", insurance: "GKV", room: "3" },
-  { id: "5", time: "10:00", duration: 30, patient: "Peter Hoffmann", type: "UroLift Nachsorge", doctor: "Dr. Fomuki", status: "scheduled", phone: "0170-5678901", insurance: "PKV" },
-  { id: "6", time: "10:30", duration: 15, patient: "Andreas Klein", type: "Laborergebnis", doctor: "Dr. Fomuki", status: "scheduled", phone: "0152-6789012", insurance: "GKV" },
-  { id: "7", time: "11:00", duration: 30, patient: "Stefan Wagner", type: "Andrologie", doctor: "Dr. Fomuki", status: "scheduled", phone: "0178-7890123", insurance: "Selbstzahler" },
-  { id: "8", time: "11:30", duration: 20, patient: "Frank Becker", type: "Vorsorge Mann", doctor: "Dr. Fomuki", status: "scheduled", phone: "0164-8901234", insurance: "GKV" },
-  { id: "9", time: "14:00", duration: 30, patient: "Jürgen Fischer", type: "Zystoskopie", doctor: "Dr. Fomuki", status: "scheduled", phone: "0172-9012345", insurance: "PKV" },
-  { id: "10", time: "14:30", duration: 15, patient: "Martin Schulz", type: "Kontrolltermin", doctor: "Dr. Fomuki", status: "no-show", phone: "0163-0123456", insurance: "GKV" },
-  { id: "11", time: "15:00", duration: 30, patient: "Dimitri Papadopoulos", type: "Prostatabiopsie", doctor: "Dr. Fomuki", status: "scheduled", phone: "0151-1234560", insurance: "GKV" },
-  { id: "12", time: "15:30", duration: 20, patient: "Robert Zimmermann", type: "Magnetstimulation", doctor: "Dr. Fomuki", status: "scheduled", phone: "0176-2345601", insurance: "PKV" },
+  { id: "1", time: "08:00", duration: 30, patientName: "Hans Müller", type: "Erstvorstellung", doctor: "Dr. Fomuki", status: "done", phone: "0172-1234567", insurance: "GKV", room: "1" },
+  { id: "2", time: "08:30", duration: 15, patientName: "Klaus Weber", type: "PSA-Kontrolle", doctor: "Dr. Fomuki", status: "done", phone: "0163-2345678", insurance: "PKV", room: "1" },
+  { id: "3", time: "09:00", duration: 30, patientName: "Thomas Schmidt", type: "Vasektomie-Beratung", doctor: "Dr. Fomuki", status: "in-progress", phone: "0151-3456789", insurance: "GKV", room: "2" },
+  { id: "4", time: "09:30", duration: 20, patientName: "Mehmet Yilmaz", type: "Kontrolltermin", doctor: "Dr. Fomuki", status: "arrived", phone: "0176-4567890", insurance: "GKV", room: "3" },
+  { id: "5", time: "10:00", duration: 30, patientName: "Peter Hoffmann", type: "UroLift Nachsorge", doctor: "Dr. Fomuki", status: "scheduled", phone: "0170-5678901", insurance: "PKV" },
+  { id: "6", time: "10:30", duration: 15, patientName: "Andreas Klein", type: "Laborergebnis", doctor: "Dr. Fomuki", status: "scheduled", phone: "0152-6789012", insurance: "GKV" },
+  { id: "7", time: "11:00", duration: 30, patientName: "Stefan Wagner", type: "Andrologie", doctor: "Dr. Fomuki", status: "scheduled", phone: "0178-7890123", insurance: "Selbstzahler" },
+  { id: "8", time: "11:30", duration: 20, patientName: "Frank Becker", type: "Vorsorge Mann", doctor: "Dr. Fomuki", status: "scheduled", phone: "0164-8901234", insurance: "GKV" },
+  { id: "9", time: "14:00", duration: 30, patientName: "Jürgen Fischer", type: "Zystoskopie", doctor: "Dr. Fomuki", status: "scheduled", phone: "0172-9012345", insurance: "PKV" },
+  { id: "10", time: "14:30", duration: 15, patientName: "Martin Schulz", type: "Kontrolltermin", doctor: "Dr. Fomuki", status: "no-show", phone: "0163-0123456", insurance: "GKV" },
+  { id: "11", time: "15:00", duration: 30, patientName: "Dimitri Papadopoulos", type: "Prostatabiopsie", doctor: "Dr. Fomuki", status: "scheduled", phone: "0151-1234560", insurance: "GKV" },
+  { id: "12", time: "15:30", duration: 20, patientName: "Robert Zimmermann", type: "Magnetstimulation", doctor: "Dr. Fomuki", status: "scheduled", phone: "0176-2345601", insurance: "PKV" },
 ];
 
 const statusConfig: Record<AppointmentStatus, { label: string; color: string; bg: string; icon: typeof Circle }> = {
@@ -69,11 +69,11 @@ const days = ["Mo 23", "Di 24", "Mi 25", "Do 26", "Fr 27"];
 
 const EMPTY_FORM: AppointmentFormData = {
   patientId: "",
-  datum: "",
-  uhrzeit: "",
-  dauer: "30",
-  typ: "Erstvorstellung",
-  notizen: "",
+  date: "",
+  time: "",
+  duration: "30",
+  type: "Erstvorstellung",
+  notes: "",
 };
 
 export default function Terminplan() {
@@ -129,7 +129,7 @@ export default function Terminplan() {
 
   const selectedPatient = patients.find((p) => p.id === form.patientId);
   const filteredPatients = patients.filter((p) =>
-    `${p.vorname ?? ""} ${p.nachname ?? ""}`.toLowerCase().includes(patientSearch.toLowerCase())
+    `${p.firstName ?? ""} ${p.lastName ?? ""}`.toLowerCase().includes(patientSearch.toLowerCase())
   );
 
   async function handleSubmit(e: React.FormEvent) {
@@ -137,7 +137,19 @@ export default function Terminplan() {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      await createAppointment(form as unknown as Record<string, unknown>);
+      const patient = patients.find((p) => p.id === form.patientId);
+      const patientName = patient ? `${patient.firstName} ${patient.lastName}` : "";
+      await createAppointment({
+        patientId: form.patientId,
+        patientName,
+        date: form.date,
+        time: form.time,
+        duration: Number(form.duration),
+        type: form.type,
+        doctor: "Dr. Fomuki",
+        status: "scheduled",
+        notes: form.notes,
+      });
       closeModal();
       await fetchAppointments();
     } catch (err) {
@@ -148,7 +160,7 @@ export default function Terminplan() {
   }
 
   const filtered = appointments.filter((a) => {
-    const matchSearch = (a.patient ?? "").toLowerCase().includes(search.toLowerCase()) ||
+    const matchSearch = (a.patientName ?? "").toLowerCase().includes(search.toLowerCase()) ||
       (a.type ?? "").toLowerCase().includes(search.toLowerCase());
     const matchFilter = filter === "all" || a.status === filter;
     return matchSearch && matchFilter;
@@ -262,7 +274,7 @@ export default function Terminplan() {
                 {/* Patient info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
-                    <span className="font-semibold text-slate-800 text-sm">{apt.patient}</span>
+                    <span className="font-semibold text-slate-800 text-sm">{apt.patientName}</span>
                     <span className="text-xs px-1.5 py-0.5 rounded-full font-medium"
                       style={{ backgroundColor: `${insuranceColors[apt.insurance]}15`, color: insuranceColors[apt.insurance] }}>
                       {apt.insurance}
@@ -325,7 +337,7 @@ export default function Terminplan() {
                 <div className="relative">
                   <input
                     type="text"
-                    value={selectedPatient ? `${selectedPatient.vorname} ${selectedPatient.nachname}` : patientSearch}
+                    value={selectedPatient ? `${selectedPatient.firstName} ${selectedPatient.lastName}` : patientSearch}
                     onChange={(e) => {
                       setForm((f) => ({ ...f, patientId: "" }));
                       setPatientSearch(e.target.value);
@@ -349,7 +361,7 @@ export default function Terminplan() {
                             setPatientSearch("");
                             setPatientDropdownOpen(false);
                           }}>
-                          {p.vorname} {p.nachname}
+                          {p.firstName} {p.lastName}
                         </button>
                       ))}
                     </div>
@@ -368,8 +380,8 @@ export default function Terminplan() {
                   <label className="block text-xs font-semibold text-slate-600 mb-1.5">Datum</label>
                   <input
                     type="date"
-                    value={form.datum}
-                    onChange={(e) => setForm((f) => ({ ...f, datum: e.target.value }))}
+                    value={form.date}
+                    onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
                     required
                     className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-[#1E9FD4] transition-colors"
                   />
@@ -378,8 +390,8 @@ export default function Terminplan() {
                   <label className="block text-xs font-semibold text-slate-600 mb-1.5">Uhrzeit</label>
                   <input
                     type="time"
-                    value={form.uhrzeit}
-                    onChange={(e) => setForm((f) => ({ ...f, uhrzeit: e.target.value }))}
+                    value={form.time}
+                    onChange={(e) => setForm((f) => ({ ...f, time: e.target.value }))}
                     step={900}
                     required
                     className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-[#1E9FD4] transition-colors"
@@ -392,8 +404,8 @@ export default function Terminplan() {
                 <div>
                   <label className="block text-xs font-semibold text-slate-600 mb-1.5">Dauer</label>
                   <select
-                    value={form.dauer}
-                    onChange={(e) => setForm((f) => ({ ...f, dauer: e.target.value as AppointmentFormData["dauer"] }))}
+                    value={form.duration}
+                    onChange={(e) => setForm((f) => ({ ...f, duration: e.target.value as AppointmentFormData["duration"] }))}
                     className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-[#1E9FD4] transition-colors bg-white">
                     <option value="15">15 Min.</option>
                     <option value="30">30 Min.</option>
@@ -404,8 +416,8 @@ export default function Terminplan() {
                 <div>
                   <label className="block text-xs font-semibold text-slate-600 mb-1.5">Typ</label>
                   <select
-                    value={form.typ}
-                    onChange={(e) => setForm((f) => ({ ...f, typ: e.target.value as AppointmentFormData["typ"] }))}
+                    value={form.type}
+                    onChange={(e) => setForm((f) => ({ ...f, type: e.target.value as AppointmentFormData["type"] }))}
                     className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-[#1E9FD4] transition-colors bg-white">
                     <option value="Erstvorstellung">Erstvorstellung</option>
                     <option value="Kontrolltermin">Kontrolltermin</option>
@@ -421,8 +433,8 @@ export default function Terminplan() {
               <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1.5">Notizen <span className="font-normal text-slate-400">(optional)</span></label>
                 <textarea
-                  value={form.notizen}
-                  onChange={(e) => setForm((f) => ({ ...f, notizen: e.target.value }))}
+                  value={form.notes}
+                  onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
                   rows={3}
                   placeholder="Hinweise zum Termin..."
                   className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-[#1E9FD4] transition-colors resize-none"

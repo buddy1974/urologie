@@ -167,7 +167,7 @@ export default function Patienten() {
         email: form.email || null,
         address: form.address || null,
         insurance: form.insurance,
-        notes: form.insuranceNumber ? `Vers.Nr.: ${form.insuranceNumber}` : null,
+        insuranceNumber: form.insuranceNumber || null,
       });
       setShowModal(false);
       setForm(EMPTY_FORM);

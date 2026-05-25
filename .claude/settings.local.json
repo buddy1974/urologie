@@ -38,7 +38,11 @@
       "Bash(npx drizzle-kit *)",
       "Skill(claude-api)",
       "Bash(npm remove *)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(npm audit *)",
+      "Bash(node -e \"const d=JSON.parse\\(require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\)\\); console.log\\('vulnerabilities:', JSON.stringify\\(d.metadata?.vulnerabilities ?? 'n/a'\\)\\); const fixable = Object.values\\(d.vulnerabilities ?? {}\\).filter\\(v=>!v.fixAvailable || v.fixAvailable?.isSemVerMajor\\); console.log\\('safe-fix available for', Object.keys\\(d.vulnerabilities??{}\\).length - fixable.length, 'of', Object.keys\\(d.vulnerabilities??{}\\).length, 'vulns'\\);\")",
+      "Bash(git rm *)",
+      "Bash(Remove-Item *)"
     ]
   }
 }
