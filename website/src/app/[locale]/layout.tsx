@@ -16,23 +16,56 @@ export const metadata: Metadata = {
     template: "%s | Urologie Neuwied",
   },
   description:
-    "Urologische Facharztpraxis in Neuwied. Diagnostik, Onkologie, Andrologie, UroLift®, Magnetstimulation. Termin online via Doctolib.",
+    "Urologische Facharztpraxis in Neuwied. Facharzt Dr. Walters T. Fomuki. Diagnostik, Onkologie, Andrologie, UroLift®, Magnetstimulation. Termin online via Doctolib.",
   keywords: [
     "Urologe Neuwied",
     "Urologie Neuwied",
-    "Fomuki",
+    "Dr. Fomuki",
     "Prostata",
     "Vasektomie",
     "UroLift",
     "Andrologie",
     "Urologe Rheinland-Pfalz",
+    "Onkologie Neuwied",
+    "Magnetstimulation",
+    "Urodynamik",
   ],
+  authors: [{ name: "Dr. Walters T. Fomuki" }],
+  creator: "Urologie Neuwied",
+  publisher: "Dr. Walters T. Fomuki",
   openGraph: {
     title: "Urologie Neuwied | Dr. Walters T. Fomuki",
-    description: "Moderne Urologie mit persönlicher Betreuung in Neuwied.",
+    description:
+      "Moderne Urologie mit persönlicher Betreuung in Neuwied. Diagnostik, Onkologie, Andrologie, UroLift® und mehr.",
     locale: "de_DE",
+    alternateLocale: ["en_GB", "fr_FR", "tr_TR"],
     type: "website",
     url: "https://urologie-neuwied.de",
+    siteName: "Urologie Neuwied",
+    images: [
+      {
+        url: "https://urologie-neuwied.de/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Urologie Neuwied – Dr. Walters T. Fomuki",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Urologie Neuwied | Dr. Walters T. Fomuki",
+    description:
+      "Urologische Facharztpraxis in Neuwied. Termin online via Doctolib.",
+    images: ["https://urologie-neuwied.de/og-image.jpg"],
+  },
+  alternates: {
+    canonical: "https://urologie-neuwied.de",
+    languages: {
+      de: "https://urologie-neuwied.de/de",
+      en: "https://urologie-neuwied.de/en",
+      fr: "https://urologie-neuwied.de/fr",
+      tr: "https://urologie-neuwied.de/tr",
+    },
   },
   robots: {
     index: true,
@@ -40,7 +73,12 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
+  },
+  verification: {
+    google: "",
   },
 };
 
