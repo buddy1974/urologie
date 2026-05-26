@@ -44,6 +44,8 @@ export const metadata: Metadata = {
   },
 };
 
+const isLanding = process.env.NEXT_PUBLIC_SITE_MODE === "landing";
+
 export default async function LocaleLayout({
   children,
   params,
@@ -72,12 +74,12 @@ export default async function LocaleLayout({
       </head>
       <body className="antialiased flex flex-col min-h-screen bg-background text-foreground">
         <NextIntlClientProvider messages={messages}>
-          <Navbar />
+          {!isLanding && <Navbar />}
           <main className="flex-1">
             {children}
           </main>
-          <Footer />
-          <ChatWidget />
+          {!isLanding && <Footer />}
+          {!isLanding && <ChatWidget />}
         </NextIntlClientProvider>
       </body>
     </html>
