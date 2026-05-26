@@ -43,7 +43,7 @@ export default function LandingPage() {
               Urologie Neuwied
             </h1>
             <p className="text-muted-foreground text-sm mt-2 tracking-wide">
-              Dr. Walters T. Fomuki &middot; Facharzt für Urologie
+              Walters T. Fomuki &middot; Facharzt für Urologie
             </p>
           </div>
         </div>
@@ -109,7 +109,7 @@ export default function LandingPage() {
         </div>
 
         <p className="text-muted-foreground text-xs text-center">
-          &copy; {new Date().getFullYear()} Urologische Praxis Neuwied &middot; Dr. Walters T. Fomuki
+          &copy; {new Date().getFullYear()} Urologische Praxis Neuwied &middot; Walters T. Fomuki
         </p>
       </div>
     </div>

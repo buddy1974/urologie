@@ -13,7 +13,7 @@ const procedures = [
   {
     title: "Vasektomie",
     subtitle: "Sterilisation des Mannes",
-    desc: "Sowohl konventionell als auch ohne Skalpell (No-Scalpel-Vasektomie). Dr. Fomuki ist Mitglied im Vasektomie-Experten-Netzwerk.",
+    desc: "Sowohl konventionell als auch ohne Skalpell (No-Scalpel-Vasektomie). Fomuki ist Mitglied im Vasektomie-Experten-Netzwerk.",
     link: "/leistungen/andrologie",
   },
   {
@@ -106,7 +106,7 @@ export default function AmbulantePage() {
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 Vor jedem Eingriff erfolgt ein ausführliches Aufklärungs- und
-                Beratungsgespräch mit Dr. Fomuki. Bei Bedarf koordinieren wir auch
+                Beratungsgespräch mit Fomuki. Bei Bedarf koordinieren wir auch
                 Eingriffe, die eine Vollnarkose in einer Kooperationsklinik erfordern.
               </p>
             </div>

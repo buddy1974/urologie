@@ -12,15 +12,15 @@ import "../globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Urologie Neuwied | Dr. Walters T. Fomuki",
+    default: "Urologie Neuwied | Walters T. Fomuki",
     template: "%s | Urologie Neuwied",
   },
   description:
-    "Urologische Facharztpraxis in Neuwied. Facharzt Dr. Walters T. Fomuki. Diagnostik, Onkologie, Andrologie, UroLift®, Magnetstimulation. Termin online via Doctolib.",
+    "Urologische Facharztpraxis in Neuwied. Facharzt Walters T. Fomuki. Diagnostik, Onkologie, Andrologie, UroLift®, Magnetstimulation. Termin online via Doctolib.",
   keywords: [
     "Urologe Neuwied",
     "Urologie Neuwied",
-    "Dr. Fomuki",
+    "Fomuki",
     "Prostata",
     "Vasektomie",
     "UroLift",
@@ -30,11 +30,11 @@ export const metadata: Metadata = {
     "Magnetstimulation",
     "Urodynamik",
   ],
-  authors: [{ name: "Dr. Walters T. Fomuki" }],
+  authors: [{ name: "Walters T. Fomuki" }],
   creator: "Urologie Neuwied",
-  publisher: "Dr. Walters T. Fomuki",
+  publisher: "Walters T. Fomuki",
   openGraph: {
-    title: "Urologie Neuwied | Dr. Walters T. Fomuki",
+    title: "Urologie Neuwied | Walters T. Fomuki",
     description:
       "Moderne Urologie mit persönlicher Betreuung in Neuwied. Diagnostik, Onkologie, Andrologie, UroLift® und mehr.",
     locale: "de_DE",
@@ -47,13 +47,13 @@ export const metadata: Metadata = {
         url: "https://urologie-neuwied.de/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Urologie Neuwied – Dr. Walters T. Fomuki",
+        alt: "Urologie Neuwied – Walters T. Fomuki",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Urologie Neuwied | Dr. Walters T. Fomuki",
+    title: "Urologie Neuwied | Walters T. Fomuki",
     description:
       "Urologische Facharztpraxis in Neuwied. Termin online via Doctolib.",
     images: ["https://urologie-neuwied.de/og-image.jpg"],

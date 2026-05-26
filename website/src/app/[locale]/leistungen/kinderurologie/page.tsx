@@ -79,7 +79,7 @@ export default function KindeurologiePage() {
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Urologische Erkrankungen bei Kindern erfordern besondere Sorgfalt und
                 Einfühlungsvermögen — sowohl gegenüber den kleinen Patienten als auch
-                gegenüber den Eltern. Dr. Fomuki nimmt sich die Zeit für ein ausführliches
+                gegenüber den Eltern. Fomuki nimmt sich die Zeit für ein ausführliches
                 Gespräch und erklärt Diagnose und Therapie verständlich.
               </p>
               <p className="text-muted-foreground leading-relaxed">

@@ -8,13 +8,13 @@ const isLanding = process.env.NEXT_PUBLIC_SITE_MODE === "landing";
 
 export const metadata: Metadata = isLanding
   ? {
-      title: "Urologie Neuwied | Dr. Walters T. Fomuki",
+      title: "Urologie Neuwied | Walters T. Fomuki",
       description:
-        "Urologische Facharztpraxis in Neuwied. Facharzt Dr. Walters T. Fomuki. Termin online via Doctolib. ☎ 02631 – 23351. Diagnostik, Onkologie, UroLift®, Andrologie.",
+        "Urologische Facharztpraxis in Neuwied. Facharzt Walters T. Fomuki. Termin online via Doctolib. ☎ 02631 – 23351. Diagnostik, Onkologie, UroLift®, Andrologie.",
       keywords: [
         "Urologe Neuwied",
         "Urologie Neuwied",
-        "Dr. Fomuki",
+        "Fomuki",
         "Urologe Rheinland-Pfalz",
         "Prostata Neuwied",
         "UroLift Neuwied",
@@ -23,7 +23,7 @@ export const metadata: Metadata = isLanding
         "Termin Urologe Neuwied",
       ],
       openGraph: {
-        title: "Urologie Neuwied | Dr. Walters T. Fomuki",
+        title: "Urologie Neuwied | Walters T. Fomuki",
         description:
           "Ihre urologische Facharztpraxis in Neuwied. Modernste Diagnostik und Therapie — von Vorsorge bis Onkologie.",
         url: "https://urologie-neuwied.de",
@@ -35,13 +35,13 @@ export const metadata: Metadata = isLanding
             url: "https://urologie-neuwied.de/og-image.jpg",
             width: 1200,
             height: 630,
-            alt: "Urologie Neuwied – Dr. Walters T. Fomuki",
+            alt: "Urologie Neuwied – Walters T. Fomuki",
           },
         ],
       },
       twitter: {
         card: "summary_large_image",
-        title: "Urologie Neuwied | Dr. Walters T. Fomuki",
+        title: "Urologie Neuwied | Walters T. Fomuki",
         description:
           "Urologische Facharztpraxis in Neuwied. Termin online via Doctolib.",
         images: ["https://urologie-neuwied.de/og-image.jpg"],

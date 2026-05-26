@@ -62,7 +62,7 @@ export default function AndrologiePage() {
 
           <div className="glass rounded-3xl p-8 border-accent/20">
             <p className="font-semibold text-foreground mb-2">Vasektomie-Experten Netzwerk</p>
-            <p className="text-muted-foreground text-sm mb-4">Dr. Fomuki ist zertifiziertes Mitglied im Netzwerk der Vasektomie-Experten.</p>
+            <p className="text-muted-foreground text-sm mb-4">Fomuki ist zertifiziertes Mitglied im Netzwerk der Vasektomie-Experten.</p>
             <a
               href="http://www.vasektomie-neuwied.de"
               target="_blank"

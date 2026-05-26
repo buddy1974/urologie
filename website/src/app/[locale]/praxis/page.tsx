@@ -5,7 +5,7 @@ import { Building2, Award, ShieldCheck } from "lucide-react";
 export const metadata: Metadata = {
   title: "Unsere Praxis",
   description:
-    "Die Urologische Praxis Neuwied von Dr. Walters T. Fomuki — Philosophie, Ausstattung, Kooperationen und Standort.",
+    "Die Urologische Praxis Neuwied von Walters T. Fomuki — Philosophie, Ausstattung, Kooperationen und Standort.",
 };
 
 const cooperations = [

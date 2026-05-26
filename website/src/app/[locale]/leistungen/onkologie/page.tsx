@@ -60,7 +60,7 @@ export default function OnkologiePage() {
           </div>
 
           <div className="glass rounded-3xl p-8 border-accent/20">
-            <p className="text-accent font-semibold mb-2">Dr. Fomuki ist onkologisch qualifizierter Arzt</p>
+            <p className="text-accent font-semibold mb-2">Fomuki ist onkologisch qualifizierter Arzt</p>
             <p className="text-muted-foreground text-sm">mit Spezialisierung auf medikamentöse Tumortherapie und ambulantes Operieren.</p>
           </div>
         </div>

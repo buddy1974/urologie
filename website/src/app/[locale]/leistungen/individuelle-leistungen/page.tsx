@@ -12,7 +12,7 @@ const services = [
   {
     title: "Vasektomie",
     subtitle: "Sterilisation des Mannes",
-    desc: "Konventionell und ohne Skalpell (No-Scalpel-Technik). Dr. Fomuki ist Mitglied im Vasektomie-Experten-Netzwerk. Weitere Informationen unter vasektomie-neuwied.de.",
+    desc: "Konventionell und ohne Skalpell (No-Scalpel-Technik). Fomuki ist Mitglied im Vasektomie-Experten-Netzwerk. Weitere Informationen unter vasektomie-neuwied.de.",
     link: "https://www.vasektomie-neuwied.de",
     external: true,
   },

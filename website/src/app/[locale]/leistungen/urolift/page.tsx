@@ -187,7 +187,7 @@ export default function UroliftPage() {
             <div className="relative">
               <h3 className="font-display text-3xl text-foreground mb-3">UroLift® in Neuwied</h3>
               <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-                Dr. Fomuki berät Sie gerne, ob UroLift® für Ihre Situation geeignet ist.
+                Fomuki berät Sie gerne, ob UroLift® für Ihre Situation geeignet ist.
                 Vereinbaren Sie jetzt einen Termin.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">

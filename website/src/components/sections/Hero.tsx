@@ -119,10 +119,10 @@ export default function Hero({ locale }: { locale?: string }) {
 
           <motion.p custom={2} initial="hidden" animate="visible" variants={fadeUp}
             className="text-slate-300 text-lg leading-relaxed mb-10 max-w-xl">
-            {locale === "en" ? "Dr. Walters T. Fomuki and his team offer state-of-the-art urological diagnostics and therapy — from prevention to oncology, andrology to UroLift\u00ae." :
-             locale === "fr" ? "Dr. Walters T. Fomuki et son \u00e9quipe offrent des diagnostics et th\u00e9rapies urologiques de pointe — de la pr\u00e9vention \u00e0 l'oncologie." :
-             locale === "tr" ? "Dr. Walters T. Fomuki ve ekibi, \u00f6nlemden onkolojiye, androlojiden UroLift\u00ae'e kadar en modern \u00fcrolojik tan\u0131 ve tedavi hizmetleri sunar." :
-             "Dr. Walters T. Fomuki und sein Team bieten Ihnen modernste urologische Diagnostik und Therapie — von Vorsorge bis Onkologie, von Andrologie bis UroLift\u00ae."}
+            {locale === "en" ? "Walters T. Fomuki and his team offer state-of-the-art urological diagnostics and therapy — from prevention to oncology, andrology to UroLift\u00ae." :
+             locale === "fr" ? "Walters T. Fomuki et son \u00e9quipe offrent des diagnostics et th\u00e9rapies urologiques de pointe — de la pr\u00e9vention \u00e0 l'oncologie." :
+             locale === "tr" ? "Walters T. Fomuki ve ekibi, \u00f6nlemden onkolojiye, androlojiden UroLift\u00ae'e kadar en modern \u00fcrolojik tan\u0131 ve tedavi hizmetleri sunar." :
+             "Walters T. Fomuki und sein Team bieten Ihnen modernste urologische Diagnostik und Therapie — von Vorsorge bis Onkologie, von Andrologie bis UroLift\u00ae."}
           </motion.p>
 
           <motion.div custom={3} initial="hidden" animate="visible" variants={fadeUp}
@@ -176,7 +176,7 @@ export default function Hero({ locale }: { locale?: string }) {
                 <span className="text-white font-bold text-xl">WF</span>
               </div>
               <div>
-                <div className="text-white font-bold text-lg">Dr. Walters T. Fomuki</div>
+                <div className="text-white font-bold text-lg">Walters T. Fomuki</div>
                 <div className="text-sm mt-0.5" style={{ color: "#5ECFEB" }}>
                   {locale === "en" ? "Specialist in Urology" : locale === "fr" ? "Sp\u00e9cialiste en Urologie" : locale === "tr" ? "\u00dcroloji Uzman\u0131" : "Facharzt f\u00fcr Urologie"}
                 </div>

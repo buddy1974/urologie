@@ -5,12 +5,12 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Unser Team",
   description:
-    "Das Team der Urologischen Praxis Neuwied — Dr. Walters T. Fomuki und seine erfahrenen Mitarbeiterinnen.",
+    "Das Team der Urologischen Praxis Neuwied — Walters T. Fomuki und seine erfahrenen Mitarbeiterinnen.",
 };
 
 const doctors = [
   {
-    name: "Dr. Walters T. Fomuki",
+    name: "Walters T. Fomuki",
     role: "Facharzt für Urologie · Praxisinhaber",
     image: "/images/Dr-fomuki/fomuki_walters_002.jpg",
     initials: "WF",
@@ -28,7 +28,7 @@ const doctors = [
       "Deutsche Gesellschaft für Andrologie (DGA)",
       "Camfomedics e.V.",
     ],
-    bio: "Gebürtig aus dem westafrikanischen Kamerun (geboren 1972) kam Dr. Fomuki nach dem Abitur am Sacred Heart College zum Medizinstudium nach Heidelberg. Seine Facharztweiterbildung absolvierte er im Nordwest Krankenhaus Frankfurt am Main bei Professor E. W. Becht. Seit 2006 ist er als Arzt tätig, seit 2013 als Facharzt für Urologie — seit 2014 in seiner eigenen Praxis in Neuwied.",
+    bio: "Gebürtig aus dem westafrikanischen Kamerun (geboren 1972) kam Fomuki nach dem Abitur am Sacred Heart College zum Medizinstudium nach Heidelberg. Seine Facharztweiterbildung absolvierte er im Nordwest Krankenhaus Frankfurt am Main bei Professor E. W. Becht. Seit 2006 ist er als Arzt tätig, seit 2013 als Facharzt für Urologie — seit 2014 in seiner eigenen Praxis in Neuwied.",
   },
 ];
 

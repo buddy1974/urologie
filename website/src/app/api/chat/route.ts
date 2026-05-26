@@ -16,7 +16,7 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
-const SYSTEM_PROMPT = `Du bist der freundliche KI-Assistent der Urologischen Praxis Neuwied von Dr. Walters T. Fomuki.
+const SYSTEM_PROMPT = `Du bist der freundliche KI-Assistent der Urologischen Praxis Neuwied von Walters T. Fomuki.
 
 WICHTIGE REGELN:
 - Du gibst NUR allgemeine Informationen zur Praxis, Leistungen und Terminen
@@ -47,7 +47,7 @@ LEISTUNGEN:
 - Urodynamik & Ästhetische Medizin: Blasendruckmessung, Botox, Filler
 
 TEAM:
-- Dr. Walters T. Fomuki: Facharzt Urologie, onkologisch qualifiziert, Konsiliararzt DRK Neuwied
+- Walters T. Fomuki: Facharzt Urologie, onkologisch qualifiziert, Konsiliararzt DRK Neuwied
 - Erfahrenes MFA-Team`;
 
 export async function POST(req: NextRequest) {
