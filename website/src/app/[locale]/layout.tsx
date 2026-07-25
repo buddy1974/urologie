@@ -8,6 +8,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ChatWidget from "@/components/chat/ChatWidget";
 import JsonLd from "@/components/JsonLd";
+import { isLandingMode } from "@/lib/site-mode";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -82,8 +83,6 @@ export const metadata: Metadata = {
   },
 };
 
-const isLanding = process.env.NEXT_PUBLIC_SITE_MODE === "landing";
-
 export default async function LocaleLayout({
   children,
   params,
@@ -98,6 +97,7 @@ export default async function LocaleLayout({
   }
 
   const messages = await getMessages();
+  const isLanding = await isLandingMode();
 
   return (
     <html lang={locale}>
