@@ -1,0 +1,1 @@
+if(console){var cookiedomainwarning='Error: The domain WWW.UROLOGIE-NEUWIED.DE is not authorized to show the cookie banner for domain group ID a98440ab-7271-48c5-a8ce-2384797c3e18. Please add it to the domain group in the Cookiebot Manager to authorize the domain.';if(typeof console.warn === 'function'){console.warn(cookiedomainwarning)}else{console.log(cookiedomainwarning)}};

@@ -14,7 +14,6 @@ const locales = [
   { code: "de", label: "Deutsch" },
   { code: "en", label: "English" },
   { code: "fr", label: "Français" },
-  { code: "tr", label: "Türkçe" },
 ];
 
 const navLinks = [

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Raleway } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -10,6 +11,13 @@ import ChatWidget from "@/components/chat/ChatWidget";
 import JsonLd from "@/components/JsonLd";
 import { isLandingMode } from "@/lib/site-mode";
 import "../globals.css";
+
+const raleway = Raleway({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-raleway",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -39,7 +47,7 @@ export const metadata: Metadata = {
     description:
       "Moderne Urologie mit persönlicher Betreuung in Neuwied. Diagnostik, Onkologie, Andrologie, UroLift® und mehr.",
     locale: "de_DE",
-    alternateLocale: ["en_GB", "fr_FR", "tr_TR"],
+    alternateLocale: ["en_GB", "fr_FR"],
     type: "website",
     url: "https://urologie-neuwied.de",
     siteName: "Urologie Neuwied",
@@ -65,7 +73,6 @@ export const metadata: Metadata = {
       de: "https://urologie-neuwied.de/de",
       en: "https://urologie-neuwied.de/en",
       fr: "https://urologie-neuwied.de/fr",
-      tr: "https://urologie-neuwied.de/tr",
     },
   },
   robots: {
@@ -103,14 +110,8 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <head>
         <JsonLd />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
-        />
       </head>
-      <body className="antialiased flex flex-col min-h-screen bg-background text-foreground">
+      <body className={`${raleway.variable} font-sans antialiased flex flex-col min-h-screen bg-background text-foreground`}>
         <NextIntlClientProvider messages={messages}>
           {!isLanding && <Navbar />}
           <main className="flex-1">

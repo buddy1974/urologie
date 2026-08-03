@@ -1,0 +1,51 @@
+/**SWIPEBOX ------------------------------------------**/
+#swipebox-overlay { 
+	background: #282832;
+	background: rgba(40, 40, 50, 0.8)
+}
+.current img { box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+
+/**Magnific PopUp ------------------------------------------**/
+.white-popup { 
+	background: #FFF;
+	padding: 25px;
+}
+@media screen and (min-width: 768px){ 
+	.mfp-inline-holder .mfp-content { width: 350px; }
+}
+
+/**Jssor ------------------------------------------**/
+.slider { position: relative; }
+
+/**BOOTSTRAP**/
+
+/*LG und MD*/
+@media screen and (min-width: 992px){ 
+	.col-xs-12.col-12-5 {
+		width: 20%
+	}
+}
+
+/*SM*/
+@media screen and (max-width: 991px){ 
+	.col-xs-12.col-12-5 {
+		width: 33%
+	}
+}
+
+/*SM*/
+@media screen and (max-width: 767px){ 
+	.col-xs-12.col-12-5 {
+		width: 50%
+	}
+}
+
+
+/*GOOGLEMAPS*/
+#map-canvas { 
+	width: 100%; 
+	height: 280px;
+	
+}
+#directions-panel { background: #fff; padding: 10px }
+.adp-marker { margin: 20px 10px;}

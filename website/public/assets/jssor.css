@@ -1,0 +1,636 @@
+.slider {
+	position: relative;
+	padding: 0;
+	min-height: 150px;
+	max-height: 495px;
+	overflow: hidden;
+	box-shadow: 0 0 7px rgba(0,0,0,0.3);
+}
+
+#slider_1_container { 
+	position: relative;
+	margin: 0 auto; 
+	width: 1140px; 
+	background: #ffffff; 
+}
+
+.slides { 
+	cursor: auto; 
+	position: absolute; 
+	overflow: hidden; 
+	left: 0px; 
+	top: 0px; 
+	width: 11400px; 
+	height: 495px; 
+}
+
+.caption { 
+	position: absolute; 
+	top: 30px;
+	width: 1170px;
+	left: 50%;
+	margin-left: -585px;
+}
+
+
+
+.caption-bg {
+	position: absolute; 
+	height: 50px;
+	width: 100%;
+	background-color: #ff0000; 
+	opacity: 0.5; 
+	filter: alpha(opacity=50);
+ }
+
+.caption-content {
+	position: relative;
+	padding: 0 15px;
+    color: #fff;
+	font-size: 30px; font-weight: bold;
+	
+}
+.caption-content-br {
+	position: absolute;
+	
+	text-align: right;
+	bottom: 20px;
+    color: #fff;
+	font-size: 30px; font-weight: bold;
+	
+}
+/*SM*/
+@media screen and (max-width: 767px){ 
+   .caption { 
+		width: 100%;
+		left: 0;
+		margin-left: 0;
+	}
+	.caption-content,
+	.caption-content-br{
+		font-size: 22px;
+	}
+}
+
+/*SM*/
+@media screen and (min-width:768px) and (max-width: 991px){ 
+   .caption { 
+		width: 750px;
+		margin-left: -375px;
+	}
+}
+
+/* MD */
+@media screen and (min-width:992px) and (max-width: 1199px){
+   .caption { 
+		width: 970px;
+		margin-left: -485px;
+		
+	}
+}
+
+/* jssor slider arrow navigator */
+/*
+.jssora19l              (normal)
+.jssora19r              (normal)
+.jssora19l:hover        (normal mouseover)
+.jssora19r:hover        (normal mouseover)
+.jssora19ldn            (mousedown)
+.jssora19rdn            (mousedown)
+*/
+
+.jssoraL, .jssoraR, .jssorbL, .jssorbR {
+	position: absolute;
+	cursor: pointer;
+	display: block;
+	overflow:hidden;
+}
+.jssoraL { left: 8px; }
+.jssoraR { right: 8px; }
+.jssorbL { top: 8px; left: 8px; }
+.jssorbR { bottom: 8px; left: 8px; }
+
+.jssora01l, .jssora01r, .jssora01ldn, .jssora01rdn { background: url(_jssor_slider/arrows/a-01.png) no-repeat; width: 45px; height: 45px; top: 123px; }
+.jssora02l, .jssora02r, .jssora02ldn, .jssora02rdn { background: url(_jssor_slider/arrows/a-02.png) no-repeat; width: 55px; height: 55px; top: 123px; }
+.jssora03l, .jssora03r, .jssora03ldn, .jssora03rdn { background: url(_jssor_slider/arrows/a-03.png) no-repeat; width: 55px; height: 55px; top: 123px; }
+.jssora04l, .jssora04r, .jssora04ldn, .jssora04rdn { background: url(_jssor_slider/arrows/a-04.png) no-repeat; width: 28px; height: 40px; top: 123px; }
+.jssora05l, .jssora05r, .jssora05ldn, .jssora05rdn { background: url(_jssor_slider/arrows/a-05.png) no-repeat; width: 40px; height: 40px; top: 123px; }
+.jssora06l, .jssora06r, .jssora06ldn, .jssora06rdn { background: url(_jssor_slider/arrows/a-06.png) no-repeat; width: 45px; height: 45px; top: 123px; }
+.jssora07l, .jssora07r, .jssora07ldn, .jssora07rdn { background: url(_jssor_slider/arrows/a-07.png) no-repeat; width: 50px; height: 50px; top: 123px; }
+.jssorb08l, .jssorb08r, .jssorb08ldn, .jssorb08rdn { background: url(_jssor_slider/arrows/b-08.png) no-repeat; width: 50px; height: 50px;  }
+.jssora09l, .jssora09r, .jssora09ldn, .jssora09rdn { background: url(_jssor_slider/arrows/a-09.png) no-repeat; width: 50px; height: 50px; top: 123px; }
+.jssora10l, .jssora10r, .jssora10ldn, .jssora10rdn { background: url(_jssor_slider/arrows/a-10.png) no-repeat; width: 28px; height: 40px; top: 123px; }
+.jssora11l, .jssora11r, .jssora11ldn, .jssora11rdn { background: url(_jssor_slider/arrows/a-11.png) no-repeat; width: 37px; height: 37px; top: 123px; }
+.jssora12l, .jssora12r, .jssora12ldn, .jssora12rdn { background: url(_jssor_slider/arrows/a-12.png) no-repeat; width: 30px; height: 46px; top: 123px; }
+.jssora13l, .jssora13r, .jssora13ldn, .jssora13rdn { background: url(_jssor_slider/arrows/a-13.png) no-repeat; width: 40px; height: 50px; top: 123px; }
+.jssora14l, .jssora14r, .jssora14ldn, .jssora14rdn { background: url(_jssor_slider/arrows/a-14.png) no-repeat; width: 30px; height: 50px; top: 123px; }
+.jssora15l, .jssora15r, .jssora15ldn, .jssora15rdn { background: url(_jssor_slider/arrows/a-15.png) no-repeat; width: 20px; height: 38px; top: 123px; }
+.jssora16l, .jssora16r, .jssora16ldn, .jssora16rdn { background: url(_jssor_slider/arrows/a-16.png) no-repeat; width: 20px; height: 38px; top: 123px; }
+.jssora17l, .jssora17r, .jssora17ldn, .jssora17rdn { background: url(_jssor_slider/arrows/a-17.png) no-repeat; width: 29px; height: 29px; top: 123px; }
+.jssora18l, .jssora18r, .jssora18ldn, .jssora18rdn { background: url(_jssor_slider/arrows/a-18.png) no-repeat; width: 50px; height: 50px; top: 123px; }
+.jssora19l, .jssora19r, .jssora19ldn, .jssora19rdn { background: url(_jssor_slider/arrows/a-19.png) no-repeat; width: 55px; height: 55px; top: 123px; }
+.jssora20l, .jssora20r, .jssora20ldn, .jssora20rdn { background: url(_jssor_slider/arrows/a-20.png) no-repeat; width: 55px; height: 55px; top: 123px; }
+
+.jssora01l { background-position: -8px -38px; }
+.jssora01r { background-position: -68px -38px; }
+.jssora01l:hover { background-position: -128px -38px; }
+.jssora01r:hover { background-position: -188px -38px; }
+.jssora01ldn { background-position: -8px -38px; }
+.jssora01rdn { background-position: -68px -38px; }
+
+.jssora02l { background-position: -3px -33px; }
+.jssora02r { background-position: -63px -33px; }
+.jssora02l:hover { background-position: -123px -33px; }
+.jssora02r:hover { background-position: -183px -33px; }
+.jssora02ldn { background-position: -3px -33px; left: 8px;}
+.jssora02rdn { background-position: -63px -33px; right: 8px; }
+
+.jssora03l { background-position: -3px -33px;  }
+.jssora03r { background-position: -63px -33px; }
+.jssora03l:hover { background-position: -123px -33px; }
+.jssora03r:hover { background-position: -183px -33px; }
+.jssora03ldn { background-position: -243px -33px; }
+.jssora03rdn { background-position: -303px -33px; }
+
+.jssora04l { background-position: -16px -39px; }
+.jssora04r { background-position: -76px -39px;  }
+.jssora04l:hover { background-position: -136px -39px; }
+.jssora04r:hover { background-position: -196px -39px; }
+.jssora04ldn { background-position: -256px -39px; }
+.jssora04rdn { background-position: -316px -39px; }
+
+.jssora05l { background-position: -10px -40px; }
+.jssora05r { background-position: -70px -40px; }
+.jssora05l:hover { background-position: -130px -40px; }
+.jssora05r:hover { background-position: -190px -40px; }
+.jssora05ldn { background-position: -250px -40px; }
+.jssora05rdn { background-position: -310px -40px; }
+
+.jssora06l { background-position: -8px -38px; }
+.jssora06r { background-position: -68px -38px; }
+.jssora06l:hover { background-position: -128px -38px; }
+.jssora06r:hover { background-position: -188px -38px; }
+.jssora06ldn { background-position: -248px -38px; }
+.jssora06rdn { background-position: -308px -38px; }
+
+.jssora07l { background-position: -5px -35px; }
+.jssora07r { background-position: -65px -35px; }
+.jssora07l:hover { background-position: -125px -35px; }
+.jssora07r:hover { background-position: -185px -35px; }
+.jssora07ldn { background-position: -245px -35px; }
+.jssora07rdn { background-position: -305px -35px; }
+
+.jssorb08l { background-position: -5px -35px; }
+.jssorb08r { background-position: -65px -35px; }
+.jssorb08l:hover { background-position: -5px -35px; opacity: .8; filter:alpha(opacity=80); }
+.jssorb08r:hover { background-position: -65px -35px; opacity: .8; filter:alpha(opacity=80); }
+.jssorb08ldn { background-position: -5px -35px; opacity: .3; filter:alpha(opacity=30); }
+.jssorb08rdn { background-position: -65px -35px; opacity: .3; filter:alpha(opacity=30); }
+
+.jssora09l { background-position: -5px -35px; }
+.jssora09r { background-position: -65px -35px; }
+.jssora09l:hover { background-position: -5px -35px; opacity: .8; filter:alpha(opacity=80); }
+.jssora09r:hover { background-position: -65px -35px; opacity: .8; filter:alpha(opacity=80); }
+.jssora09ldn { background-position: -5px -35px; opacity: .3; filter:alpha(opacity=30); }
+.jssora09rdn { background-position: -65px -35px; opacity: .3; filter:alpha(opacity=30); }
+
+.jssora10l { background-position: -16px -39px; }
+.jssora10r { background-position: -76px -39px; }
+.jssora10l:hover { background-position: -136px -39px; }
+.jssora10r:hover { background-position: -196px -39px; }
+.jssora10ldn { background-position: -256px -39px; }
+.jssora10rdn { background-position: -316px -39px; }
+
+.jssora11l { background-position: -11px -41px; }
+.jssora11r { background-position: -71px -41px; }
+.jssora11l:hover { background-position: -131px -41px; }
+.jssora11r:hover { background-position: -191px -41px; }
+.jssora11ldn { background-position: -251px -41px; }
+.jssora11rdn { background-position: -311px -41px; }
+
+.jssora12l { background-position: -16px -37px; left: 0px;}
+.jssora12r { background-position: -75px -37px;  right: 0px;}
+.jssora12l:hover { background-position: -136px -37px; }
+.jssora12r:hover { background-position: -195px -37px; }
+.jssora12ldn { background-position: -256px -37px;left: 0px; }
+.jssora12rdn { background-position: -315px -37px;  right: 0px;}
+
+.jssora13l { background-position: -10px -35px; left: 0px;}
+.jssora13r { background-position: -70px -35px; right: 0px;}
+.jssora13l:hover { background-position: -130px -35px; }
+.jssora13r:hover { background-position: -190px -35px; }
+.jssora13ldn { background-position: -250px -35px; left: 0px;}
+.jssora13rdn { background-position: -310px -35px; right: 0px;}
+
+.jssora14l { background-position: -15px -35px; left: 0px;}
+.jssora14r { background-position: -75px -35px; right: 0px;}
+.jssora14l:hover { background-position: -135px -35px; }
+.jssora14r:hover { background-position: -195px -35px; }
+.jssora14ldn { background-position: -255px -35px; left: 0px;}
+.jssora14rdn { background-position: -315px -35px; right: 0px;}
+
+.jssora15l { background-position: -20px -41px; }
+.jssora15r { background-position: -80px -41px; }
+.jssora15l:hover { background-position: -140px -41px; }
+.jssora15r:hover { background-position: -200px -41px; }
+.jssora15ldn { background-position: -260px -41px; }
+.jssora15rdn { background-position: -320px -41px; }
+
+.jssora16l { background-position: -19px -42px; }
+.jssora16r { background-position: -79px -42px; }
+.jssora16l:hover { background-position: -139px -42px; }
+.jssora16r:hover { background-position: -199px -42px; }
+.jssora16ldn { background-position: -259px -42px; }
+.jssora16rdn { background-position: -319px -42px; }
+
+.jssora17l { background-position: -16px -45px; }
+.jssora17r { background-position: -76px -45px; }
+.jssora17l:hover {background-position: -136px -45px;}
+.jssora17r:hover {background-position: -196px -45px;}
+.jssora17ldn {background-position: -256px -45px; }
+.jssora17rdn { background-position: -316px -45px; }
+
+.jssora18l { background-position: -5px -35px; }
+.jssora18r { background-position: -65px -35px; }
+.jssora18l:hover { background-position: -125px -35px; }
+.jssora18r:hover { background-position: -185px -35px; }
+.jssora18ldn { background-position: -245px -35px; }
+.jssora18rdn { background-position: -305px -35px; }
+
+.jssora19l { background-position: -3px -33px; }
+.jssora19r { background-position: -63px -33px; }
+.jssora19l:hover { background-position: -123px -33px; }
+.jssora19r:hover { background-position: -183px -33px; }
+.jssora19ldn { background-position: -243px -33px; }
+.jssora19rdn { background-position: -303px -33px; }
+
+.jssora20l { background-position: -3px -33px; }
+.jssora20r { background-position: -63px -33px; }
+.jssora20l:hover { background-position: -123px -33px; }
+.jssora20r:hover { background-position: -183px -33px; }
+.jssora20ldn { background-position: -243px -33px; }
+.jssora20rdn { background-position: -303px -33px; }
+
+
+/*--------------------------------------------------------------------*/
+/* Bullet Navigator Skins */
+ 
+ .jssorb01 { position: absolute; bottom: 16px; z-index: 99 }
+ .jssorb01 div, .jssorb01 div:hover, .jssorb01 .av {
+	filter: alpha(opacity=70);
+	opacity: .7;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb01 div { background-color: gray; POSITION: absolute; WIDTH: 12px; HEIGHT: 12px;}
+.jssorb01 div:hover, .jssorb01 .av:hover { background-color: #d3d3d3; }
+.jssorb01 .av { background-color: #fff; }
+.jssorb01 .dn, .jssorb01 .dn:hover { background-color: #555555; }
+
+
+.jssorb01 .n { color: #fff; font-size: 10px; line-height: 12px; text-align:center; width: 100%; display: block}
+.jssorb01 .av .n { color: #000;  }
+/*------------*/
+           
+ .jssorb02 { position: absolute; bottom: 16px;  }
+ .jssorb02 div, .jssorb02 div:hover, .jssorb02 .av {
+	background: url(../img/bullets/b02.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb02 div { background-position: -5px -5px; POSITION: absolute; WIDTH: 21px; HEIGHT: 21px; text-align:center; line-height:21px; color:White; font-size:12px;}
+.jssorb02 div:hover, .jssorb02 .av:hover { background-position: -35px -5px; }
+.jssorb02 .av { background-position: -65px -5px; }
+.jssorb02 .dn, .jssorb02 .dn:hover { background-position: -95px -5px; }
+
+.jssorb02 .n { color: #fff; font-size: 10px; line-height: 21px; text-align:center; width: 100%; display: block}
+
+
+/*------------*/
+
+ .jssorb03 { position: absolute; bottom: 16px; }
+ .jssorb03 div, .jssorb03 div:hover, .jssorb03 .av {
+	background: url(../img/bullets/b03.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb03 div { background-position: -5px -4px; position: absolute; width: 21px; height: 21px; text-align:center; line-height:21px; color:white; font-size:12px;}
+.jssorb03 div:hover, .jssorb03 .av:hover { background-position: -35px -4px; }
+.jssorb03 .av { background-position: -65px -4px; }
+.jssorb03 .dn, .jssorb03 .dn:hover { background-position: -95px -4px; }
+
+/*------------*/
+/*------------*/
+
+.jssorb05 { position: absolute; bottom: 16px; }
+.jssorb05 div, .jssorb05 div:hover, .jssorb05 .av {
+	background: url(../img/bullets/b05.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb05 div { background-position: -7px -7px; POSITION: absolute; WIDTH: 16px; HEIGHT: 16px;}
+.jssorb05 div:hover, .jssorb05 .av:hover { background-position: -37px -7px; }
+.jssorb05 .av { background-position: -67px -7px; }
+.jssorb05 .dn, .jssorb05 .dn:hover { background-position: -97px -7px; }
+
+.jssorb05 .n { color: #fff; font-size: 10px; line-height: 16px; text-align:center; width: 100%; display: block}
+.jssorb05 .av .n { color: #000}
+/*------------*/
+
+.jssorb06 { position: absolute; bottom: 16px;  }
+.jssorb06 div, .jssorb06 div:hover, .jssorb06 .av{
+	background: url(../img/bullets//b06.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb06 div { background-position: -6px -6px; POSITION: absolute; WIDTH: 18px; HEIGHT: 18px;}
+.jssorb06 div:hover, .jssorb06 .av:hover { background-position: -36px -6px; }
+.jssorb06 .av { background-position: -66px -6px; }
+.jssorb06 .dn, .jssorb06 .dn:hover { background-position: -96px -6px; }
+
+.jssorb06 .n { color: #fff; font-size: 10px; line-height: 18px; text-align:center; width: 100%; display: block}
+.jssorb06 .av .n { color: #000}
+
+/*------------*/
+ 			
+.jssorb07 { position: absolute; bottom: 16px;  }			
+.jssorb07 div, .jssorb07 div:hover, .jssorb07 .av {
+	background: url(../img/bullets/b07.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb07 div { background-position: -5px -5px; POSITION: absolute; WIDTH: 20px; HEIGHT: 20px;}
+.jssorb07 div:hover, .jssorb07 .av:hover { background-position: -35px -5px; }
+.jssorb07 .av { background-position: -65px -5px; }
+.jssorb07 .dn, .jssorb07 .dn:hover { background-position: -95px -5px; }
+
+.jssorb07 .n { color: #fff; font-size: 10px; line-height: 20px; text-align:center; width: 100%; display: block}
+.jssorb07 .av .n { color: #000}
+
+/*------------*/
+/*------------*/
+ 
+ .jssorb09 { position: absolute; bottom: 16px; }
+ .jssorb09 div, .jssorb09 div:hover, .jssorb09 .av {
+	filter: alpha(opacity=70);
+	opacity: .7;
+	overflow:hidden;
+	cursor: pointer;
+	border: #fff 1px solid;
+}
+.jssorb09 div { background-color: #d3d3d3; POSITION: absolute; WIDTH: 12px; HEIGHT: 12px;}
+.jssorb09 div:hover, .jssorb09 .av:hover { background-color: gray; }
+.jssorb09 .av { background-color: #000; }
+.jssorb09 .dn, .jssorb09 .dn:hover { background-color: #a9a9a9; }
+
+.jssorb09 .n { color: #000; font-size: 10px; line-height: 12px; text-align:center; width: 100%; display: block}
+.jssorb09 .av .n { color: #fff}
+
+
+/*------------*/
+
+ .jssorb10 { position: absolute; bottom: 16px; }
+ .jssorb10 div, .jssorb10 div:hover, .jssorb10 .av {
+	background: url(../img/bullets/b10.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb10 div { background-position: -10px -10px; POSITION: absolute; WIDTH: 11px; HEIGHT: 11px;}
+.jssorb10 div:hover, .jssorb10 .av:hover { background-position: -40px -10px; }
+.jssorb10 .av { background-position: -70px -10px; }
+.jssorb10 .dn, .jssorb10 .dn:hover { background-position: -100px -10px; }
+
+.jssorb10 .n { color: #000; font-size: 9px; line-height: 11px; text-align:center; width: 100%; display: block}
+.jssorb10 .av .n { color: #fff}
+
+/*------------*/
+
+ .jssorb11 { position: absolute; bottom: 16px; }
+ .jssorb11 div, .jssorb11 div:hover, .jssorb11 .av {
+	background: url(../img/bullets/b11.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb11 div { background-position: -10px -10px; POSITION: absolute; WIDTH: 11px; HEIGHT: 11px;}
+.jssorb11 div:hover, .jssorb11 .av:hover { background-position: -40px -10px; }
+.jssorb11 .av { background-position: -70px -10px; }
+.jssorb11 .dn, .jssorb11 .dn:hover { background-position: -100px -10px; }
+
+.jssorb11 .n { color: #000; font-size: 9px; line-height: 11px; text-align:center; width: 100%; display: block}
+.jssorb11 .av .n { color: #fff}
+
+/*------------*/
+
+.jssorb12 { position: absolute; bottom: 16px; }
+.jssorb12 div, .jssorb12 div:hover, .jssorb12 .av {
+	background: url(../img/bullets/b12.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb12 div { background-position: -7px -7px; POSITION: absolute; WIDTH: 16px; HEIGHT: 16px;}
+.jssorb12 div:hover, .jssorb12 .av:hover { background-position: -37px -7px; }
+.jssorb12 .av { background-position: -67px -7px; }
+.jssorb12 .dn, .jssorb12 .dn:hover { background-position: -97px -7px; }
+
+.jssorb12 .n { color: #000; font-size: 10px; line-height: 16px; text-align:center; width: 100%; display: block}
+.jssorb12 .av .n { color: #fff}
+
+/*------------*/
+
+ .jssorb13 { position: absolute; bottom: 16px; }
+ .jssorb13 div, .jssorb13 div:hover, .jssorb13 .av {
+	background: url(../img/bullets/b13.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb13 div { background-position: -5px -5px; POSITION: absolute; WIDTH: 21px; HEIGHT: 21px;}
+.jssorb13 div:hover, .jssorb13 .av:hover { background-position: -35px -5px; }
+.jssorb13 .av { background-position: -65px -5px; }
+.jssorb13 .dn, .jssorb13 .dn:hover { background-position: -95px -5px; }
+
+.jssorb13 .n { color: #000; font-size: 9px; line-height: 21px; text-align:center; width: 100%; display: block}
+.jssorb13 .av .n { color: #fff}
+
+/*------------*/
+
+.jssorb14 { position: absolute; bottom: 16px; }			
+.jssorb14 div, .jssorb14 div:hover, .jssorb14 .av {
+	background: url(../img/bullets/b14.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb14 div { background-position: -9px -9px; POSITION: absolute; WIDTH: 12px; HEIGHT: 12px;}
+.jssorb14 div:hover, .jssorb14 .av:hover { background-position: -39px -9px; }
+.jssorb14 .av { background-position: -69px -9px; }
+.jssorb14 .dn, .jssorb14 .dn:hover { background-position: -99px -9px; }
+
+.jssorb14 .n { color: #fff; font-size: 9px; line-height: 12px; text-align:center; width: 100%; display: block}
+.jssorb14 .av .n { color: #000}
+
+/*------------*/
+
+/*------------*/
+
+ .jssorb16{ position: absolute; bottom: 16px;  }
+ .jssorb16 div, .jssorb16 div:hover, .jssorb16 .av {
+	background: url(../img/bullets/b16.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb16 div { background-position: -5px -5px; POSITION: absolute; WIDTH: 21px; HEIGHT: 21px;}
+.jssorb16 div:hover, .jssorb16 .av:hover { background-position: -35px -5px; }
+.jssorb16 .av { background-position: -65px -5px; }
+.jssorb16 .dn, .jssorb16 .dn:hover { background-position: -95px -5px; }
+
+.jssorb16 .n { color: #fff; font-size: 11px; line-height: 21px; text-align:center; width: 100%; display: block}
+.jssorb16 .av .n { color: #000}
+
+/*------------*/
+
+.jssorb17 { position: absolute; bottom: 16px;  }
+.jssorb17 div, .jssorb17 div:hover, .jssorb17 .av {
+	background: url(../img/bullets/b17.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb17 div { background-position: -7px -7px; POSITION: absolute; WIDTH: 16px; HEIGHT: 16px;}
+.jssorb17 div:hover, .jssorb17 .av:hover { background-position: -37px -7px; }
+.jssorb17 .av { background-position: -67px -7px; }
+.jssorb17 .dn, .jssorb17 .dn:hover { background-position: -97px -7px; }
+
+.jssorb17 .n { color: #fff; font-size: 9px; line-height: 16px; text-align:center; width: 100%; display: block}
+.jssorb17 .av .n { color: #fff}
+
+/*------------*/
+
+.jssorb18 { position: absolute; bottom: 16px; }
+.jssorb18 div, .jssorb18 div:hover, .jssorb18 .av {
+	background: url(../img/bullets/b18.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb18 div { background-position: -3px -3px; position: absolute; width: 24px; height: 24px; text-align: center; line-height: 24px; font-size: 16px;}
+.jssorb18 div:hover, .jssorb18 .av:hover { background-position: -33px -3px; }
+.jssorb18 .av { background-position: -63px -3px; }
+.jssorb18 .dn, .jssorb18 .dn:hover { background-position: -93px -3px; }
+
+.jssorb18 .n {
+	display: none;
+	color: #000;
+}
+.jssorb18 div:hover .n, .jssorb18 .av .n, .jssorb18 .av:hover .n, .jssorb18 .dn .n { display: block; }
+
+/*------------*/
+
+/*------------*/
+
+.jssorb20 { position: absolute; bottom: 16px; }
+.jssorb20 div, .jssorb20 div:hover, .jssorb20 .av {
+	background: url(../img/bullets/b20.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb20 div { background-position: -5px -5px; POSITION: absolute; WIDTH: 19px; HEIGHT: 19px; text-align:center; line-height:19px; color:White; font-size:12px;}
+.jssorb20 div:hover, .jssorb20 .av:hover { background-position: -35px -5px; }
+.jssorb20 .av { background-position: -65px -5px; }
+.jssorb20 .dn, .jssorb20 .dn:hover { background-position: -95px -5px; }
+
+.jssorb20 .n { color: #fff; font-size: 11px; line-height: 19px; text-align:center; width: 100%; display: block; margin-left: 1px }
+.jssorb20 .av .n { color: #fff}
+			
+/*------------*/	
+
+.jssorb21 {position: absolute; bottom: 15px; }		
+.jssorb21 div, .jssorb21 div:hover, .jssorb21 .av {
+	background: url(../img/bullets/b21.png) no-repeat;
+	overflow:hidden;
+	cursor: pointer;
+}
+.jssorb21 div { background-position: -5px -5px; POSITION: absolute; WIDTH: 19px; HEIGHT: 19px; text-align:center; line-height:19px; color:White; font-size:12px;}
+.jssorb21 div:hover, .jssorb21 .av:hover { background-position: -35px -5px; }
+.jssorb21 .av { background-position: -65px -5px; }
+.jssorb21 .dn, .jssorb21 .dn:hover { background-position: -95px -5px; }		
+
+.jssorb21 .n { color: #fff; font-size: 9px; line-height: 19px; text-align:center; width: 100%; display: block;  margin-left: 1px}
+.jssorb21 .av .n { color: #000}
+
+/*------------*/	
+
+
+.tbnslides { cursor: move;  }
+ 
+
+/* jssor slider thumbnail navigator skin */
+/*
+.jssort07 .p            (normal)
+.jssort07 .p:hover      (normal mouseover)
+.jssort07 .pav          (active)
+.jssort07 .pav:hover    (active mouseover)
+.jssort07 .pdn          (mousedown)
+*/
+ .jssort01 { 
+ 	position: absolute; 
+	width: 950px; 
+	height: 70px; 
+	left:0px; 
+	bottom: 0px; 
+}
+
+
+.jssort01 .p { position: absolute; width: 70px; height: 70px; top: 0; left: 0; }
+
+.jssort01 .w img,
+.jssort01 .c img  { height: 100%; border: none;position:absolute; top: 0; left: 0 }
+
+ .jssort01 .w
+{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+}
+.jssort01 .c {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 70px;
+	height: 70px;
+	border: #000 1px solid;
+}
+.jssort01 .p:hover .c, .jssort01 .pav:hover .c, .jssort01 .pav .c {
+	background: url(../img/t01.png) center center;
+	border-width: 0px;
+	top: 0px;
+	left: 0px;
+	width: 70px;
+	height: 70px;
+}
+.jssort01 .p:hover .c, .jssort01 .pav:hover .c {
+	top: 0px;
+	left: 0px;
+	width: 70px;
+	height: 70px;
+	border: #fff 1px solid;
+}
+
+
+
+.jssort07 .pav:hover .o {
+	border-color: #0099FF;
+}
+
+.jssort07 .p:hover .o {
+	transition: none;
+	-moz-transition: none;
+	-webkit-transition: none;
+	-o-transition: none;
+}
+
+/*CAPTIONS*/
+
+.caption_container { 
+ background: rgba( 0,0,0, 0.6 );
+ color: #fff;
+}
+.caption {  }

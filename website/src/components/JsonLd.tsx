@@ -81,7 +81,7 @@ export default function JsonLd() {
         "@id": "https://urologie-neuwied.de/#website",
         "url": "https://urologie-neuwied.de",
         "name": "Urologie Neuwied",
-        "inLanguage": ["de", "en", "fr", "tr"],
+        "inLanguage": ["de", "en", "fr"],
         "publisher": { "@id": "https://urologie-neuwied.de/#clinic" }
       },
       {

@@ -1,0 +1,154 @@
+/*------------------------------------------------------*/
+/*------------------------------------------------------*/
+body {
+  font-family: Raleway, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #444;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  line-height: 1;
+  font-weight: 700;
+  color: #89c2ca;
+}
+h1:first-child,
+.h1:first-child,
+h2:first-child,
+.h2:first-child,
+h3:first-child,
+.h3:first-child {
+  margin-top: 0;
+}
+h1,
+.h1 {
+  font-size: 39px;
+  margin-bottom: 20px;
+}
+h2,
+.h2 {
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #444;
+}
+h3,
+.h3 {
+  font-size: 16px;
+}
+h4,
+h5,
+h6 {
+  font-size: 16px;
+}
+h2 small {
+  font-size: 16px;
+  display: block;
+  margin-bottom: 5px;
+}
+/*------------------------------------------------------*/
+a {
+  color: #444;
+  transition: color ease-in-out 0.25s;
+}
+a:hover {
+  color: #2d5a71;
+  text-decoration: underline;
+}
+p a {
+  text-decoration: underline;
+}
+p a:hover {
+  text-decoration: none;
+}
+a.anchor {
+  display: block;
+  position: relative;
+  top: -140px;
+  visibility: hidden;
+}
+/*------------------------------------------------------*/
+p,
+ul,
+table {
+  margin-bottom: 1.42857em;
+}
+p,
+td,
+li {
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+p.last {
+  margin-bottom: 0;
+}
+.teasertext {
+  font-size: 30px;
+  font-weight: 300;
+}
+/*------------------------------------------------------*/
+ol,
+ul {
+  padding: 0;
+}
+ul li {
+  margin: 0 0 0 1em;
+}
+a.button {
+  display: inline-block;
+  width: auto;
+  padding: 5px;
+  margin: 11.42857px 0 11.42857px;
+  transition: color ease-in-out 0.25s;
+  background: #89c2ca;
+  text-decoration: none;
+}
+a.button:hover {
+  background: #89c2ca;
+}
+.pill {
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.pill:hover {
+  text-decoration: none;
+}
+/*------------------------------------------------------*/
+.trenner {
+  border: 0;
+  height: 3px;
+  background: #2d5a71;
+  width: 110px;
+  margin: 40px auto;
+}
+/*------------------------------------------------------*/
+#footer,
+#footer a {
+  color: #ffffff;
+}
+/*XS*/
+@media screen and (max-width: 767px) {
+  .col-xs-text-center {
+    text-align: center;
+  }
+}
+/*SM*/
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .col-sm-text-center {
+    text-align: center;
+  }
+}
+/* MD */
+/*LG */
+/*------------------------------------------------------*/
