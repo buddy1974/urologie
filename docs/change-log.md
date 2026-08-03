@@ -216,3 +216,57 @@ appointment cards, profile rows) per the white/teal brand. Removed all
   dashboard) were restyled with the same care but not live-tested, since their
   logic is unchanged and doing so would require real patient credentials.
 - Verified via `npx tsc --noEmit` (clean) and a dev-server browser check of Step 1.
+
+## 2026-08-04 — Pre-launch compliance fixes: Impressum, Datenschutz rewrite, consent, wording (website/ only)
+
+Six compliance fixes ahead of AVV sign-off. Done directly, no forks, no unauthorized
+git commands.
+
+- **Impressum** (`impressum/page.tsx`): added `info@urologie-neuwied.de`, the
+  § 18 Abs. 2 MStV editorial-responsible-person block, and a website-developer
+  credit (maxpromo.digital). EN/FR versions now show a short note explaining the
+  Impressum is legally required to stay in German, with the German content below.
+- **Datenschutzerklärung** (`datenschutz/page.tsx`): full rewrite, 10 sections,
+  naming every processor honestly (Vercel, Neon, Render, Anthropic, seven
+  communications, Doctolib) with purpose, transfer basis, and AVV status stated
+  as "wird abgeschlossen" (pending) — matches the actual pre-launch state, not a
+  false "already signed" claim. **Verified two factual claims against the actual
+  code before asserting them in a legal document**, rather than taking the pasted
+  text on faith: (1) grepped the whole `src/` tree for Google Analytics/Facebook
+  Pixel/any tracking script — none found, so "no tracking cookies" is true; (2)
+  read `api/chat/route.ts` — confirmed it calls `api.anthropic.com` with
+  `claude-haiku-4-5-20251001` and sends only the chat message text (last 10
+  messages) plus a static system prompt, no name/phone/portal data, so the "no
+  personal patient data sent to Anthropic" claim is accurate. Corrected "Freigabe
+  durch Dr. Fomuki" to "Freigabe durch Walters T. Fomuki" — this is the fourth
+  time the "Dr." title has needed removing from pasted content in this project;
+  applied without re-asking, per the established rule (`e695ad7` and three
+  corrections since). EN/FR versions carry a genuine ~300-word summary (not a
+  literal translation), no em dashes, written for this specific content.
+- **Kontakt form consent checkbox**: added a required checkbox above the submit
+  button, linked to `/[locale]/datenschutz`. Note: the form has `noValidate` on
+  its `<form>` tag, so native HTML `required` enforcement doesn't apply here —
+  added real state (`consent`) and disabled the submit button (`disabled={... ||
+  !consent}`) so the form genuinely cannot be submitted without checking the box.
+  Verified in-browser: button is visibly disabled until checked, enables on check.
+- **UroLift wording**: the "ohne Operation" ("without surgery") phrase the
+  request pointed at `leistungen/urolift/page.tsx` wasn't actually there — that
+  page already says "ohne Gewebsentfernung" — it was in `Services.tsx`'s homepage
+  card description (DE/EN/FR). Fixed there instead: "minimalinvasiv — ohne
+  Gewebeentfernung" / "minimally invasive — without tissue removal" / "peu
+  invasif — sans ablation de tissu".
+- **Footer compliance notice**: added the cookie/tracking line above the
+  copyright row in all three languages. Impressum/Datenschutz links were already
+  correctly wired, no change needed there.
+- **Patientenportal disclosure**: replaced the bare "DSGVO-konform" claim with
+  "Verschlüsselte Übertragung · Datenschutz nach DSGVO" and added the EU/US
+  servers disclosure paragraph with a `/datenschutz` link, all three languages
+  (page had no locale-awareness before; added a small `t()` helper and
+  `useLocale()` scoped to just these new strings, not a full-page i18n retrofit).
+  Also added a Datenschutz link to Step 2 (OTP entry) for the "link on every
+  step" requirement — Step 3 (dashboard) doesn't need one added explicitly since
+  the site's global Footer (with its Datenschutz link) already renders below
+  every step via the standard page layout.
+- Verified via `npx tsc --noEmit` (clean) and a dev-server + browser walkthrough:
+  Datenschutz DE and EN, Impressum, Kontakt checkbox behavior (disabled → enabled
+  on check), Patientenportal Step 1 disclosure text.

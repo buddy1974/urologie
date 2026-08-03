@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import Link from "next/link";
 import { useLocale } from "next-intl";
 import {
   Phone,
@@ -52,6 +53,9 @@ type Content = {
   placeholderNachricht: string;
   requiredNote: string;
   privacyNote: string;
+  consentPrefix: string;
+  consentLinkLabel: string;
+  consentSuffix: string;
   sending: string;
   send: string;
   successTitle: string;
@@ -104,6 +108,9 @@ const content: Record<Locale, Content> = {
     requiredNote: "Mit * gekennzeichnete Felder sind Pflichtangaben",
     privacyNote:
       "Ihre Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet und nicht an Dritte weitergegeben.",
+    consentPrefix: "Ich habe die ",
+    consentLinkLabel: "Datenschutzerklärung",
+    consentSuffix: " gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu.",
     sending: "Wird gesendet…",
     send: "Nachricht abschicken",
     successTitle: "Nachricht gesendet!",
@@ -160,6 +167,9 @@ const content: Record<Locale, Content> = {
     requiredNote: "Fields marked with * are required",
     privacyNote:
       "Your data will only be used to process your request and will not be shared with third parties.",
+    consentPrefix: "I have read the ",
+    consentLinkLabel: "privacy policy",
+    consentSuffix: " and consent to my data being processed to handle my enquiry.",
     sending: "Sending…",
     send: "Send Message",
     successTitle: "Message sent!",
@@ -216,6 +226,9 @@ const content: Record<Locale, Content> = {
     requiredNote: "Les champs marqués d'un * sont obligatoires",
     privacyNote:
       "Vos données seront utilisées uniquement pour traiter votre demande et ne seront pas transmises à des tiers.",
+    consentPrefix: "J'ai lu la ",
+    consentLinkLabel: "politique de confidentialité",
+    consentSuffix: " et consens au traitement de mes données pour le traitement de ma demande.",
     sending: "Envoi en cours…",
     send: "Envoyer le message",
     successTitle: "Message envoyé !",
@@ -263,6 +276,7 @@ export default function KontaktPage() {
   const [form, setForm] = useState<FormState>(INITIAL);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [consent, setConsent] = useState(false);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -290,6 +304,7 @@ export default function KontaktPage() {
       }
       setStatus("success");
       setForm(INITIAL);
+      setConsent(false);
     } catch {
       setErrorMsg(c.errorNetwork);
       setStatus("error");
@@ -549,11 +564,30 @@ export default function KontaktPage() {
                   />
                 </div>
 
+                <label className="flex items-start gap-2.5 text-[14px] text-body-text">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={consent}
+                    onChange={(e) => setConsent(e.target.checked)}
+                    className="mt-0.5 accent-primary flex-shrink-0"
+                  />
+                  <span>
+                    {c.consentPrefix}
+                    <Link href={`/${locale}/datenschutz`} className="text-primary hover:text-primary-dark underline underline-offset-2">
+                      {c.consentLinkLabel}
+                    </Link>
+                    {c.consentSuffix}
+                    {" "}
+                    <span className="text-red-500">*</span>
+                  </span>
+                </label>
+
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
                   <p className="text-xs text-body-text/60 max-w-sm">
                     {c.requiredNote} — {c.privacyNote}
                   </p>
-                  <button type="submit" disabled={status === "sending"} className="btn-primary inline-flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed flex-shrink-0">
+                  <button type="submit" disabled={status === "sending" || !consent} className="btn-primary inline-flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed flex-shrink-0">
                     {status === "sending" ? (
                       <>
                         <span className="inline-block h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />

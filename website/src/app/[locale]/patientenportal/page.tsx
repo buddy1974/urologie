@@ -1,7 +1,15 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { useLocale } from "next-intl";
 import { Lock, AlertCircle, LogOut, Calendar, FlaskConical, User, ChevronLeft, Timer, MessageSquare } from "lucide-react";
+
+function t(locale: string, de: string, en: string, fr: string) {
+  if (locale === "en") return en;
+  if (locale === "fr") return fr;
+  return de;
+}
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "https://urologie-backend.onrender.com";
 
@@ -73,6 +81,7 @@ const apptStatusLabel: Record<string, string> = {
 };
 
 export default function PatientenportalPage() {
+  const locale = useLocale();
   const [step, setStep] = useState<Step>(1);
   const [activeTab, setActiveTab] = useState<DashTab>("befunde");
 
@@ -307,8 +316,26 @@ export default function PatientenportalPage() {
               </a>
             </p>
 
-            <p className="text-[12px] text-[#999] text-center mt-6">
-              Ihre Daten werden nicht gespeichert · DSGVO-konform
+            <p className="text-[12px] text-[#999] text-center mt-6 leading-relaxed">
+              {t(
+                locale,
+                "Ihre Daten werden verschlüsselt übertragen und auf Servern in der EU und den USA verarbeitet. Weitere Informationen finden Sie in unserer ",
+                "Your data is transmitted in encrypted form and processed on servers in the EU and the US. For more information, please see our ",
+                "Vos données sont transmises de manière chiffrée et traitées sur des serveurs dans l'UE et aux États-Unis. Pour plus d'informations, consultez notre "
+              )}
+              <Link href={`/${locale}/datenschutz`} className="text-primary hover:text-primary-dark transition-colors underline underline-offset-2">
+                {t(locale, "Datenschutzerklärung", "privacy policy", "politique de confidentialité")}
+              </Link>
+              .
+            </p>
+
+            <p className="text-[12px] text-[#999] text-center mt-2">
+              {t(
+                locale,
+                "Verschlüsselte Übertragung · Datenschutz nach DSGVO",
+                "Encrypted transmission · Privacy under GDPR",
+                "Transmission chiffrée · Confidentialité selon le RGPD"
+              )}
             </p>
           </div>
         </div>
@@ -387,6 +414,12 @@ export default function PatientenportalPage() {
                 <ChevronLeft size={14} />
                 Keinen Code erhalten? Zurück
               </button>
+            </p>
+
+            <p className="text-[12px] text-[#999] text-center mt-6">
+              <Link href={`/${locale}/datenschutz`} className="text-primary hover:text-primary-dark transition-colors underline underline-offset-2">
+                {t(locale, "Datenschutzerklärung", "Privacy Policy", "Politique de confidentialité")}
+              </Link>
             </p>
           </div>
         </div>
