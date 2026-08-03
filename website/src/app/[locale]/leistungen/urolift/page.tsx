@@ -162,16 +162,15 @@ export default async function UroliftPage() {
         </div>
         <p className="text-body-text/70 text-sm text-center mb-16">{c.beforeAfterCaption}</p>
 
-        <div className="trenner" />
-
-        <div className="text-center">
-          <h3 className="mb-3">{c.ctaTitle}</h3>
-          <p className="text-body-text leading-[1.6] max-w-xl mx-auto mb-6">{c.ctaText}</p>
-          <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" className="btn-doctolib">
-            {c.bookLabel}
-          </a>
-        </div>
       </div>
+
+      <section className="bg-[#f0f7f9] py-[60px] px-5 text-center">
+        <h3 className="mb-3">{c.ctaTitle}</h3>
+        <p className="text-body-text leading-[1.6] max-w-xl mx-auto mb-6">{c.ctaText}</p>
+        <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" className="btn-doctolib">
+          {c.bookLabel}
+        </a>
+      </section>
     </div>
   );
 }

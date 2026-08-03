@@ -207,23 +207,22 @@ export default async function KinderurologiePage() {
           </div>
         </div>
 
-        <div className="trenner" />
-
-        {/* CTA */}
-        <div className="text-center">
-          <h3 className="mb-3">{c.ctaTitle}</h3>
-          <p className="text-body-text leading-[1.6] mb-8 max-w-xl mx-auto">{c.ctaText}</p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" className="btn-doctolib inline-flex items-center gap-2">
-              {c.ctaBook}
-              <ArrowRight size={14} />
-            </a>
-            <a href="tel:+49263123351" className="btn-primary inline-flex items-center gap-2">
-              {c.ctaPhone}
-            </a>
-          </div>
-        </div>
       </div>
+
+      {/* CTA */}
+      <section className="bg-[#f0f7f9] py-[60px] px-5 text-center">
+        <h3 className="mb-3">{c.ctaTitle}</h3>
+        <p className="text-body-text leading-[1.6] mb-8 max-w-xl mx-auto">{c.ctaText}</p>
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" className="btn-doctolib inline-flex items-center gap-2">
+            {c.ctaBook}
+            <ArrowRight size={14} />
+          </a>
+          <a href="tel:+49263123351" className="btn-primary inline-flex items-center gap-2">
+            {c.ctaPhone}
+          </a>
+        </div>
+      </section>
     </div>
   );
 }

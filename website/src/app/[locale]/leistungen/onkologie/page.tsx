@@ -8,11 +8,15 @@ export const metadata: Metadata = {
   description: "Onkologische Betreuung und Nachsorge bei urologischen Tumoren in Neuwied.",
 };
 
+const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
+
 const content = {
   de: {
     label: "Leistungen",
     title: "Onkologie",
     subtitle: "Onkologisch qualifizierte Betreuung und Nachsorge.",
+    ctaHeading: "Termin vereinbaren",
+    ctaButton: "Termin via Doctolib",
     tumorsHeading: "Tumore & Nachsorge",
     tumors: [
       "Nierenzellkarzinom (Nierenkrebs)",
@@ -30,6 +34,8 @@ const content = {
     label: "Services",
     title: "Oncology",
     subtitle: "Oncology-qualified care and follow-up.",
+    ctaHeading: "Book Appointment",
+    ctaButton: "Book via Doctolib",
     tumorsHeading: "Tumors & Follow-up Care",
     tumors: [
       "Renal cell carcinoma (kidney cancer)",
@@ -47,6 +53,8 @@ const content = {
     label: "Prestations",
     title: "Oncologie",
     subtitle: "Prise en charge et suivi oncologiques qualifiés.",
+    ctaHeading: "Prendre rendez-vous",
+    ctaButton: "Rendez-vous via Doctolib",
     tumorsHeading: "Tumeurs & Suivi",
     tumors: [
       "Carcinome à cellules rénales (cancer du rein)",
@@ -105,6 +113,13 @@ export default async function OnkologiePage() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="bg-[#f0f7f9] py-[60px] px-5 text-center">
+        <p className="text-body-text text-[20px] font-bold mb-6">{t.ctaHeading}</p>
+        <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" className="btn-doctolib">
+          {t.ctaButton}
+        </a>
       </section>
     </div>
   );

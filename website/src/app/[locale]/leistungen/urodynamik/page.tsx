@@ -9,11 +9,15 @@ export const metadata: Metadata = {
 
 type Locale = "de" | "en" | "fr";
 
+const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
+
 const content = {
   de: {
     label: "Leistungen",
     title: "Urodynamik & Ästhetische Medizin",
     intro: "Blasendiagnostik und ästhetische Behandlungen aus einer Hand.",
+    ctaHeading: "Termin vereinbaren",
+    ctaButton: "Termin via Doctolib",
     urodynamikTitle: "Urodynamik",
     urodynamikText:
       "Die Urodynamik (Blasendruckmessung) ist die präziseste Methode zur Diagnose von Harninkontinenz und Blasenentleerungsstörungen.",
@@ -37,6 +41,8 @@ const content = {
     label: "Services",
     title: "Urodynamics & Aesthetic Medicine",
     intro: "Bladder diagnostics and aesthetic treatments from a single source.",
+    ctaHeading: "Book Appointment",
+    ctaButton: "Book via Doctolib",
     urodynamikTitle: "Urodynamics",
     urodynamikText:
       "Urodynamics (bladder pressure measurement) is the most precise method for diagnosing urinary incontinence and bladder-emptying disorders.",
@@ -60,6 +66,8 @@ const content = {
     label: "Prestations",
     title: "Urodynamique & Médecine Esthétique",
     intro: "Diagnostic vésical et traitements esthétiques réunis.",
+    ctaHeading: "Prendre rendez-vous",
+    ctaButton: "Rendez-vous via Doctolib",
     urodynamikTitle: "Urodynamique",
     urodynamikText:
       "L'urodynamique (mesure de la pression vésicale) est la méthode la plus précise pour diagnostiquer l'incontinence urinaire et les troubles de la vidange vésicale.",
@@ -139,6 +147,13 @@ export default async function UrodynamikPage() {
           </div>
         </div>
       </div>
+
+      <section className="bg-[#f0f7f9] py-[60px] px-5 text-center">
+        <p className="text-body-text text-[20px] font-bold mb-6">{t.ctaHeading}</p>
+        <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" className="btn-doctolib">
+          {t.ctaButton}
+        </a>
+      </section>
     </div>
   );
 }

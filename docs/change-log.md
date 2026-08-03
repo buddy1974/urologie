@@ -105,3 +105,49 @@ from `next-intl/server`) extracted from the static replica's DE/EN/FR HTML sourc
 - Verified via `npx tsc --noEmit` (clean) and a dev-server smoke test: all 14 routes
   return HTTP 200 in `de`/`en`/`fr`, and every `/assets/...` path referenced by the
   new pages was confirmed to exist on disk.
+
+## 2026-08-03 — Post-Phase-3 visual fix batch (website/ only, done by the coordinating session directly, not delegated to forks)
+
+Six fixes requested from a visual audit of the live deployment: Navbar redesign +
+PraxisOS link, Hero landmark/doctor floating cards, bigger CTA buttons, images on
+inner pages, and a standardized Doctolib CTA section on every Leistungen page.
+
+- **Navbar** (`Navbar.tsx`): added a `PraxisOS` link (→ the dashboard, `target=_blank`)
+  between the language switcher and the Doctolib button, desktop and mobile. Bottom
+  border, 3px primary-colored left accent on the logo, `gap-8` nav spacing, filled
+  `bg-primary` button style for "Patientenportal"/"Espace Patient" (was a plain text
+  link — genuinely too subtle before), larger Doctolib button, `0_2px_12px` scroll
+  shadow, bordered/shadowed dropdown with `#f0f7f9` hover.
+- **Hero** (`Hero.tsx`): bigger Doctolib and Patientenportal CTA buttons (18px text,
+  16px/36px padding, doctolib-blue glow shadow + `scale-1.03` hover). Added two
+  floating photo cards. **Correction to an earlier claim in this same conversation:**
+  I initially said no Neuwied landmark photo existed anywhere in the assets — that
+  was wrong. `/assets/header_01.jpg` (already in use, just under a generic filename
+  I hadn't visually checked) is the exact "man in a hat" statue + Rhine bridge photo
+  described in the request. Added it as the bottom-left floating card ("Neuwied am
+  Rhein"). The Dr. Fomuki card went top-right instead of bottom-right as originally
+  spec'd — bottom-right is permanently occupied by the site's fixed chat widget
+  (`ChatWidget.tsx`, `fixed bottom-6 right-6`), so bottom-right would have
+  guaranteed a visual collision on every page load.
+- **Homepage** (`page.tsx`): added a 3-image full-width photo strip between Hero and
+  Services (`leistungen_001.jpg`, `header_praxis_01.jpg`, `gruppenbild_2023.jpg`) —
+  swapped out `header_01.jpg` from this slot once it became the Hero's landmark card,
+  to avoid showing the same photo twice in a row.
+- **Leistungen pages** (all 9): standardized a `bg-[#f0f7f9]` Doctolib CTA section
+  at the bottom of every page — added it fresh to `onkologie`, `andrologie`,
+  `magnetstimulation`, `urodynamik` (none had one); upgraded the existing bare CTA
+  button on `diagnostik`, `urolift`, `ambulante-op`, `individuelle-leistungen`,
+  `kinderurologie` into the same bg + heading pattern. Found and fixed a real
+  localization bug along the way: `ambulante-op`'s Doctolib button label was
+  hardcoded German text regardless of locale — now uses the page's own `content`
+  object like every other page.
+- **Not done, and why:** `praxis`, `dr-walters`, `team`, `diagnostik`, and
+  `magnetstimulation` already had real images from Phase 3 (confirmed by reading
+  each file before touching anything) — the request's "add images" fixes for those
+  pages were already satisfied, so nothing was duplicated or changed there beyond
+  the CTA-section work above.
+- This batch was done directly by the coordinating session — not delegated to
+  parallel forks — specifically because of the unauthorized-git-push incident
+  recorded in the Phase 3 entry above and in `docs/known-risks.md`. Verified with
+  `npx tsc --noEmit` (clean) and a dev-server + browser visual check of the
+  homepage, Hero cards, and one Leistungen page's CTA section before committing.

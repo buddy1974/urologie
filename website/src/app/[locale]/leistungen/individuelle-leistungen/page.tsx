@@ -29,6 +29,7 @@ const content = {
     disclaimer:
       "IGeL-Leistungen sind freiwillig. Sie können jede Leistung ablehnen, ohne Nachteile für Ihre weitere Behandlung befürchten zu müssen. Bei Interesse sprechen Sie uns an — wir beraten Sie gerne. Die Abrechnung erfolgt gemäß GOÄ (Gebührenordnung für Ärzte); vor jeder Leistungserbringung erhalten Sie eine schriftliche Vereinbarung.",
     cta: "Termin via Doctolib",
+    ctaHeading: "Termin vereinbaren",
   },
   en: {
     label: "Services",
@@ -48,6 +49,7 @@ const content = {
     disclaimer:
       "IGeL services are voluntary. You may decline any service without any disadvantage to your further treatment. If you're interested, just ask us — we're happy to advise. Billing follows the GOÄ (German medical fee schedule); you'll receive a written agreement before any service is provided.",
     cta: "Book via Doctolib",
+    ctaHeading: "Book Appointment",
   },
   fr: {
     label: "Prestations",
@@ -67,6 +69,7 @@ const content = {
     disclaimer:
       "Les prestations IGeL sont facultatives. Vous pouvez refuser toute prestation sans aucun désavantage pour la suite de votre traitement. Si vous êtes intéressé, parlez-en avec nous — nous vous conseillons volontiers. La facturation se fait selon la GOÄ (barème allemand des honoraires médicaux) ; vous recevrez un accord écrit avant toute prestation.",
     cta: "RDV via Doctolib",
+    ctaHeading: "Prendre rendez-vous",
   },
 } as const satisfies Record<Locale, unknown>;
 
@@ -117,17 +120,19 @@ export default async function IndividuelleLeistungenPage() {
           <p className="text-body-text leading-[1.6]">{t.disclaimer}</p>
         </div>
 
-        <div className="text-center mt-10">
-          <a
-            href="https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-doctolib"
-          >
-            {t.cta}
-          </a>
-        </div>
       </div>
+
+      <section className="bg-[#f0f7f9] py-[60px] px-5 text-center">
+        <p className="text-body-text text-[20px] font-bold mb-6">{t.ctaHeading}</p>
+        <a
+          href="https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-doctolib"
+        >
+          {t.cta}
+        </a>
+      </section>
     </div>
   );
 }

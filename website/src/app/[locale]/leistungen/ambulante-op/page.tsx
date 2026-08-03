@@ -23,6 +23,8 @@ const content = {
     intro:
       "Ambulantes Operieren (einschl. Narkoseeingriffe) — viele urologische Eingriffe führen wir direkt in unserer Praxis durch.",
     heading: "Unsere ambulanten Eingriffe",
+    ctaHeading: "Termin vereinbaren",
+    cta: "Termin via Doctolib",
     membershipNote:
       "Wir sind Mitglied im Netzwerk Vasektomie-Experten: ",
     procedures: [
@@ -78,6 +80,8 @@ const content = {
     intro:
       "Outpatient surgery (including procedures under anaesthesia) — many urological procedures are carried out directly at our practice.",
     heading: "Our outpatient procedures",
+    ctaHeading: "Book Appointment",
+    cta: "Book via Doctolib",
     membershipNote: "We are a member of the Vasectomy Experts network: ",
     procedures: [
       {
@@ -132,6 +136,8 @@ const content = {
     intro:
       "Chirurgie ambulatoire (y compris les interventions sous anesthésie) — de nombreuses interventions urologiques sont réalisées directement dans notre cabinet.",
     heading: "Nos interventions ambulatoires",
+    ctaHeading: "Prendre rendez-vous",
+    cta: "Rendez-vous via Doctolib",
     membershipNote: "Nous sommes membres du réseau Vasektomie-Experten : ",
     procedures: [
       {
@@ -233,17 +239,19 @@ export default async function AmbulanteOpPage() {
           </a>
         </p>
 
-        <div className="flex justify-center mt-8">
-          <a
-            href="https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-doctolib"
-          >
-            Termin via Doctolib
-          </a>
-        </div>
       </div>
+
+      <section className="bg-[#f0f7f9] py-[60px] px-5 text-center">
+        <p className="text-body-text text-[20px] font-bold mb-6">{t.ctaHeading}</p>
+        <a
+          href="https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-doctolib"
+        >
+          {t.cta}
+        </a>
+      </section>
     </div>
   );
 }

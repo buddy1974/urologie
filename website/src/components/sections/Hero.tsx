@@ -104,19 +104,45 @@ export default function Hero({ locale }: { locale?: string }) {
             href={DOCTOLIB_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-doctolib-blue text-white font-bold px-7 py-3 rounded transition-colors hover:bg-[#0d6ab8]"
+            className="inline-flex items-center gap-2 bg-doctolib-blue text-white font-bold text-[18px] px-9 py-4 rounded-md shadow-[0_4px_16px_rgba(16,122,202,0.4)] transition-all duration-200 hover:bg-[#0d6ab8] hover:scale-[1.03] hover:shadow-[0_6px_20px_rgba(16,122,202,0.5)]"
           >
             <Image src="/assets/doctolib-white-transparent.png" alt="" width={20} height={20} className="h-4 w-auto" />
             {t(locale, "Termin via Doctolib", "Book via Doctolib", "RDV via Doctolib")}
           </a>
           <a
             href={`/${locale ?? "de"}/patientenportal`}
-            className="inline-flex items-center gap-2 bg-transparent border-2 border-primary text-primary font-bold px-7 py-3 rounded transition-colors hover:bg-primary hover:text-white"
+            className="inline-flex items-center gap-2 bg-transparent border-2 border-primary text-primary font-bold text-[18px] px-9 py-4 rounded-md transition-colors hover:bg-primary hover:text-white"
           >
             {t(locale, "Patientenportal", "Patient Portal", "Espace Patient")}
           </a>
         </motion.div>
       </div>
+
+      {/* Neuwied landmark floating card — bottom-left */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7, duration: 0.5 }}
+        className="hidden md:block absolute bottom-10 left-10 z-10 w-[200px]"
+      >
+        <div className="rounded-xl overflow-hidden border-[3px] border-white shadow-[0_8px_24px_rgba(0,0,0,0.25)] relative aspect-[4/3]">
+          <Image src="/assets/header_01.jpg" alt="Neuwied am Rhein" fill className="object-cover" />
+        </div>
+        <p className="text-primary text-[13px] font-bold text-center mt-2">Neuwied am Rhein</p>
+      </motion.div>
+
+      {/* Dr. Fomuki floating card — top-right, clear of the fixed navbar and the fixed chat widget */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8, duration: 0.5 }}
+        className="hidden md:block absolute top-32 right-10 z-10 w-40"
+      >
+        <div className="rounded-xl overflow-hidden border-[3px] border-white shadow-[0_8px_24px_rgba(0,0,0,0.25)] relative aspect-[4/5]">
+          <Image src="/assets/walters_fomuki_2023.jpg" alt="Walters T. Fomuki" fill className="object-cover" />
+        </div>
+        <p className="text-primary text-[13px] font-bold text-center mt-2">Walters T. Fomuki</p>
+      </motion.div>
 
       <motion.div
         initial={{ opacity: 0 }}

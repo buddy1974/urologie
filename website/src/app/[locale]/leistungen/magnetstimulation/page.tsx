@@ -8,10 +8,14 @@ export const metadata: Metadata = {
     "Magnetstimulation der Beckenbodenmuskulatur bei Inkontinenz in Neuwied.",
 };
 
+const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
+
 const content = {
   de: {
     label: "Leistungen",
     title: "Magnetstimulation der Beckenbodenmuskulatur",
+    ctaHeading: "Termin vereinbaren",
+    ctaButton: "Termin via Doctolib",
     subheading: "Unsere Beckenbodenmuskulatur – oft unterschätzt und doch so wichtig",
     paragraphs: [
       "Ungewollter Urinabgang (eine sogenannte Inkontinenz, Blasenschwäche) bei Frauen und Männern kann als große Belastung wahrgenommen werden und im Alltag stark einschränken.",
@@ -30,6 +34,8 @@ const content = {
   en: {
     label: "Services",
     title: "Magnetic Stimulation of the Pelvic Floor Muscles",
+    ctaHeading: "Book Appointment",
+    ctaButton: "Book via Doctolib",
     subheading: "Our Pelvic Floor Muscles – often underestimated, yet so important",
     paragraphs: [
       "Involuntary loss of urine (so-called incontinence, bladder weakness) in women and men can be perceived as a great burden and can severely restrict everyday life.",
@@ -48,6 +54,8 @@ const content = {
   fr: {
     label: "Prestations",
     title: "Stimulation magnétique des muscles du plancher pelvien",
+    ctaHeading: "Prendre rendez-vous",
+    ctaButton: "Rendez-vous via Doctolib",
     subheading: "Nos muscles du plancher pelvien – souvent sous-estimés, mais pourtant si importants",
     paragraphs: [
       "Les pertes d'urine involontaires (appelées incontinence, faiblesse vésicale) chez les femmes et les hommes peuvent être perçues comme un lourd fardeau et fortement restreindre la vie quotidienne.",
@@ -120,6 +128,13 @@ export default async function MagnetstimulationPage() {
           </div>
         </div>
       </div>
+
+      <section className="bg-[#f0f7f9] py-[60px] px-5 text-center">
+        <p className="text-body-text text-[20px] font-bold mb-6">{c.ctaHeading}</p>
+        <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" className="btn-doctolib">
+          {c.ctaButton}
+        </a>
+      </section>
     </div>
   );
 }

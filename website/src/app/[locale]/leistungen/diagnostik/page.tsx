@@ -49,6 +49,7 @@ const content = {
       { name: "Ultraschall-System", desc: "Hochauflösende Ultraschalldiagnostik — Niere, Blase, Prostata und Hoden, mehrere Schallköpfe für präzise Bildgebung bei Tumoren, Steinen und Vergrößerungen" },
     ],
     cta: "Termin via Doctolib",
+    ctaHeading: "Termin vereinbaren",
     phoneNote: "Für eine Überweisung oder einen Termin erreichen Sie uns unter 02631 - 23351 oder buchen Sie online über Doctolib.",
   },
   en: {
@@ -86,6 +87,7 @@ const content = {
       { name: "Ultrasound System", desc: "High-resolution ultrasound diagnostics — kidney, bladder, prostate and testicles, multiple transducers for precise imaging of tumors, stones and enlargements" },
     ],
     cta: "Book via Doctolib",
+    ctaHeading: "Book Appointment",
     phoneNote: "For a referral or appointment, reach us at 02631 - 23351 or book online via Doctolib.",
   },
   fr: {
@@ -123,6 +125,7 @@ const content = {
       { name: "Système d'échographie", desc: "Diagnostic échographique haute résolution — rein, vessie, prostate et testicules, plusieurs sondes pour une imagerie précise des tumeurs, calculs et hypertrophies" },
     ],
     cta: "Rendez-vous via Doctolib",
+    ctaHeading: "Prendre rendez-vous",
     phoneNote: "Pour une orientation ou un rendez-vous, contactez-nous au 02631 - 23351 ou réservez en ligne via Doctolib.",
   },
 } satisfies Record<Locale, unknown>;
@@ -199,12 +202,14 @@ export default async function DiagnostikPage() {
           </div>
         </div>
 
-        <div className="text-center mt-12">
-          <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" className="btn-doctolib">
-            {t.cta}
-          </a>
-        </div>
       </div>
+
+      <section className="bg-[#f0f7f9] py-[60px] px-5 text-center">
+        <p className="text-body-text text-[20px] font-bold mb-6">{t.ctaHeading}</p>
+        <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" className="btn-doctolib">
+          {t.cta}
+        </a>
+      </section>
     </div>
   );
 }

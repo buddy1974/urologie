@@ -8,11 +8,15 @@ export const metadata: Metadata = {
   description: "Männergesundheit in Neuwied — Vasektomie, Erektionsstörungen, Testosteronmangel, Kinderwunsch.",
 };
 
+const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
+
 const content = {
   de: {
     label: "Leistungen",
     title: "Andrologie",
     subheading: "Männergesundheit & Vasektomie — kompetent und diskret",
+    ctaHeading: "Termin vereinbaren",
+    ctaButton: "Termin via Doctolib",
     servicesTitle: "Unsere andrologischen Leistungen",
     services: [
       "Männliche Sterilisation — Vasektomie (konservativ und non-skalpell)",
@@ -37,6 +41,8 @@ const content = {
     label: "Services",
     title: "Andrology",
     subheading: "Men's health & vasectomy — competent and discreet",
+    ctaHeading: "Book Appointment",
+    ctaButton: "Book via Doctolib",
     servicesTitle: "Our andrological services",
     services: [
       "Male sterilization — vasectomy (conventional and no-scalpel)",
@@ -61,6 +67,8 @@ const content = {
     label: "Prestations",
     title: "Andrologie",
     subheading: "Santé masculine & vasectomie — compétence et discrétion",
+    ctaHeading: "Prendre rendez-vous",
+    ctaButton: "Rendez-vous via Doctolib",
     servicesTitle: "Nos prestations andrologiques",
     services: [
       "Stérilisation masculine — vasectomie (conventionnelle et sans scalpel)",
@@ -144,6 +152,13 @@ export default async function AndrologiePage() {
           </div>
         </div>
       </div>
+
+      <section className="bg-[#f0f7f9] py-[60px] px-5 text-center">
+        <p className="text-body-text text-[20px] font-bold mb-6">{t.ctaHeading}</p>
+        <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" className="btn-doctolib">
+          {t.ctaButton}
+        </a>
+      </section>
     </div>
   );
 }

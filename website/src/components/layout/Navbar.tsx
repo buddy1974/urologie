@@ -9,6 +9,7 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
+const PRAXISOS_URL = "https://urologie-dashboard-one.vercel.app";
 
 const languages = [
   { code: "de", label: "Deutsch" },
@@ -61,20 +62,20 @@ export default function Navbar() {
 
   const linkClass = (active: boolean) =>
     cn(
-      "text-[16px] font-bold text-body-text border-b-2 border-transparent transition-colors duration-[250ms] hover:text-primary hover:border-primary py-1",
+      "text-[16px] font-bold text-body-text border-b-2 border-transparent transition-colors duration-200 hover:text-primary hover:border-primary py-1",
       active && "text-primary border-primary"
     );
 
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-[100] bg-[rgba(255,255,255,0.9)] h-[60px] md:h-[102px] transition-shadow duration-300",
-        scrolled && "shadow-[0_2px_8px_rgba(0,0,0,0.1)]"
+        "fixed top-0 left-0 right-0 z-[100] bg-[rgba(255,255,255,0.9)] h-[60px] md:h-[102px] border-b border-[rgba(45,90,113,0.15)] transition-shadow duration-300",
+        scrolled && "shadow-[0_2px_12px_rgba(0,0,0,0.1)]"
       )}
     >
       <div className="container h-full flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link href={`/${locale}`} className="flex items-center flex-shrink-0">
+        <Link href={`/${locale}`} className="flex items-center flex-shrink-0 border-l-[3px] border-primary pl-3">
           <Image
             src="/assets/logo.png"
             alt="Urologie Neuwied"
@@ -86,7 +87,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-6">
+        <nav className="hidden lg:flex items-center gap-8">
           {navLinks.slice(0, 3).map((link) => (
             <Link key={link.key} href={`/${locale}${link.href}`} className={linkClass(isActive(link.href))}>
               {t(link.key)}
@@ -99,12 +100,12 @@ export default function Navbar() {
               <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
             </button>
             <div className="absolute top-full left-0 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-              <div className="min-w-[200px] bg-white rounded-md shadow-[0_8px_24px_rgba(0,0,0,0.15)] py-2">
+              <div className="min-w-[200px] bg-white border border-[#e5e5e5] rounded-md shadow-[0_4px_16px_rgba(0,0,0,0.1)] py-2">
                 {leistungenLinks.map((item) => (
                   <Link
                     key={item.key}
                     href={`/${locale}${item.href}`}
-                    className="flex items-center h-10 px-4 text-[15px] text-body-text hover:bg-muted hover:text-primary transition-colors"
+                    className="flex items-center py-3 px-5 text-[15px] text-body-text hover:bg-[#f0f7f9] hover:text-primary transition-colors"
                   >
                     {tLeistungen(item.key)}
                   </Link>
@@ -121,7 +122,7 @@ export default function Navbar() {
 
           <Link
             href={`/${locale}/patientenportal`}
-            className="text-[16px] font-bold text-primary hover:text-primary-dark transition-colors duration-[250ms]"
+            className="text-[14px] font-bold text-white bg-primary hover:bg-primary-dark transition-colors duration-200 px-[14px] py-[6px] rounded"
           >
             {t("portal")}
           </Link>
@@ -143,14 +144,24 @@ export default function Navbar() {
             ))}
           </div>
 
+          {/* PraxisOS */}
+          <a
+            href={PRAXISOS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[13px] font-bold text-primary-dark hover:text-primary transition-colors duration-200"
+          >
+            PraxisOS
+          </a>
+
           {/* Doctolib CTA */}
           <a
             href={DOCTOLIB_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center bg-doctolib-blue hover:bg-[#0d6ab8] px-4 py-2 rounded transition-colors"
+            className="inline-flex items-center bg-doctolib-blue hover:bg-[#0d6ab8] px-[22px] py-[10px] rounded transition-colors"
           >
-            <Image src="/assets/doctolib-white-transparent.png" alt="Doctolib" width={90} height={20} className="h-5 w-auto" />
+            <Image src="/assets/doctolib-white-transparent.png" alt="Doctolib" width={100} height={22} className="h-[22px] w-auto" />
           </a>
         </nav>
 
@@ -195,7 +206,10 @@ export default function Navbar() {
               </Link>
             ))}
 
-            <Link href={`/${locale}/patientenportal`} className="py-2.5 text-[16px] font-bold text-primary">
+            <Link
+              href={`/${locale}/patientenportal`}
+              className="inline-block w-fit mt-1 text-[14px] font-bold text-white bg-primary px-[14px] py-[6px] rounded"
+            >
               {t("portal")}
             </Link>
 
@@ -222,6 +236,15 @@ export default function Navbar() {
               className="inline-flex items-center justify-center bg-doctolib-blue px-4 py-3 rounded mt-1"
             >
               <Image src="/assets/doctolib-white-transparent.png" alt="Doctolib" width={100} height={22} className="h-[22px] w-auto" />
+            </a>
+
+            <a
+              href={PRAXISOS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[13px] font-bold text-primary-dark text-center mt-2 py-2"
+            >
+              PraxisOS
             </a>
           </div>
         </div>
