@@ -151,3 +151,49 @@ inner pages, and a standardized Doctolib CTA section on every Leistungen page.
   recorded in the Phase 3 entry above and in `docs/known-risks.md`. Verified with
   `npx tsc --noEmit` (clean) and a dev-server + browser visual check of the
   homepage, Hero cards, and one Leistungen page's CTA section before committing.
+
+## 2026-08-03 — Homepage redesign: 8-section layout, Navbar restructure (website/ only, done directly, no forks)
+
+Full homepage rebuild per an 8-section spec: video Hero (unchanged), Quick Action
+Strip, Welcome/Neuwied section, Services grid, Doctor Profile, FAQ + AI chatbot
+promo, Practice Photo Strip, Final CTA Strip. New components: `QuickActionStrip.tsx`,
+`WelcomeSection.tsx`, `DoctorProfile.tsx`, `FaqSection.tsx`, `PhotoStrip.tsx`,
+`FinalCtaStrip.tsx`. Rewrote `Hero.tsx` and `Services.tsx`; `page.tsx` now composes
+all 8 sections in order, passing `locale` from `getLocale()` to each.
+
+- **Dropped "Dr." from Hero copy** — the spec's subline text ("Dr. Walters T.
+  Fomuki — Ihr Facharzt...") would have reintroduced the title this repo has
+  explicitly removed three times now (`e695ad7`, Phase 2 Footer, the previous fix
+  batch's floating card). Used "Walters T. Fomuki" instead, no re-ask needed given
+  the established precedent.
+- **Welcome section body copy** extracted verbatim (German unchanged) from the
+  static replica's `index.html` — first two paragraphs after the hero, before the
+  services list. EN/FR are original English/French, not machine-literal
+  translations, per the "no em dashes, no AI phrases" instruction.
+- **Doctor Profile bio** reuses the exact `career`/`bio` paragraphs already
+  established on the `/dr-walters` page (Phase 3) rather than re-extracting —
+  keeps the two pages consistent.
+- **Services grid images**: each of the 6 cards reuses the same image already
+  established on that service's own detail page (diagnostik, onkologie, andrologie,
+  magnetstimulation, urodynamik), so the homepage and detail pages stay visually
+  consistent. `urolift` had no existing photo (its page uses procedure diagrams),
+  so `leistungen_003.jpg` was picked as a generic practice photo for that card only.
+- **FAQ → chat widget bridge**: `ChatWidget.tsx` got one small addition — a
+  `window.addEventListener("open-chat-widget", ...)` in a `useEffect` — so the
+  FAQ section's "KI-Assistent starten" button can open the existing widget without
+  a larger refactor (no shared state/context needed). Verified in-browser: clicking
+  the button opens the real chat panel.
+- **Navbar restructure**: simplified the top bar to Logo · Leistungen dropdown ·
+  Kontakt · language flags · PraxisOS (subtle) · Patientenportal button · Doctolib
+  button · "Alle Seiten" menu trigger. All other page links (Startseite, Unsere
+  Praxis, Walters T. Fomuki, Team, Links, Impressum, Datenschutz) moved into a new
+  full-screen white overlay menu, opened by the same trigger on desktop and by the
+  standard hamburger icon on mobile. Added the `nav.allPages` translation key to
+  all three message files. This is a significant reduction in top-bar link depth
+  from what Phase 2 built — implemented as explicitly specified, not asked about
+  again, since the request was unambiguous (unlike the earlier dropdown-mapping and
+  content-source bugs, which genuinely needed clarification).
+- Verified via `npx tsc --noEmit` (clean) and a full dev-server + browser
+  walkthrough: all 8 sections render with real content and images, the overlay
+  menu opens and lists every page correctly, and the FAQ chatbot button actually
+  opens `ChatWidget`.

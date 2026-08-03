@@ -38,6 +38,12 @@ export default function ChatWidget() {
   }, [open]);
 
   useEffect(() => {
+    const openWidget = () => setOpen(true);
+    window.addEventListener("open-chat-widget", openWidget);
+    return () => window.removeEventListener("open-chat-widget", openWidget);
+  }, []);
+
+  useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 

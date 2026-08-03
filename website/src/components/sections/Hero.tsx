@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Phone } from "lucide-react";
 
 const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
 
@@ -48,9 +48,14 @@ export default function Hero({ locale }: { locale?: string }) {
           initial="hidden"
           animate="visible"
           variants={fadeUp}
-          className="text-primary text-[14px] font-bold tracking-[3px] uppercase mb-4"
+          className="text-primary text-[13px] font-bold tracking-[3px] uppercase mb-4"
         >
-          {t(locale, "Facharztpraxis für Urologie · Neuwied", "Specialist Urology Practice · Neuwied", "Cabinet d'Urologie Spécialisé · Neuwied")}
+          {t(
+            locale,
+            "Facharztpraxis für Urologie · Neuwied am Rhein",
+            "Specialist Urology Practice · Neuwied am Rhein",
+            "Cabinet d'Urologie Spécialisé · Neuwied am Rhein"
+          )}
         </motion.span>
 
         <motion.h1
@@ -58,7 +63,7 @@ export default function Hero({ locale }: { locale?: string }) {
           initial="hidden"
           animate="visible"
           variants={fadeUp}
-          className="text-white text-[32px] md:text-[48px] font-bold leading-tight mb-4"
+          className="text-white text-[clamp(36px,5vw,56px)] font-bold leading-tight mb-4"
         >
           {t(locale, "Willkommen bei Urologie Neuwied", "Welcome to Urologie Neuwied", "Bienvenue à Urologie Neuwied")}
         </motion.h1>
@@ -68,33 +73,18 @@ export default function Hero({ locale }: { locale?: string }) {
           initial="hidden"
           animate="visible"
           variants={fadeUp}
-          className="text-primary text-[16px] font-bold uppercase mb-4"
+          className="text-white/80 text-[18px] mb-10"
         >
           {t(
             locale,
-            "Urologe Walters T. Fomuki – Vasektomie-Experte in Neuwied",
-            "Urologist Walters T. Fomuki – Vasectomy Expert in Neuwied",
-            "Urologue Walters T. Fomuki – Expert en Vasectomie à Neuwied"
-          )}
-        </motion.p>
-
-        <motion.p
-          custom={3}
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-          className="text-white/85 text-[18px] mb-8"
-        >
-          {t(
-            locale,
-            "Moderne Medizin mit persönlicher Betreuung seit über 15 Jahren.",
-            "Modern medicine with personal care for over 15 years.",
-            "Une médecine moderne avec un suivi personnalisé depuis plus de 15 ans."
+            "Walters T. Fomuki — Ihr Facharzt für Urologie in Neuwied",
+            "Walters T. Fomuki — Your specialist urologist in Neuwied",
+            "Walters T. Fomuki — Votre urologue spécialiste à Neuwied"
           )}
         </motion.p>
 
         <motion.div
-          custom={4}
+          custom={3}
           initial="hidden"
           animate="visible"
           variants={fadeUp}
@@ -104,14 +94,21 @@ export default function Hero({ locale }: { locale?: string }) {
             href={DOCTOLIB_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-doctolib-blue text-white font-bold text-[18px] px-9 py-4 rounded-md shadow-[0_4px_16px_rgba(16,122,202,0.4)] transition-all duration-200 hover:bg-[#0d6ab8] hover:scale-[1.03] hover:shadow-[0_6px_20px_rgba(16,122,202,0.5)]"
+            className="inline-flex items-center gap-2 bg-doctolib-blue text-white font-bold text-[17px] px-8 py-4 rounded-md shadow-[0_4px_16px_rgba(16,122,202,0.5)] transition-all duration-200 hover:bg-[#0d6ab8] hover:scale-[1.03]"
           >
             <Image src="/assets/doctolib-white-transparent.png" alt="" width={20} height={20} className="h-4 w-auto" />
-            {t(locale, "Termin via Doctolib", "Book via Doctolib", "RDV via Doctolib")}
+            {t(locale, "Termin buchen", "Book Appointment", "Prendre rendez-vous")}
+          </a>
+          <a
+            href="tel:+49263123351"
+            className="inline-flex items-center gap-2 bg-primary text-white font-bold text-[17px] px-8 py-4 rounded-md transition-all duration-200 hover:bg-primary-dark hover:scale-[1.03]"
+          >
+            <Phone size={17} />
+            {t(locale, "Jetzt anrufen", "Call Now", "Appeler")}
           </a>
           <a
             href={`/${locale ?? "de"}/patientenportal`}
-            className="inline-flex items-center gap-2 bg-transparent border-2 border-primary text-primary font-bold text-[18px] px-9 py-4 rounded-md transition-colors hover:bg-primary hover:text-white"
+            className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white font-bold text-[17px] px-8 py-4 rounded-md transition-colors hover:bg-white hover:text-primary-dark"
           >
             {t(locale, "Patientenportal", "Patient Portal", "Espace Patient")}
           </a>
@@ -131,7 +128,7 @@ export default function Hero({ locale }: { locale?: string }) {
         <p className="text-primary text-[13px] font-bold text-center mt-2">Neuwied am Rhein</p>
       </motion.div>
 
-      {/* Dr. Fomuki floating card — top-right, clear of the fixed navbar and the fixed chat widget */}
+      {/* Dr. Fomuki floating card — top-right; bottom-right is reserved for the fixed chat widget */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}

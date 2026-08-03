@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { getLocale } from "next-intl/server";
 import Hero from "@/components/sections/Hero";
+import QuickActionStrip from "@/components/sections/QuickActionStrip";
+import WelcomeSection from "@/components/sections/WelcomeSection";
 import Services from "@/components/sections/Services";
+import DoctorProfile from "@/components/sections/DoctorProfile";
+import FaqSection from "@/components/sections/FaqSection";
+import PhotoStrip from "@/components/sections/PhotoStrip";
+import FinalCtaStrip from "@/components/sections/FinalCtaStrip";
 import LandingPage from "@/components/landing/LandingPage";
 import { isLandingMode } from "@/lib/site-mode";
-
-const stripImages = ["/assets/leistungen_001.jpg", "/assets/header_praxis_01.jpg", "/assets/gruppenbild_2023.jpg"];
 
 export async function generateMetadata(): Promise<Metadata> {
   if (!(await isLandingMode())) return {};
@@ -70,16 +73,13 @@ export default async function HomePage() {
   return (
     <div>
       <Hero locale={locale} />
-
-      <div className="flex gap-1 h-[300px]">
-        {stripImages.map((src) => (
-          <div key={src} className="relative flex-1">
-            <Image src={src} alt="" fill className="object-cover" />
-          </div>
-        ))}
-      </div>
-
-      <Services />
+      <QuickActionStrip locale={locale} />
+      <WelcomeSection locale={locale} />
+      <Services locale={locale} />
+      <DoctorProfile locale={locale} />
+      <FaqSection locale={locale} />
+      <PhotoStrip />
+      <FinalCtaStrip locale={locale} />
     </div>
   );
 }

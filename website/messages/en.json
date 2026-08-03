@@ -8,7 +8,8 @@
     "linksPage": "Links",
     "appointment": "Book Appointment",
     "contact": "Contact",
-    "portal": "Patient Portal"
+    "portal": "Patient Portal",
+    "allPages": "All Pages"
   },
   "leistungen": {
     "diagnostik": "Diagnostics",
