@@ -43,10 +43,10 @@ interface Appointment {
 }
 
 const labStatusColor: Record<string, string> = {
-  normal: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30",
-  high: "bg-orange-500/20 text-orange-300 border border-orange-500/30",
-  low: "bg-blue-400/20 text-blue-300 border border-blue-400/30",
-  critical: "bg-red-500/20 text-red-300 border border-red-500/30",
+  normal: "bg-[#f0fdf4] text-[#16a34a] border border-[#bbf7d0]",
+  high: "bg-[#fffbeb] text-[#d97706] border border-[#fde68a]",
+  low: "bg-[#eff6ff] text-[#2563eb] border border-[#bfdbfe]",
+  critical: "bg-[#fff1f2] text-[#dc2626] border border-[#fecaca]",
 };
 
 const labStatusLabel: Record<string, string> = {
@@ -57,11 +57,11 @@ const labStatusLabel: Record<string, string> = {
 };
 
 const apptStatusColor: Record<string, string> = {
-  scheduled: "bg-blue-500/20 text-blue-300 border border-blue-500/30",
-  confirmed: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30",
-  completed: "bg-white/10 text-muted-foreground border border-white/10",
-  cancelled: "bg-red-500/20 text-red-300 border border-red-500/30",
-  "no-show": "bg-orange-500/20 text-orange-300 border border-orange-500/30",
+  scheduled: "bg-[#eff6ff] text-[#2563eb] border border-[#bfdbfe]",
+  confirmed: "bg-[#f0fdf4] text-[#16a34a] border border-[#bbf7d0]",
+  completed: "bg-[#f9fafb] text-[#666] border border-[#e5e5e5]",
+  cancelled: "bg-[#fff1f2] text-[#dc2626] border border-[#fecaca]",
+  "no-show": "bg-[#fffbeb] text-[#d97706] border border-[#fde68a]",
 };
 
 const apptStatusLabel: Record<string, string> = {
@@ -228,27 +228,26 @@ export default function PatientenportalPage() {
     .filter((a) => a.date < today)
     .sort((a, b) => `${b.date}${b.time}`.localeCompare(`${a.date}${a.time}`));
 
-  const inputClass = "w-full px-4 py-3 glass rounded-xl text-foreground placeholder:text-muted-foreground bg-transparent outline-none focus:border-primary/50 transition-all text-sm";
-  const labelClass = "block text-sm font-medium text-muted-foreground mb-1.5";
+  const inputClass =
+    "w-full px-4 py-3 border border-[#e5e5e5] rounded-lg text-body-text placeholder:text-[#999] bg-white outline-none focus:border-primary focus:shadow-[0_0_0_3px_rgba(137,194,202,0.15)] transition-all text-[15px]";
+  const labelClass = "block text-[14px] font-bold text-body-text mb-1.5";
 
   // ── STEP 1 ──
   if (step === 1) {
     return (
-      <div className="min-h-screen bg-hero noise flex items-center justify-center px-4 py-20">
-        <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px]" />
-        <div className="pointer-events-none absolute bottom-0 right-0 h-96 w-96 rounded-full bg-accent/20 blur-[120px]" />
-        <div className="relative w-full max-w-md">
-          <div className="text-center mb-8">
-            <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-gradient shadow-glow mx-auto mb-4">
-              <Lock size={28} className="text-primary-foreground" />
-            </div>
-            <h1 className="font-display text-3xl text-foreground mb-1">Patientenportal</h1>
-            <p className="text-muted-foreground text-sm">Urologie Neuwied — sicherer Zugang</p>
+      <div className="min-h-screen bg-white">
+        <section className="bg-primary-dark flex items-center justify-center text-center px-4 h-[200px]">
+          <div>
+            <h1 className="text-white text-[36px] font-bold mb-2">Patientenportal</h1>
+            <p className="text-primary text-[16px] font-bold uppercase tracking-[2px]">Sicher. Persönlich. Jederzeit.</p>
           </div>
+        </section>
 
-          <div className="glass-strong rounded-3xl shadow-elegant p-8">
-            <h2 className="font-display text-xl text-foreground mb-1">Identitätsprüfung</h2>
-            <p className="text-muted-foreground text-sm mb-6">
+        <div className="flex items-start justify-center px-4">
+          <div className="w-full max-w-[480px] my-[60px] bg-white border border-[#e5e5e5] rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.06)] px-10 py-12">
+            <Lock size={40} className="text-primary mx-auto mb-4" />
+            <h2 className="text-primary-dark text-[22px] font-bold text-center mb-2">Identitätsprüfung</h2>
+            <p className="text-[#666] text-[14px] text-center mb-8">
               Geben Sie Ihre Daten ein. Ein Einmalcode wird an Ihr Telefon gesendet.
             </p>
 
@@ -287,26 +286,29 @@ export default function PatientenportalPage() {
               </div>
 
               {step1Error && (
-                <div className="flex items-start gap-2.5 glass rounded-xl p-3 border-red-500/30">
-                  <AlertCircle size={15} className="text-red-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-red-400 text-sm">{step1Error}</p>
+                <div className="flex items-start gap-2.5 bg-[#fff5f5] border border-[#fecaca] rounded-lg p-3">
+                  <AlertCircle size={15} className="text-[#dc2626] flex-shrink-0 mt-0.5" />
+                  <p className="text-[#dc2626] text-[14px]">{step1Error}</p>
                 </div>
               )}
 
               <button
                 type="submit"
                 disabled={step1Loading}
-                className="w-full py-3.5 rounded-full bg-primary-gradient text-primary-foreground font-semibold shadow-glow transition-transform hover:scale-[1.02] disabled:opacity-60 mt-2"
+                className="w-full py-3.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-bold text-[16px] border-none cursor-pointer transition-colors disabled:opacity-70 mt-2"
               >
-                {step1Loading ? "Wird geprüft…" : "Code anfordern"}
+                {step1Loading ? "Wird geprüft..." : "Code anfordern"}
               </button>
             </form>
 
-            <p className="text-xs text-muted-foreground text-center mt-6 leading-relaxed">
-              Probleme beim Zugang? Rufen Sie uns an:{" "}
-              <a href="tel:+492631233510" className="text-accent hover:text-foreground transition-colors underline underline-offset-2">
-                02631 - 23351
+            <p className="text-[13px] text-center mt-6">
+              <a href="tel:+492631233510" className="text-primary hover:text-primary-dark transition-colors">
+                Probleme beim Zugang?
               </a>
+            </p>
+
+            <p className="text-[12px] text-[#999] text-center mt-6">
+              Ihre Daten werden nicht gespeichert · DSGVO-konform
             </p>
           </div>
         </div>
@@ -317,32 +319,31 @@ export default function PatientenportalPage() {
   // ── STEP 2 ──
   if (step === 2) {
     return (
-      <div className="min-h-screen bg-hero noise flex items-center justify-center px-4 py-20">
-        <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px]" />
-        <div className="relative w-full max-w-md">
-          <div className="text-center mb-8">
-            <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-gradient shadow-glow mx-auto mb-4">
-              <Lock size={28} className="text-primary-foreground" />
-            </div>
-            <h1 className="font-display text-3xl text-foreground mb-1">Patientenportal</h1>
-            <p className="text-muted-foreground text-sm">Urologie Neuwied — sicherer Zugang</p>
+      <div className="min-h-screen bg-white">
+        <section className="bg-primary-dark flex items-center justify-center text-center px-4 h-[200px]">
+          <div>
+            <h1 className="text-white text-[36px] font-bold mb-2">Patientenportal</h1>
+            <p className="text-primary text-[16px] font-bold uppercase tracking-[2px]">Sicher. Persönlich. Jederzeit.</p>
           </div>
+        </section>
 
-          <div className="glass-strong rounded-3xl shadow-elegant p-8">
-            <h2 className="font-display text-xl text-foreground mb-1">SMS-Verifizierung</h2>
-            <p className="text-muted-foreground text-sm mb-3">
+        <div className="flex items-start justify-center px-4">
+          <div className="w-full max-w-[480px] my-[60px] bg-white border border-[#e5e5e5] rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.06)] px-10 py-12">
+            <Lock size={40} className="text-primary mx-auto mb-4" />
+            <h2 className="text-primary-dark text-[22px] font-bold text-center mb-2">SMS-Verifizierung</h2>
+            <p className="text-[#666] text-[14px] text-center mb-3">
               Ein Einmalcode wurde an Ihr Telefon gesendet.
             </p>
-            <div className="flex items-center gap-1.5 mb-6">
-              <Timer size={14} className={secondsLeft <= 60 ? "text-red-400" : "text-accent"} />
-              <span className={`text-sm font-medium ${secondsLeft <= 60 ? "text-red-400" : "text-accent"}`}>
+            <div className="flex items-center justify-center gap-1.5 mb-8">
+              <Timer size={14} className={secondsLeft <= 60 ? "text-[#dc2626]" : "text-primary"} />
+              <span className={`text-[14px] font-bold ${secondsLeft <= 60 ? "text-[#dc2626]" : "text-primary"}`}>
                 Code läuft ab in: {countdownDisplay}
               </span>
             </div>
 
             <form onSubmit={handleVerifyOtp} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-3 text-center">6-stelliger Code</label>
+                <label className="block text-[14px] font-bold text-body-text mb-3 text-center">6-stelliger Code</label>
                 <div className="flex gap-2 justify-center" onPaste={handleOtpPaste}>
                   {otpDigits.map((digit, i) => (
                     <input
@@ -354,8 +355,8 @@ export default function PatientenportalPage() {
                       value={digit}
                       onChange={(e) => handleOtpDigit(i, e.target.value)}
                       onKeyDown={(e) => handleOtpKeyDown(i, e)}
-                      className={`w-12 h-14 text-center text-2xl font-bold rounded-xl outline-none transition-all text-foreground glass ${
-                        digit ? "border-primary/60 bg-primary/10" : ""
+                      className={`w-[52px] h-[60px] text-center text-[24px] font-bold rounded-lg outline-none transition-all text-primary-dark border-2 ${
+                        digit ? "border-primary bg-[#f0f7f9]" : "border-[#e5e5e5]"
                       }`}
                     />
                   ))}
@@ -363,25 +364,25 @@ export default function PatientenportalPage() {
               </div>
 
               {step2Error && (
-                <div className="flex items-start gap-2.5 glass rounded-xl p-3 border-red-500/30">
-                  <AlertCircle size={15} className="text-red-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-red-400 text-sm">{step2Error}</p>
+                <div className="flex items-start gap-2.5 bg-[#fff5f5] border border-[#fecaca] rounded-lg p-3">
+                  <AlertCircle size={15} className="text-[#dc2626] flex-shrink-0 mt-0.5" />
+                  <p className="text-[#dc2626] text-[14px]">{step2Error}</p>
                 </div>
               )}
 
               <button
                 type="submit"
                 disabled={step2Loading || secondsLeft === 0 || otpCode.length < 6}
-                className="w-full py-3.5 rounded-full bg-primary-gradient text-primary-foreground font-semibold shadow-glow transition-transform hover:scale-[1.02] disabled:opacity-50"
+                className="w-full py-3.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-bold text-[16px] border-none cursor-pointer transition-colors disabled:opacity-50"
               >
-                {step2Loading ? "Wird geprüft…" : "Bestätigen"}
+                {step2Loading ? "Wird geprüft..." : "Bestätigen"}
               </button>
             </form>
 
-            <p className="text-center mt-5">
+            <p className="text-center mt-4">
               <button
                 onClick={() => { setStep(1); setOtpDigits(["", "", "", "", "", ""]); setStep2Error(""); }}
-                className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="inline-flex items-center gap-1 text-[14px] text-primary hover:text-primary-dark transition-colors"
               >
                 <ChevronLeft size={14} />
                 Keinen Code erhalten? Zurück
@@ -403,19 +404,19 @@ export default function PatientenportalPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background pt-20">
+    <div className="min-h-screen bg-white">
       {/* Dashboard header */}
-      <div className="glass-strong border-b border-white/5 px-4 sm:px-6 py-4 sticky top-[4.5rem] z-40">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
+      <div className="bg-primary-dark px-4 sm:px-6 py-4 sticky top-[60px] md:top-[102px] z-40">
+        <div className="max-w-[900px] mx-auto flex items-center justify-between">
           <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-widest mb-0.5">Patientenportal</p>
-            <h1 className="font-display text-xl text-foreground">
+            <p className="text-primary text-[12px] uppercase tracking-widest mb-0.5">Patientenportal</p>
+            <h1 className="text-white text-[20px] font-bold">
               Willkommen, {patient.firstName}
             </h1>
           </div>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-red-400 transition-colors px-3 py-2 rounded-xl hover:bg-red-500/10"
+            className="flex items-center gap-1.5 text-[14px] text-white/70 hover:text-white transition-colors px-3 py-2"
           >
             <LogOut size={15} />
             Abmelden
@@ -423,17 +424,17 @@ export default function PatientenportalPage() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-[900px] mx-auto">
         {/* Tab bar */}
-        <div className="flex gap-1 glass rounded-2xl p-1 mb-6">
+        <div className="flex border-b-2 border-[#e5e5e5]">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all ${
+              className={`flex-1 flex items-center justify-center gap-2 py-3.5 text-[15px] font-bold transition-all border-b-2 -mb-[2px] ${
                 activeTab === tab.id
-                  ? "bg-primary-gradient text-primary-foreground shadow-glow"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "border-primary text-primary-dark"
+                  : "border-transparent text-[#666] hover:text-primary-dark"
               }`}
             >
               {tab.icon}
@@ -442,150 +443,150 @@ export default function PatientenportalPage() {
           ))}
         </div>
 
-        {dashLoading && (
-          <div className="flex items-center justify-center py-16 text-muted-foreground text-sm">Laden…</div>
-        )}
+        <div className="px-5 py-8">
+          {dashLoading && (
+            <div className="flex items-center justify-center py-16 text-[#666] text-[14px]">Laden…</div>
+          )}
 
-        {/* ── BEFUNDE ── */}
-        {!dashLoading && activeTab === "befunde" && (
-          <div>
-            {labResults.length > 0 ? (
-              <div className="space-y-3">
-                {labResults
-                  .sort((a, b) => b.resultDate.localeCompare(a.resultDate))
-                  .map((l) => (
-                    <div key={l.id} className="glass rounded-2xl p-4">
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-4 min-w-0">
-                          <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow flex-shrink-0">
-                            <FlaskConical size={16} className="text-primary-foreground" />
+          {/* ── BEFUNDE ── */}
+          {!dashLoading && activeTab === "befunde" && (
+            <div>
+              {labResults.length > 0 ? (
+                <div className="space-y-3">
+                  {labResults
+                    .sort((a, b) => b.resultDate.localeCompare(a.resultDate))
+                    .map((l) => (
+                      <div key={l.id} className="bg-white border border-[#e5e5e5] rounded-xl p-5">
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex items-center gap-4 min-w-0">
+                            <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#f0f7f9] flex-shrink-0">
+                              <FlaskConical size={16} className="text-primary" />
+                            </div>
+                            <div className="min-w-0">
+                              <p className="font-bold text-primary-dark text-[15px] truncate">{l.test}</p>
+                              <p className="text-[#666] text-[13px] mt-0.5">
+                                {new Date(l.resultDate).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })}
+                              </p>
+                            </div>
                           </div>
-                          <div className="min-w-0">
-                            <p className="font-semibold text-foreground text-sm truncate">{l.test}</p>
-                            <p className="text-muted-foreground text-xs mt-0.5">
-                              {new Date(l.resultDate).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })}
+                          <div className="flex items-center gap-3 flex-shrink-0">
+                            <span className="font-bold text-primary-dark text-[15px]">
+                              {l.value}{l.unit ? ` ${l.unit}` : ""}
+                            </span>
+                            <span className={`px-2.5 py-1 rounded-md text-xs font-medium ${labStatusColor[l.status] ?? "bg-[#f9fafb] text-[#666] border border-[#e5e5e5]"}`}>
+                              {labStatusLabel[l.status] ?? l.status}
+                            </span>
+                          </div>
+                        </div>
+                        {l.doctorComment && (
+                          <div className="mt-3 flex items-start gap-2 bg-[#f9fafb] border-l-[3px] border-primary px-3.5 py-2.5">
+                            <MessageSquare size={13} className="text-[#666] flex-shrink-0 mt-0.5" />
+                            <p className="text-[14px] text-body-text leading-relaxed">{l.doctorComment}</p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                </div>
+              ) : (
+                <div className="bg-[#f9fafb] rounded-xl py-[60px] text-center">
+                  <FlaskConical size={32} className="text-[#e5e5e5] mx-auto mb-3" />
+                  <p className="text-[#999] font-medium">Keine Befunde verfügbar</p>
+                  <p className="text-[#999] text-[14px] mt-1">Befunde werden nach der Auswertung hier angezeigt.</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── TERMINE ── */}
+          {!dashLoading && activeTab === "termine" && (
+            <div className="space-y-6">
+              {upcomingAppts.length > 0 && (
+                <div>
+                  <h2 className="text-xs font-bold text-[#666] uppercase tracking-wider mb-3">Bevorstehende Termine</h2>
+                  <div className="space-y-3">
+                    {upcomingAppts.map((a) => (
+                      <div key={a.id} className="bg-white border border-[#e5e5e5] rounded-xl p-5 flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                          <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#f0f7f9] flex-shrink-0">
+                            <Calendar size={16} className="text-primary" />
+                          </div>
+                          <div>
+                            <p className="font-bold text-primary-dark text-[15px]">{a.type}</p>
+                            <p className="text-[#666] text-[13px] mt-0.5">
+                              {new Date(a.date).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })} · {a.time} Uhr · {a.doctor}
                             </p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-3 flex-shrink-0">
-                          <span className="font-bold text-foreground text-sm">
-                            {l.value}{l.unit ? ` ${l.unit}` : ""}
-                          </span>
-                          <span className={`px-2.5 py-1 rounded-lg text-xs font-medium ${labStatusColor[l.status] ?? "bg-white/10 text-muted-foreground"}`}>
-                            {labStatusLabel[l.status] ?? l.status}
-                          </span>
-                        </div>
+                        <span className={`px-2.5 py-1 rounded-md text-xs font-medium flex-shrink-0 ${apptStatusColor[a.status] ?? "bg-[#f9fafb] text-[#666] border border-[#e5e5e5]"}`}>
+                          {apptStatusLabel[a.status] ?? a.status}
+                        </span>
                       </div>
-                      {l.doctorComment && (
-                        <div className="mt-3 flex items-start gap-2 px-1">
-                          <MessageSquare size={13} className="text-muted-foreground flex-shrink-0 mt-0.5" />
-                          <p className="text-xs text-muted-foreground leading-relaxed">{l.doctorComment}</p>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-              </div>
-            ) : (
-              <div className="glass rounded-3xl p-10 text-center">
-                <FlaskConical size={32} className="text-muted-foreground/30 mx-auto mb-3" />
-                <p className="text-muted-foreground font-medium">Keine Befunde verfügbar</p>
-                <p className="text-muted-foreground/60 text-sm mt-1">Befunde werden nach der Auswertung hier angezeigt.</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ── TERMINE ── */}
-        {!dashLoading && activeTab === "termine" && (
-          <div className="space-y-6">
-            {upcomingAppts.length > 0 && (
-              <div>
-                <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Bevorstehende Termine</h2>
-                <div className="space-y-3">
-                  {upcomingAppts.map((a) => (
-                    <div key={a.id} className="glass rounded-2xl p-4 flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-4">
-                        <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow flex-shrink-0">
-                          <Calendar size={16} className="text-primary-foreground" />
-                        </div>
-                        <div>
-                          <p className="font-semibold text-foreground text-sm">{a.type}</p>
-                          <p className="text-muted-foreground text-xs mt-0.5">
-                            {new Date(a.date).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })} · {a.time} Uhr · {a.doctor}
-                          </p>
-                        </div>
-                      </div>
-                      <span className={`px-2.5 py-1 rounded-lg text-xs font-medium flex-shrink-0 ${apptStatusColor[a.status] ?? "bg-white/10 text-muted-foreground"}`}>
-                        {apptStatusLabel[a.status] ?? a.status}
-                      </span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-            {pastAppts.length > 0 && (
-              <div>
-                <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Vergangene Termine</h2>
-                <div className="space-y-3 opacity-60">
-                  {pastAppts.map((a) => (
-                    <div key={a.id} className="glass rounded-2xl p-4 flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-4">
-                        <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl glass flex-shrink-0">
-                          <Calendar size={16} className="text-muted-foreground" />
+              )}
+              {pastAppts.length > 0 && (
+                <div>
+                  <h2 className="text-xs font-bold text-[#666] uppercase tracking-wider mb-3">Vergangene Termine</h2>
+                  <div className="space-y-3 opacity-60">
+                    {pastAppts.map((a) => (
+                      <div key={a.id} className="bg-white border border-[#e5e5e5] rounded-xl p-5 flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                          <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#f9fafb] flex-shrink-0">
+                            <Calendar size={16} className="text-[#666]" />
+                          </div>
+                          <div>
+                            <p className="font-bold text-primary-dark text-[15px]">{a.type}</p>
+                            <p className="text-[#666] text-[13px] mt-0.5">
+                              {new Date(a.date).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })} · {a.time} Uhr · {a.doctor}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="font-semibold text-foreground text-sm">{a.type}</p>
-                          <p className="text-muted-foreground text-xs mt-0.5">
-                            {new Date(a.date).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })} · {a.time} Uhr · {a.doctor}
-                          </p>
-                        </div>
+                        <span className={`px-2.5 py-1 rounded-md text-xs font-medium flex-shrink-0 ${apptStatusColor[a.status] ?? "bg-[#f9fafb] text-[#666] border border-[#e5e5e5]"}`}>
+                          {apptStatusLabel[a.status] ?? a.status}
+                        </span>
                       </div>
-                      <span className={`px-2.5 py-1 rounded-lg text-xs font-medium flex-shrink-0 ${apptStatusColor[a.status] ?? "bg-white/10 text-muted-foreground"}`}>
-                        {apptStatusLabel[a.status] ?? a.status}
-                      </span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-            {appointments.length === 0 && (
-              <div className="glass rounded-3xl p-10 text-center">
-                <Calendar size={32} className="text-muted-foreground/30 mx-auto mb-3" />
-                <p className="text-muted-foreground font-medium">Keine Termine gefunden</p>
-                <p className="text-muted-foreground/60 text-sm mt-1">Buchen Sie Ihren nächsten Termin telefonisch.</p>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+              {appointments.length === 0 && (
+                <div className="bg-[#f9fafb] rounded-xl py-[60px] text-center">
+                  <Calendar size={32} className="text-[#e5e5e5] mx-auto mb-3" />
+                  <p className="text-[#999] font-medium">Keine Termine gefunden</p>
+                  <p className="text-[#999] text-[14px] mt-1">Buchen Sie Ihren nächsten Termin telefonisch.</p>
+                </div>
+              )}
+            </div>
+          )}
 
-        {/* ── DATEN ── */}
-        {!dashLoading && activeTab === "daten" && (
-          <div className="glass rounded-2xl divide-y divide-white/5">
-            {[
-              { label: "Name", value: `${patient.firstName} ${patient.lastName}` },
-              { label: "Geburtsdatum", value: patient.dateOfBirth ? new Date(patient.dateOfBirth).toLocaleDateString("de-DE") : "—" },
-              { label: "Versicherung", value: patient.insurance === "GKV" ? "Gesetzlich (GKV)" : "Privat (PKV)" },
-              { label: "Versicherungsnummer", value: patient.insuranceNumber ?? "—" },
-              { label: "Telefon", value: patient.phone ?? "—" },
-              { label: "E-Mail", value: patient.email ?? "—" },
-              { label: "Adresse", value: patient.address ?? "—" },
-              { label: "Behandelnder Arzt", value: patient.doctor ?? "—" },
-            ].map(({ label, value }) => (
-              <div key={label} className="flex items-center justify-between px-5 py-4 gap-4">
-                <span className="text-sm text-muted-foreground flex-shrink-0 w-40">{label}</span>
-                <span className="text-sm font-medium text-foreground text-right">{value}</span>
-              </div>
-            ))}
-            <div className="px-5 py-4">
-              <p className="text-xs text-muted-foreground leading-relaxed">
+          {/* ── DATEN ── */}
+          {!dashLoading && activeTab === "daten" && (
+            <div>
+              {[
+                { label: "Name", value: `${patient.firstName} ${patient.lastName}` },
+                { label: "Geburtsdatum", value: patient.dateOfBirth ? new Date(patient.dateOfBirth).toLocaleDateString("de-DE") : "—" },
+                { label: "Versicherung", value: patient.insurance === "GKV" ? "Gesetzlich (GKV)" : "Privat (PKV)" },
+                { label: "Versicherungsnummer", value: patient.insuranceNumber ?? "—" },
+                { label: "Telefon", value: patient.phone ?? "—" },
+                { label: "E-Mail", value: patient.email ?? "—" },
+                { label: "Adresse", value: patient.address ?? "—" },
+                { label: "Behandelnder Arzt", value: patient.doctor ?? "—" },
+              ].map(({ label, value }) => (
+                <div key={label} className="flex items-center justify-between gap-4 border-b border-[#f5f5f5] py-3.5">
+                  <span className="text-[14px] text-[#666] flex-shrink-0 w-[180px]">{label}</span>
+                  <span className="text-[14px] font-semibold text-primary-dark text-right">{value}</span>
+                </div>
+              ))}
+              <p className="text-[13px] text-[#666] leading-relaxed pt-4">
                 Für Änderungen Ihrer Daten kontaktieren Sie bitte die Praxis unter{" "}
-                <a href="tel:+492631233510" className="text-accent hover:text-foreground transition-colors underline underline-offset-2">
+                <a href="tel:+492631233510" className="text-primary hover:text-primary-dark transition-colors underline underline-offset-2">
                   02631 - 23351
                 </a>.
               </p>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

@@ -197,3 +197,22 @@ all 8 sections in order, passing `locale` from `getLocale()` to each.
   walkthrough: all 8 sections render with real content and images, the overlay
   menu opens and lists every page correctly, and the FAQ chatbot button actually
   opens `ChatWidget`.
+
+## 2026-08-03 — Restyle Patientenportal to match site brand (website/ only)
+
+Rebuilt `src/app/[locale]/patientenportal/page.tsx` styling only — page hero band,
+white card login/OTP steps, redesigned dashboard (header, tabs, lab result/
+appointment cards, profile rows) per the white/teal brand. Removed all
+`bg-hero`/`noise`/`glass`/`glass-strong`/`bg-primary-gradient`/`shadow-glow` classes.
+
+- **Zero logic changes** — verified by diffing for any touched line containing
+  `useState`/`useEffect`/`fetch`/`handle*`/state setters outside of `className`:
+  none found. All state, the OTP request/verify flow against the real backend
+  (`urologie-backend.onrender.com`), the countdown timer, tab switching, and
+  logout are byte-for-byte identical to before.
+- Did not test-submit the login form against the live backend — that would hit a
+  real endpoint with (potentially) real patient session logic, so only Step 1's
+  static rendering was verified visually in the dev server. Steps 2/3 (OTP entry,
+  dashboard) were restyled with the same care but not live-tested, since their
+  logic is unchanged and doing so would require real patient credentials.
+- Verified via `npx tsc --noEmit` (clean) and a dev-server browser check of Step 1.
