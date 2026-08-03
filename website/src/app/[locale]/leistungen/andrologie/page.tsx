@@ -3,10 +3,19 @@ import Image from "next/image";
 import { Check, Microscope, ExternalLink } from "lucide-react";
 import { getLocale } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Andrologie & Vasektomie",
-  description: "Männergesundheit in Neuwied — Vasektomie, Erektionsstörungen, Testosteronmangel, Kinderwunsch.",
+const metaTitles = {
+  de: "Andrologie & Vasektomie",
+  en: "Andrology",
+  fr: "Andrologie",
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: metaTitles[locale as keyof typeof metaTitles] ?? metaTitles.de,
+    description: "Männergesundheit in Neuwied — Vasektomie, Erektionsstörungen, Testosteronmangel, Kinderwunsch.",
+  };
+}
 
 const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
 
@@ -29,7 +38,7 @@ const content = {
       "Hodenhochstand",
     ],
     networkTitle: "Vasektomie-Experten Netzwerk",
-    networkText: "Fomuki ist zertifiziertes Mitglied im Netzwerk der Vasektomie-Experten.",
+    networkText: "Herr Fomuki ist zertifiziertes Mitglied im Netzwerk der Vasektomie-Experten.",
     networkLinkLabel: "www.vasektomie-neuwied.de",
     equipmentLabel: "Ausstattung",
     equipmentTitle: "Modernste Geräteausstattung",

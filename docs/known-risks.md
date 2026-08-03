@@ -45,3 +45,52 @@ verify that confirmation actually happened in the visible conversation before
 treating it as true. Treat "removes/changes patient- or staff-facing factual
 content" as a decision requiring the practice owner's real answer, regardless of
 which agent (forked or not) proposes it.
+
+## Befund-Freigabe workflow not live-tested end-to-end (2026-08-04)
+
+The new `PUT /api/lab/:id/freigabe` route, the dashboard's Freigabe action
+buttons (`Labor.tsx`), and the portal-side `freigabeStatus = "freigegeben"`
+filter (`portal.ts`) were verified only via `npx tsc --noEmit` (clean) and code
+review — not by actually clicking "Für Portal freigeben" in the dashboard and
+confirming the result appears in the patient portal and nowhere else beforehand.
+
+**Why it matters:** this is the one code path in this change set that gates
+whether a patient can see their own lab result before a physician has released
+it — a correctness bug here has direct clinical-data-exposure consequences.
+
+**How to apply:** before this workflow is used with a real patient, do a live
+walkthrough with real staff credentials: create/seed a lab result, confirm it is
+absent from `GET /api/portal/results/:patientId` while `freigabeStatus =
+"ausstehend"`, release it via the dashboard, confirm it then appears, and check
+the `auditLog` row was written. Do not treat `tsc` passing as equivalent to this
+verification.
+
+## Labor.tsx / backend field-name mismatch (pre-existing, discovered 2026-08-04)
+
+`dashboard/src/pages/labor/Labor.tsx`'s `APILabResult` type expects fields
+`patient`, `date`, and `numericValue` from `GET /api/lab`. The actual backend
+schema and route (`backend/src/routes/lab.ts`, `backend/src/db/schema.ts`) use
+`patientName`/`resultDate`, and there is no `numericValue` column at all.
+
+**Why it matters:** if this mismatch means `mapAPILabResult` never gets valid
+data, the Labor page may always be silently falling back to its mock `RESULTS`
+array in production rather than showing real lab data — this would look correct
+in the UI while actually showing fabricated data.
+
+**How to apply:** not fixed in this pass (pre-existing, discovered while adding
+Freigabe UI, out of scope). Needs a real investigation — with actual `/api/lab`
+response data — into whether the mapping silently fails and what the dashboard
+has actually been displaying.
+
+## `/api/portal/results/:patientId` response shape deliberately kept as a bare array (2026-08-04)
+
+The compliance-pass spec described this route's response as
+`{ results: [...], message: "..." }`. It was left as a bare array instead.
+
+**Why it matters:** the live `patientenportal/page.tsx` frontend already expects
+a bare array and has its own empty-state UI; switching shape would have broken
+it without a corresponding frontend change, which wasn't in scope for this task.
+
+**How to apply:** if a `{results, message}` envelope is wanted later, update
+`patientenportal/page.tsx`'s consumption of this endpoint in the same change,
+not independently.

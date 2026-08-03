@@ -2,11 +2,20 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { getLocale } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Magnetstimulation",
-  description:
-    "Magnetstimulation der Beckenbodenmuskulatur bei Inkontinenz in Neuwied.",
+const metaTitles = {
+  de: "Magnetstimulation",
+  en: "Magnetic Stimulation",
+  fr: "Stimulation Magnétique",
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: metaTitles[locale as keyof typeof metaTitles] ?? metaTitles.de,
+    description:
+      "Magnetstimulation der Beckenbodenmuskulatur bei Inkontinenz in Neuwied.",
+  };
+}
 
 const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
 

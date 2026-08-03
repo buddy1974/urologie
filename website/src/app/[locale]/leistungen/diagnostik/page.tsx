@@ -3,11 +3,20 @@ import Image from "next/image";
 import { Microscope } from "lucide-react";
 import { getLocale } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Diagnostik",
-  description:
-    "Urologische Diagnostik in Neuwied — Labor, Sonographie, Zystoskopie, Prostatabiopsie, Uroflowmetrie.",
+const metaTitles = {
+  de: "Diagnostik",
+  en: "Diagnostics",
+  fr: "Diagnostique",
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: metaTitles[locale as keyof typeof metaTitles] ?? metaTitles.de,
+    description:
+      "Urologische Diagnostik in Neuwied — Labor, Sonographie, Zystoskopie, Prostatabiopsie, Uroflowmetrie.",
+  };
+}
 
 const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
 

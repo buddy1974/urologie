@@ -3,11 +3,20 @@ import Image from "next/image";
 import { getLocale } from "next-intl/server";
 import { GraduationCap, Users } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Unser Team",
-  description:
-    "Das Team der Urologischen Praxis Neuwied — Walters T. Fomuki und seine erfahrenen Mitarbeiterinnen.",
+const metaTitles = {
+  de: "Unser Team",
+  en: "Our Team",
+  fr: "Notre Équipe",
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: metaTitles[locale as keyof typeof metaTitles] ?? metaTitles.de,
+    description:
+      "Das Team der Urologischen Praxis Neuwied — Walters T. Fomuki und seine erfahrenen Mitarbeiterinnen.",
+  };
+}
 
 type Locale = "de" | "en" | "fr";
 

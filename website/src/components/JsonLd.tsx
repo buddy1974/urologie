@@ -116,7 +116,7 @@ export default function JsonLd() {
             "name": "Bietet die Praxis Vasektomien an?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Ja, Fomuki ist zertifiziertes Mitglied im Vasektomie-Experten-Netzwerk und führt Vasektomien konservativ und non-skalpell durch."
+              "text": "Ja, Herr Fomuki ist zertifiziertes Mitglied im Vasektomie-Experten-Netzwerk und führt Vasektomien konservativ und non-skalpell durch."
             }
           }
         ]

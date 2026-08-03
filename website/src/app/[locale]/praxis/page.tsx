@@ -2,11 +2,20 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { getLocale } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Unsere Praxis",
-  description:
-    "Die Urologische Praxis Neuwied von Walters T. Fomuki — Philosophie, Ausstattung, Kooperationen und Standort.",
+const metaTitles = {
+  de: "Unsere Praxis",
+  en: "Our Practice",
+  fr: "Notre Cabinet",
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: metaTitles[locale as keyof typeof metaTitles] ?? metaTitles.de,
+    description:
+      "Die Urologische Praxis Neuwied von Walters T. Fomuki — Philosophie, Ausstattung, Kooperationen und Standort.",
+  };
+}
 
 const cooperations = [
   { name: "Marienhaus Klinikum Bendorf-Neuwied-Waldbreitbach", href: "http://www.marienhaus-klinikum.de/" },

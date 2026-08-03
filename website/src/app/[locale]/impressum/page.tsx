@@ -1,10 +1,19 @@
 import type { Metadata } from "next";
 import { getLocale } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Impressum",
-  description: "Impressum der Urologischen Praxis Neuwied.",
+const metaTitles = {
+  de: "Impressum",
+  en: "Legal Notice",
+  fr: "Mentions Légales",
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: metaTitles[locale as keyof typeof metaTitles] ?? metaTitles.de,
+    description: "Impressum der Urologischen Praxis Neuwied.",
+  };
+}
 
 const content = {
   de: {

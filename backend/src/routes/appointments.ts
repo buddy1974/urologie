@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 
 export async function appointmentsRoutes(fastify: FastifyInstance) {
   // GET appointments — optional ?patientId filter
-  fastify.get<{ Querystring: { date?: string; patientId?: string } }>("/api/appointments", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  fastify.get<{ Querystring: { date?: string; patientId?: string } }>("/api/appointments", { preHandler: [fastify.requireStaff] }, async (request, reply) => {
     try {
       const { patientId } = request.query;
       const query = db.select().from(appointments).orderBy(appointments.date, appointments.time);
@@ -20,7 +20,7 @@ export async function appointmentsRoutes(fastify: FastifyInstance) {
   });
 
   // POST create appointment
-  fastify.post<{ Body: typeof appointments.$inferInsert }>("/api/appointments", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  fastify.post<{ Body: typeof appointments.$inferInsert }>("/api/appointments", { preHandler: [fastify.requireStaff] }, async (request, reply) => {
     try {
       const result = await db.insert(appointments).values(request.body).returning();
       return reply.status(201).send(result[0]);
@@ -31,7 +31,7 @@ export async function appointmentsRoutes(fastify: FastifyInstance) {
   });
 
   // PUT update appointment status
-  fastify.put<{ Params: { id: string }; Body: Partial<typeof appointments.$inferInsert> }>("/api/appointments/:id", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  fastify.put<{ Params: { id: string }; Body: Partial<typeof appointments.$inferInsert> }>("/api/appointments/:id", { preHandler: [fastify.requireStaff] }, async (request, reply) => {
     try {
       const result = await db.update(appointments)
         .set({ ...request.body, updatedAt: new Date() })
@@ -46,7 +46,7 @@ export async function appointmentsRoutes(fastify: FastifyInstance) {
   });
 
   // DELETE appointment
-  fastify.delete<{ Params: { id: string } }>("/api/appointments/:id", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  fastify.delete<{ Params: { id: string } }>("/api/appointments/:id", { preHandler: [fastify.requireStaff] }, async (request, reply) => {
     try {
       await db.delete(appointments).where(eq(appointments.id, request.params.id));
       return reply.send({ success: true });

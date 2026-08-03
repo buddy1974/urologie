@@ -85,3 +85,55 @@ losing that access point.
 explicit new instruction overriding `e695ad7`. If the PraxisOS link needs to come
 back, it belongs somewhere other than the public footer given the minimal-footer
 direction.
+
+## 2026-08-04 — Fixed the JWT role-check gap on every staff route, not just the Freigabe route
+
+**Context:** The Befund-Freigabe task (B1-B3) only asked for a new
+`PUT /api/lab/:id/freigabe` route restricted to `inhaber`/`arzt`. While building
+its access control, `fastify.authenticate` turned out to only verify JWT
+*validity*, not payload shape — a patient portal token (`{patientId}`) and a
+staff token (`{staffId, role}`) were interchangeable at every route using
+`authenticate`, including `patients`, `appointments`, `cms`, and `auth`
+change-password/me. Asked Marcel (via AskUserQuestion) whether to fix only the
+new route or the systemic gap; he chose to fix the systemic gap first.
+
+**Decision:** Added `requireStaff`, `requireFreigabeRole`, and `requirePatient`
+decorators (payload-shape + role checks after `jwtVerify()`) and applied the
+correct one to every existing route that had been using the bare `authenticate`
+decorator, not just the new Freigabe route.
+
+**Why it matters:** Building the new route's access control on top of an
+insecure base (where any authenticated patient could already reach staff-only
+endpoints) would have been misleading — it would look like the release workflow
+was protected while the rest of the API stayed open to role confusion.
+
+**How to apply:** Any new route needing staff-only or patient-only access should
+use `requireStaff`/`requireFreigabeRole`/`requirePatient`, never the bare
+`authenticate` decorator, which still exists but only confirms a token is valid,
+not who it belongs to.
+
+## 2026-08-04 — Replaced Compliance.tsx's checklist instead of patching it
+
+**Context:** The compliance-pass spec (D2) gave exact new AVV/TOM/Patientenportal/
+KBV sections with specific status wording for `dashboard/src/pages/compliance/
+Compliance.tsx`. The existing page's content conflicted with this and with known
+facts: it claimed all AVVs were already signed (spec says "ausstehend" for all
+five), named "Twilio" as the SMS provider (the actual provider is seven
+communications, established in the Datenschutz rewrite), and marked an
+incident-response item "ok" that the spec marks "ausstehend."
+
+**Decision:** Replaced the page's content wholesale with the four new sections
+from the spec, rather than patching individual fields. This dropped older
+checklist content the new spec didn't mention and that couldn't be verified
+against code: MBO-Ä (KI nur unterstützend), MPG/UroLift & Magnetstimulation
+device-maintenance protocol, and KBV TI-Connector/ePA/eAU/eRezept/MediStar items.
+
+**Why it matters:** Patching field-by-field would have left stale, contradictory,
+or unverifiable claims sitting next to the new accurate content in a page whose
+entire purpose is tracking real compliance status. A full replacement is more
+honest about what's actually known, but it does mean real (if unverified)
+tracked items are gone from the page, not just corrected.
+
+**How to apply:** If the MBO-Ä/MPG/KBV items are still relevant, they should be
+re-added as verified, sourced content (confirm against actual device maintenance
+records / KBV integration status) rather than restored as-is from the old page.

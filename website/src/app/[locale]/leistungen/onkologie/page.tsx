@@ -3,10 +3,19 @@ import Image from "next/image";
 import { getLocale } from "next-intl/server";
 import { HeartPulse, Check } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Onkologie",
-  description: "Onkologische Betreuung und Nachsorge bei urologischen Tumoren in Neuwied.",
+const metaTitles = {
+  de: "Onkologie",
+  en: "Oncology",
+  fr: "Oncologie",
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: metaTitles[locale as keyof typeof metaTitles] ?? metaTitles.de,
+    description: "Onkologische Betreuung und Nachsorge bei urologischen Tumoren in Neuwied.",
+  };
+}
 
 const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
 
@@ -27,7 +36,7 @@ const content = {
       "Hodentumoren",
       "Peniskarzinom",
     ],
-    noteTitle: "Fomuki ist onkologisch qualifizierter Arzt",
+    noteTitle: "Herr Fomuki ist onkologisch qualifizierter Arzt",
     noteText: "mit Spezialisierung auf medikamentöse Tumortherapie und ambulantes Operieren.",
   },
   en: {

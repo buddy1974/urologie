@@ -149,7 +149,7 @@ export async function portalRoutes(fastify: FastifyInstance) {
 
   fastify.get(
     "/api/portal/results",
-    { preHandler: [fastify.authenticate] },
+    { preHandler: [fastify.requirePatient] },
     async (request, reply) => {
       try {
         const { patientId } = request.user as { patientId: string };
@@ -164,7 +164,7 @@ export async function portalRoutes(fastify: FastifyInstance) {
           doctorComment: labResults.doctorComment,
         })
           .from(labResults)
-          .where(eq(labResults.patientId, patientId))
+          .where(and(eq(labResults.patientId, patientId), eq(labResults.freigabeStatus, "freigegeben")))
           .orderBy(asc(labResults.resultDate));
         return reply.send(result);
       } catch (error) {
@@ -176,7 +176,7 @@ export async function portalRoutes(fastify: FastifyInstance) {
 
   fastify.get(
     "/api/portal/appointments",
-    { preHandler: [fastify.authenticate] },
+    { preHandler: [fastify.requirePatient] },
     async (request, reply) => {
       try {
         const { patientId } = request.user as { patientId: string };

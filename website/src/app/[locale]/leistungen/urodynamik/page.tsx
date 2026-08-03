@@ -2,10 +2,19 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { getLocale } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Urodynamik & Ästhetische Medizin",
-  description: "Blasendruckmessung und ästhetische Medizin mit Botox und Filler in Neuwied.",
+const metaTitles = {
+  de: "Urodynamik & Ästhetische Medizin",
+  en: "Urodynamics",
+  fr: "Urodynamique",
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: metaTitles[locale as keyof typeof metaTitles] ?? metaTitles.de,
+    description: "Blasendruckmessung und ästhetische Medizin mit Botox und Filler in Neuwied.",
+  };
+}
 
 type Locale = "de" | "en" | "fr";
 

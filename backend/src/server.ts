@@ -60,6 +60,48 @@ async function main() {
     }
   });
 
+  // Staff-only routes (dashboard/PraxisOS). A patient portal token has no
+  // staffId in its payload and must not pass — jwtVerify() alone only checks
+  // the signature, not who the token belongs to.
+  fastify.decorate("requireStaff", async (request, reply) => {
+    try {
+      await request.jwtVerify();
+    } catch {
+      return reply.status(401).send({ error: "Unauthorized" });
+    }
+    const payload = request.user as { staffId?: string; role?: string };
+    if (!payload.staffId) {
+      return reply.status(403).send({ error: "Forbidden" });
+    }
+  });
+
+  // Befund-Freigabe: only inhaber/arzt may release or revoke lab results.
+  // MFA and Büro can still read status via requireStaff-protected GET routes.
+  fastify.decorate("requireFreigabeRole", async (request, reply) => {
+    try {
+      await request.jwtVerify();
+    } catch {
+      return reply.status(401).send({ error: "Unauthorized" });
+    }
+    const payload = request.user as { staffId?: string; role?: string };
+    if (!payload.staffId || !["inhaber", "arzt"].includes(payload.role ?? "")) {
+      return reply.status(403).send({ error: "Forbidden" });
+    }
+  });
+
+  // Patient portal routes. A staff token has no patientId and must not pass.
+  fastify.decorate("requirePatient", async (request, reply) => {
+    try {
+      await request.jwtVerify();
+    } catch {
+      return reply.status(401).send({ error: "Unauthorized" });
+    }
+    const payload = request.user as { patientId?: string };
+    if (!payload.patientId) {
+      return reply.status(403).send({ error: "Forbidden" });
+    }
+  });
+
   // Multipart support for file uploads
   await fastify.register(multipart, {
     limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB

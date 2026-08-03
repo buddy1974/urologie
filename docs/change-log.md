@@ -270,3 +270,89 @@ git commands.
 - Verified via `npx tsc --noEmit` (clean) and a dev-server + browser walkthrough:
   Datenschutz DE and EN, Impressum, Kontakt checkbox behavior (disabled → enabled
   on check), Patientenportal Step 1 disclosure text.
+
+## 2026-08-04 — Full compliance pass: auth-gap fix, Befund-Freigabe workflow, website W1-W8 (all three layers)
+
+- **Critical security finding and fix (backend, out of the originally-scoped B1-B3
+  work, expanded per explicit user direction after an AskUserQuestion prompt):**
+  `fastify.authenticate` only verified that a JWT was valid — it did not check
+  *which* payload shape it carried. Patient portal tokens (`{patientId}`) and staff
+  tokens (`{staffId, role}`) were interchangeable at every route using
+  `authenticate`, meaning a patient's own portal token could call staff-only
+  routes (`patients`, `appointments`, `cms`, `auth` change-password/me). Added
+  `requireStaff`, `requireFreigabeRole` (staff + `role` in `["inhaber","arzt"]`),
+  and `requirePatient` decorators in `backend/src/server.ts`
+  (`backend/src/types/fastify.d.ts` for typings), each verifying the JWT and then
+  checking payload shape/role. Replaced `fastify.authenticate` with the correct
+  decorator on every existing staff route (`patients.ts`, `appointments.ts`,
+  `cms.ts`, `auth.ts`) and the two patient-portal routes (`portal.ts`:
+  `/api/portal/results`, `/api/portal/appointments`). This was a pre-existing gap,
+  not introduced by this task — flagging it was necessary before building the
+  Freigabe (release) workflow's access control on top of it.
+- **Befund-Freigabe (lab-result release) workflow (B1-B3):** added
+  `freigabeStatus` (`"ausstehend" | "freigegeben" | "gesperrt"`, default
+  `"ausstehend"`), `freigegebenVon`, `freigegebenAm` columns to `labResults` in
+  `backend/src/db/schema.ts`; pushed to the live Neon DB via
+  `npx drizzle-kit push` (additive only — nullable/defaulted columns, no
+  drops/renames). Added `PUT /api/lab/:id/freigabe`
+  (`preHandler: [fastify.requireFreigabeRole]`) in `backend/src/routes/lab.ts`,
+  writing an `auditLog` row (`action: "befund_freigabe"`) on every status change.
+  `GET /api/portal/results/:patientId` now filters to
+  `freigabeStatus = "freigegeben"` only, so unreleased results never reach a
+  patient. Kept the existing bare-array response shape on that route rather than
+  switching to a `{results, message}` envelope, to avoid breaking the already-live
+  `patientenportal/page.tsx` frontend, which expects an array and has its own
+  empty-state UI.
+- **Dashboard Freigabe UI (D1):** `dashboard/src/pages/labor/Labor.tsx` now shows
+  a status badge (ausstehend/freigegeben/gesperrt), a "Freigegeben von X am Y"
+  caption, and role-gated action buttons ("Für Portal freigeben" / "Freigabe
+  widerrufen" / "Erneut freigeben") per result, restricted to `inhaber`/`arzt`
+  via `useAuthStore`. Added a confirm dialog before any status change and running
+  counts in the page header. Added `updateLabFreigabe()` to `dashboard/src/lib/api.ts`.
+  **Discovered, not fixed (pre-existing, out of scope):** `APILabResult` expects
+  `patient`/`date`/`numericValue` fields that don't match the backend's actual
+  field names (`patientName`/`resultDate`; `numericValue` doesn't exist in the
+  schema at all) — the live `/api/lab` response likely never populates this page
+  correctly today. Logged in `docs/known-risks.md`.
+- **Dashboard Compliance module (D2):** `dashboard/src/pages/compliance/Compliance.tsx`
+  was **fully replaced**, not patched — the previous content asserted things that
+  don't reflect reality (all AVVs already signed; named "Twilio" as the SMS
+  provider when it is actually seven communications; an incident-response item
+  marked "ok" that the new spec marks "ausstehend"). The replacement covers AVV,
+  TOM, Patientenportal, and KBV sections per the task's spec, each item with an
+  explicit status and, for AVV items, an "AVV abschließen" link to the provider's
+  DPA page. This **dropped** older, unrelated checklist content that could not be
+  verified against code — MBO-Ä (KI nur unterstützend), MPG/UroLift &
+  Magnetstimulation device-maintenance protocol, and KBV TI-Connector/ePA/eAU/
+  eRezept/MediStar items. None of that was re-added; if it's still needed it
+  should come back as verified, sourced content rather than restored as-is.
+- **Website W1-W8:** Datenschutzerklärung rewritten in `datenschutz/page.tsx`
+  (new Section 3 "Rechtsgrundlagen der Verarbeitung" replacing "Zweck der
+  Datenverarbeitung"; processor purposes corrected for Render and seven
+  communications; all five `avv` fields reworded to "gemäß Art. 28 DSGVO
+  (Abschluss in Vorbereitung)"; Patientenportal section notes TLS 1.3 and was
+  corrected for accuracy — the pasted spec claimed every portal access is
+  audit-logged, but only the freigabe action actually is, so the text now reads
+  "Befunde werden erst nach aktiver Freigabe durch Herrn Fomuki im Portal
+  sichtbar. Die Freigabe eines Befunds wird im Audit-Log mit Zeitstempel
+  protokolliert."). **W5:** prefixed the three remaining bare "Fomuki
+  ist/berät/hat" German-text instances with "Herr" in `JsonLd.tsx`,
+  `andrologie/page.tsx`, `urolift/page.tsx`, `onkologie/page.tsx`. **W6:** made
+  meta titles locale-aware (EN/FR) across 12 pages — the 10 server-component
+  `leistungen/*`, `praxis`, `team`, `datenschutz`, `impressum` pages converted
+  their static `export const metadata` to `generateMetadata()`; `kontakt` and
+  `patientenportal` (both client components) needed new/updated `layout.tsx`
+  wrappers since `"use client"` pages can't export `metadata` directly
+  (`patientenportal/layout.tsx` is a new file). Found and fixed a duplication
+  bug on first pass: EN/FR title strings included "| Urologie Neuwied", which
+  doubled with the root layout's `title.template`; removed the redundant suffix
+  and re-verified via `curl` on 5 sample pages.
+- **Not done in this pass:** end-to-end live testing of the Freigabe UI/route
+  (clicking "Für Portal freigeben" in the dashboard and confirming the result
+  appears/disappears in the patient portal) — this requires real staff JWT
+  credentials that were not available and should not be fabricated. Logged as an
+  open item in `docs/known-risks.md`.
+- Verified via `npx tsc --noEmit` (clean in `website/`, `dashboard/`, `backend/`).
+  Not live-tested beyond the metadata `curl` spot-checks above and the earlier
+  dev-server walkthrough of the Datenschutz/Impressum/Kontakt/Patientenportal
+  pages (unchanged by this pass, re-confirmed clean by `tsc`).

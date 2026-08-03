@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 
 export async function patientsRoutes(fastify: FastifyInstance) {
   // GET all patients
-  fastify.get("/api/patients", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  fastify.get("/api/patients", { preHandler: [fastify.requireStaff] }, async (request, reply) => {
     try {
       const result = await db.select().from(patients).orderBy(patients.lastName);
       return reply.send(result);
@@ -16,7 +16,7 @@ export async function patientsRoutes(fastify: FastifyInstance) {
   });
 
   // GET single patient
-  fastify.get<{ Params: { id: string } }>("/api/patients/:id", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  fastify.get<{ Params: { id: string } }>("/api/patients/:id", { preHandler: [fastify.requireStaff] }, async (request, reply) => {
     try {
       const result = await db.select().from(patients).where(eq(patients.id, request.params.id));
       if (result.length === 0) return reply.status(404).send({ error: "Patient not found" });
@@ -28,7 +28,7 @@ export async function patientsRoutes(fastify: FastifyInstance) {
   });
 
   // POST create patient
-  fastify.post<{ Body: typeof patients.$inferInsert }>("/api/patients", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  fastify.post<{ Body: typeof patients.$inferInsert }>("/api/patients", { preHandler: [fastify.requireStaff] }, async (request, reply) => {
     try {
       const result = await db.insert(patients).values(request.body).returning();
       return reply.status(201).send(result[0]);
@@ -47,7 +47,7 @@ export async function patientsRoutes(fastify: FastifyInstance) {
   });
 
   // PUT update patient
-  fastify.put<{ Params: { id: string }; Body: Partial<typeof patients.$inferInsert> }>("/api/patients/:id", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  fastify.put<{ Params: { id: string }; Body: Partial<typeof patients.$inferInsert> }>("/api/patients/:id", { preHandler: [fastify.requireStaff] }, async (request, reply) => {
     try {
       const result = await db.update(patients)
         .set({ ...request.body, updatedAt: new Date() })

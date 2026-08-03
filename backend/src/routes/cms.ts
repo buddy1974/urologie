@@ -71,18 +71,18 @@ export async function cmsRoutes(fastify: FastifyInstance) {
 
   // ── PAGES ────────────────────────────────────────────────────────────────
 
-  fastify.get("/api/cms/pages", { preHandler: [fastify.authenticate] }, async () => {
+  fastify.get("/api/cms/pages", { preHandler: [fastify.requireStaff] }, async () => {
     return await db.select().from(pages);
   });
 
-  fastify.get("/api/cms/pages/:slug", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  fastify.get("/api/cms/pages/:slug", { preHandler: [fastify.requireStaff] }, async (request, reply) => {
     const { slug } = request.params as { slug: string };
     const [page] = await db.select().from(pages).where(eq(pages.slug, slug));
     if (!page) return reply.status(404).send({ error: "Page not found" });
     return page;
   });
 
-  fastify.put("/api/cms/pages/:slug", { preHandler: [fastify.authenticate] }, async (request) => {
+  fastify.put("/api/cms/pages/:slug", { preHandler: [fastify.requireStaff] }, async (request) => {
     const { slug } = request.params as { slug: string };
     const body = request.body as PageBody;
 
@@ -120,7 +120,7 @@ export async function cmsRoutes(fastify: FastifyInstance) {
 
   // ── BLOG ─────────────────────────────────────────────────────────────────
 
-  fastify.get("/api/cms/blog", { preHandler: [fastify.authenticate] }, async (request) => {
+  fastify.get("/api/cms/blog", { preHandler: [fastify.requireStaff] }, async (request) => {
     const { status } = request.query as { status?: string };
     if (status) {
       return await db.select().from(blogPosts)
@@ -130,14 +130,14 @@ export async function cmsRoutes(fastify: FastifyInstance) {
     return await db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt));
   });
 
-  fastify.get("/api/cms/blog/:id", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  fastify.get("/api/cms/blog/:id", { preHandler: [fastify.requireStaff] }, async (request, reply) => {
     const { id } = request.params as { id: string };
     const [post] = await db.select().from(blogPosts).where(eq(blogPosts.id, id));
     if (!post) return reply.status(404).send({ error: "Post not found" });
     return post;
   });
 
-  fastify.post<{ Body: BlogPostBody }>("/api/cms/blog", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  fastify.post<{ Body: BlogPostBody }>("/api/cms/blog", { preHandler: [fastify.requireStaff] }, async (request, reply) => {
     const body = request.body;
     const slug = generateSlug(body.title);
 
@@ -160,7 +160,7 @@ export async function cmsRoutes(fastify: FastifyInstance) {
     return reply.status(201).send(post);
   });
 
-  fastify.put<{ Params: { id: string }; Body: BlogPostUpdate }>("/api/cms/blog/:id", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  fastify.put<{ Params: { id: string }; Body: BlogPostUpdate }>("/api/cms/blog/:id", { preHandler: [fastify.requireStaff] }, async (request, reply) => {
     const { id } = request.params;
     const body = request.body;
 
@@ -192,7 +192,7 @@ export async function cmsRoutes(fastify: FastifyInstance) {
     return updated;
   });
 
-  fastify.delete("/api/cms/blog/:id", { preHandler: [fastify.authenticate] }, async (request) => {
+  fastify.delete("/api/cms/blog/:id", { preHandler: [fastify.requireStaff] }, async (request) => {
     const { id } = request.params as { id: string };
     await db.delete(blogPosts).where(eq(blogPosts.id, id));
     return { success: true };
@@ -202,7 +202,7 @@ export async function cmsRoutes(fastify: FastifyInstance) {
 
   fastify.post<{ Body: { type: string; rawText: string; context?: string } }>(
     "/api/cms/ai-enhance",
-    { preHandler: [fastify.authenticate] },
+    { preHandler: [fastify.requireStaff] },
     async (request, reply) => {
       const { type, rawText, context } = request.body;
       const systemPrompt = SYSTEM_PROMPTS[type];
@@ -242,7 +242,7 @@ export async function cmsRoutes(fastify: FastifyInstance) {
   ]);
   const ALLOWED_EXT = new Set([".jpg", ".jpeg", ".png", ".webp", ".pdf", ".doc", ".docx"]);
 
-  fastify.post("/api/cms/media/upload", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  fastify.post("/api/cms/media/upload", { preHandler: [fastify.requireStaff] }, async (request, reply) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = await (request as any).file();
     if (!data) return reply.status(400).send({ error: "No file provided" });
@@ -274,11 +274,11 @@ export async function cmsRoutes(fastify: FastifyInstance) {
     return reply.status(201).send(item);
   });
 
-  fastify.get("/api/cms/media", { preHandler: [fastify.authenticate] }, async () => {
+  fastify.get("/api/cms/media", { preHandler: [fastify.requireStaff] }, async () => {
     return await db.select().from(media).orderBy(desc(media.uploadedAt));
   });
 
-  fastify.delete("/api/cms/media/:id", { preHandler: [fastify.authenticate] }, async (request) => {
+  fastify.delete("/api/cms/media/:id", { preHandler: [fastify.requireStaff] }, async (request) => {
     const { id } = request.params as { id: string };
     const [item] = await db.select().from(media).where(eq(media.id, id));
 

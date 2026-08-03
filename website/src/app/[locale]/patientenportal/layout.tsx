@@ -2,24 +2,19 @@ import type { Metadata } from "next";
 import { getLocale } from "next-intl/server";
 
 const metaTitles = {
-  de: "Kontakt & Anfahrt",
-  en: "Contact",
-  fr: "Contact",
+  de: "Patientenportal",
+  en: "Patient Portal",
+  fr: "Espace Patient",
 };
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return {
     title: metaTitles[locale as keyof typeof metaTitles] ?? metaTitles.de,
-    description:
-      "Kontaktieren Sie die Urologische Praxis Neuwied. Adresse, Telefon, Öffnungszeiten, Anfahrt und direktes Kontaktformular.",
+    description: "Sicherer Zugang zu Ihren Laborergebnissen und Terminen — Urologie Neuwied.",
   };
 }
 
-export default function KontaktLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function PatientenportalLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }

@@ -52,6 +52,9 @@ export const labResults = pgTable("lab_results", {
   sent: boolean("sent").notNull().default(false),
   doctorComment: text("doctor_comment"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  freigabeStatus: text("freigabe_status").notNull().default("ausstehend"),
+  freigegebenVon: text("freigegeben_von"),
+  freigegebenAm: timestamp("freigegeben_am"),
 });
 
 export const patientOtp = pgTable("patient_otp", {

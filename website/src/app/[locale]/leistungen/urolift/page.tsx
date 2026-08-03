@@ -3,11 +3,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { getLocale } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "UroLift® bei BPH",
-  description:
-    "UroLift® Behandlung bei benigner Prostatahyperplasie in Neuwied — ambulant, schonend, ohne Gewebsentfernung.",
+const metaTitles = {
+  de: "UroLift® bei BPH",
+  en: "UroLift® Treatment",
+  fr: "Traitement UroLift®",
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: metaTitles[locale as keyof typeof metaTitles] ?? metaTitles.de,
+    description:
+      "UroLift® Behandlung bei benigner Prostatahyperplasie in Neuwied — ambulant, schonend, ohne Gewebsentfernung.",
+  };
+}
 
 const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
 
@@ -35,7 +44,7 @@ const content = {
     ],
     beforeAfterCaption: "Links: Eingeengte Harnröhre durch BPH · Rechts: Geöffnete Harnröhre nach UroLift®",
     ctaTitle: "UroLift® in Neuwied",
-    ctaText: "Fomuki berät Sie gerne, ob UroLift® für Ihre Situation geeignet ist. Vereinbaren Sie jetzt einen Termin.",
+    ctaText: "Herr Fomuki berät Sie gerne, ob UroLift® für Ihre Situation geeignet ist. Vereinbaren Sie jetzt einen Termin.",
     bookLabel: "Online buchen",
   },
   en: {

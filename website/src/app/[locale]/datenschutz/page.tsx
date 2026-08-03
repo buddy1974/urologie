@@ -1,10 +1,19 @@
 import type { Metadata } from "next";
 import { getLocale } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Datenschutz",
-  description: "Datenschutzerklärung der Urologischen Praxis Neuwied gemäß DSGVO.",
+const metaTitles = {
+  de: "Datenschutz",
+  en: "Privacy Policy",
+  fr: "Politique de Confidentialité",
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: metaTitles[locale as keyof typeof metaTitles] ?? metaTitles.de,
+    description: "Datenschutzerklärung der Urologischen Praxis Neuwied gemäß DSGVO.",
+  };
+}
 
 type Processor = {
   name: string;
@@ -25,7 +34,7 @@ const processors: Processor[] = [
     transfer: "USA – Grundlage: Standardvertragsklauseln (SCC) gemäß Art. 46 DSGVO",
     privacyUrl: "https://vercel.com/legal/privacy-policy",
     privacyLabel: "vercel.com/legal/privacy-policy",
-    avv: "wird abgeschlossen gemäß Art. 28 DSGVO",
+    avv: "gemäß Art. 28 DSGVO (Abschluss in Vorbereitung)",
   },
   {
     name: "Neon Inc.",
@@ -34,16 +43,16 @@ const processors: Processor[] = [
     transfer: "USA – Grundlage: Standardvertragsklauseln (SCC) gemäß Art. 46 DSGVO",
     privacyUrl: "https://neon.tech/privacy",
     privacyLabel: "neon.tech/privacy",
-    avv: "wird abgeschlossen gemäß Art. 28 DSGVO",
+    avv: "gemäß Art. 28 DSGVO (Abschluss in Vorbereitung)",
   },
   {
     name: "Render Services Inc.",
     address: "525 Brannan Street, Suite 300, San Francisco, CA 94107, USA",
-    purpose: "Backend-API (Verarbeitung von Patientenportal-Anfragen)",
+    purpose: "Backend-API (Verarbeitung von Patientenportal-Authentifizierung und Befunddaten)",
     transfer: "USA – Grundlage: Standardvertragsklauseln (SCC) gemäß Art. 46 DSGVO",
     privacyUrl: "https://render.com/privacy",
     privacyLabel: "render.com/privacy",
-    avv: "wird abgeschlossen gemäß Art. 28 DSGVO",
+    avv: "gemäß Art. 28 DSGVO (Abschluss in Vorbereitung)",
   },
   {
     name: "Anthropic PBC",
@@ -53,16 +62,16 @@ const processors: Processor[] = [
     transfer: "USA – Grundlage: Standardvertragsklauseln (SCC) gemäß Art. 46 DSGVO",
     privacyUrl: "https://anthropic.com/privacy",
     privacyLabel: "anthropic.com/privacy",
-    avv: "wird abgeschlossen gemäß Art. 28 DSGVO",
+    avv: "gemäß Art. 28 DSGVO (Abschluss in Vorbereitung)",
   },
   {
     name: "seven communications GmbH & Co. KG",
     address: "Gerwigstraße 53, 76131 Karlsruhe, Deutschland",
-    purpose: "SMS-Versand von Einmalcodes (OTP) für das Patientenportal",
+    purpose: "Versand von Einmalcodes (OTP) per SMS für die Zwei-Faktor-Authentifizierung im Patientenportal",
     transfer: "Deutschland – DSGVO-konform",
     privacyUrl: "https://www.seven.io/de/datenschutz/",
     privacyLabel: "seven.io/de/datenschutz",
-    avv: "wird abgeschlossen gemäß Art. 28 DSGVO",
+    avv: "gemäß Art. 28 DSGVO (Abschluss in Vorbereitung)",
   },
   {
     name: "Doctolib GmbH",
@@ -161,20 +170,23 @@ export default async function DatenschutzPage() {
 
           <div>
             <h2 className="mb-3">2. Arten der verarbeiteten Daten</h2>
+            <p className="text-body-text leading-[1.6] mb-3">
+              Wir verarbeiten folgende Kategorien personenbezogener Daten:
+            </p>
             <ul className="list-disc list-inside text-body-text leading-[1.6] space-y-1">
-              <li>Kontaktdaten (Name, E-Mail, Telefonnummer)</li>
+              <li>Kontaktdaten (Name, E-Mail-Adresse, Telefonnummer)</li>
               <li>Inhaltsdaten (Texteingaben im Kontaktformular)</li>
-              <li>Technische Daten (IP-Adresse, Browser, Zugriffszeiten)</li>
-              <li>Patientendaten im Patientenportal (Geburtsdatum, Versicherungsnummer, Mobilnummer, Laborbefunde, Termine)</li>
+              <li>Nutzungsdaten (IP-Adresse, Browser-Typ, Zugriffszeiten)</li>
+              <li>Patientendaten im Patientenportal: Geburtsdatum, Krankenversicherungsnummer, Mobiltelefonnummer, Laborergebnisse, Termindetails</li>
             </ul>
           </div>
 
           <div>
-            <h2 className="mb-3">3. Zweck der Datenverarbeitung</h2>
+            <h2 className="mb-3">3. Rechtsgrundlagen der Verarbeitung</h2>
             <ul className="list-disc list-inside text-body-text leading-[1.6] space-y-1">
-              <li>Beantwortung von Anfragen über das Kontaktformular (Art. 6 Abs. 1 lit. b DSGVO)</li>
-              <li>Bereitstellung des Patientenportals (§ 630g BGB, Art. 9 Abs. 2 lit. h DSGVO)</li>
-              <li>Technischer Betrieb der Website</li>
+              <li>Kontaktformular: Art. 6 Abs. 1 lit. b DSGVO</li>
+              <li>Patientenportal: Art. 9 Abs. 2 lit. h DSGVO in Verbindung mit § 630g BGB</li>
+              <li>Technischer Betrieb: Art. 6 Abs. 1 lit. f DSGVO</li>
             </ul>
           </div>
 
@@ -236,9 +248,12 @@ export default async function DatenschutzPage() {
               <br />
               Aufbewahrung: gemäß § 630f Abs. 3 BGB mindestens 10 Jahre nach Abschluss der Behandlung
             </p>
+            <p className="text-body-text leading-[1.6] mb-2">
+              Die Übertragung erfolgt ausschließlich verschlüsselt (TLS 1.3).
+            </p>
             <p className="text-body-text leading-[1.6]">
-              Hinweis: Die Daten werden über einen verschlüsselten Server (TLS 1.3) verarbeitet. Befunde
-              erscheinen erst nach aktiver Freigabe durch Walters T. Fomuki im Portal.
+              Befunde werden erst nach aktiver Freigabe durch Herrn Fomuki im Portal sichtbar. Die
+              Freigabe eines Befunds wird im Audit-Log mit Zeitstempel protokolliert.
             </p>
           </div>
 
@@ -319,8 +334,9 @@ export default async function DatenschutzPage() {
               Diese Datenschutzerklärung wurde zuletzt aktualisiert am: August 2026
             </p>
             <p className="text-body-text leading-[1.6]">
-              Auftragsverarbeitungsverträge mit den genannten Dienstleistern befinden sich derzeit im
-              Abschlussverfahren.
+              Die Auftragsverarbeitungsverträge mit den genannten technischen Dienstleistern befinden
+              sich derzeit im Abschlussverfahren und werden vor dem produktiven Betrieb des
+              Patientenportals unterzeichnet.
             </p>
           </div>
         </div>

@@ -51,7 +51,7 @@ export async function authRoutes(fastify: FastifyInstance) {
   // POST /api/auth/change-password — authenticated, requires current password
   fastify.post<{ Body: { currentPassword: string; newPassword: string } }>(
     "/api/auth/change-password",
-    { preHandler: [fastify.authenticate] },
+    { preHandler: [fastify.requireStaff] },
     async (request, reply) => {
       const payload = request.user as { staffId: string; role: string };
       const { currentPassword, newPassword } = request.body;
@@ -86,7 +86,7 @@ export async function authRoutes(fastify: FastifyInstance) {
   // POST /api/auth/me  — validate a token and return current user
   fastify.post(
     "/api/auth/me",
-    { preHandler: [fastify.authenticate] },
+    { preHandler: [fastify.requireStaff] },
     async (request, reply) => {
       const payload = request.user as { staffId: string; role: string };
 

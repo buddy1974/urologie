@@ -69,3 +69,13 @@ export async function saveLabComment(id: string, comment: string) {
   if (!res.ok) throw new Error("Failed to save comment");
   return res.json();
 }
+
+export async function updateLabFreigabe(id: string, status: "freigegeben" | "gesperrt", freigegebenVon: string) {
+  const res = await fetch(`${API_BASE}/api/lab/${id}/freigabe`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ status, freigegebenVon }),
+  });
+  if (!res.ok) throw new Error("Failed to update Freigabe status");
+  return res.json();
+}
