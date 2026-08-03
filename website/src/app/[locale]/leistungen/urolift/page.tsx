@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Zap, Check, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { getLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "UroLift® bei BPH",
@@ -8,210 +9,169 @@ export const metadata: Metadata = {
     "UroLift® Behandlung bei benigner Prostatahyperplasie in Neuwied — ambulant, schonend, ohne Gewebsentfernung.",
 };
 
-const steps = [
-  {
-    step: "1",
-    title: "Einführung",
-    desc: "Das UroLift®-System wird zystoskopisch in die Harnröhre eingeführt.",
-    img: "/images/leistung/urolift_schritt_1.png",
-  },
-  {
-    step: "2",
-    title: "Positionierung",
-    desc: "Das Prostatagewebe, das die Harnröhre einengt, wird identifiziert und angehoben.",
-    img: "/images/leistung/urolift_schritt_2.png",
-  },
-  {
-    step: "3",
-    title: "Implantation",
-    desc: "Kleine Implantate halten das Gewebe dauerhaft zur Seite und öffnen die Harnröhre.",
-    img: "/images/leistung/urolift_schritt_3.png",
-  },
-  {
-    step: "4",
-    title: "Ergebnis",
-    desc: "Die Harnröhre ist frei — verbesserter Harnfluss ohne Gewebsentfernung.",
-    img: "/images/leistung/urolift_schritt_4.png",
-  },
-];
+const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
 
-const DOCTOLIB_URL =
-  "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking?speciality_id=1336&utm_source=website";
+const content = {
+  de: {
+    label: "BPH",
+    title: "Urolift® bei benigner Prostatahyperplasie",
+    intro:
+      "Die benigne Prostatahyperplasie oder BPH ist eine Erkrankung, bei der sich die Prostata vergrößert. Sie tritt bei Männern mit steigendem Alter häufig auf. Mehr als 40 % der Männer ab 50 und über 70 % der Männer ab 60 sind von BPH betroffen. BPH ist zwar eine gutartige Erkrankung und hat nichts mit Prostatakrebs zu tun, kann sich aber erheblich auf die Lebensqualität eines Patienten auswirken.",
+    footnote: "Berry, S.J., et al., J Urology 1984; 2018 US Census Bureau International Data Base",
+    subheading1: "Was ist Prostatavergrößerung",
+    body1:
+      "Die Prostata ist eine walnussgroße männliche Fortpflanzungsdrüse, die Flüssigkeit für Samen produziert. Die Prostata umgibt die Harnröhre, d. h. die Röhre, die den Urin aus der Blase aus dem Körper leitet. Die vergrößerte Prostata drückt auf die Harnröhre und verengt diese, was unangenehme Harnsymptome verursacht.",
+    contactLine: "Sprechen Sie uns einfach vertrauensvoll an!",
+    contactRest: " Wir suchen gemeinsam mit Ihnen nach einem Weg, Ihre Beschwerden erfolgreich zu behandeln.",
+    subheading2: "Vorteile",
+    body2:
+      "Angenehme und schonende Therapiemethode (nicht invasiv) — kurze ambulante Behandlungszeit (Dauer pro Sitzung ca. 15 Minuten) — in Alltagskleidung durchführbar.",
+    stepsHeading: "Ablauf des Eingriffs",
+    steps: [
+      { title: "Einführung", desc: "Das UroLift®-System wird zystoskopisch in die Harnröhre eingeführt." },
+      { title: "Positionierung", desc: "Das Prostatagewebe, das die Harnröhre einengt, wird identifiziert und angehoben." },
+      { title: "Implantation", desc: "Kleine Implantate halten das Gewebe dauerhaft zur Seite und öffnen die Harnröhre." },
+      { title: "Ergebnis", desc: "Die Harnröhre ist frei — verbesserter Harnfluss ohne Gewebsentfernung." },
+    ],
+    beforeAfterCaption: "Links: Eingeengte Harnröhre durch BPH · Rechts: Geöffnete Harnröhre nach UroLift®",
+    ctaTitle: "UroLift® in Neuwied",
+    ctaText: "Fomuki berät Sie gerne, ob UroLift® für Ihre Situation geeignet ist. Vereinbaren Sie jetzt einen Termin.",
+    bookLabel: "Online buchen",
+  },
+  en: {
+    label: "BPH",
+    title: "Urolift® for Benign Prostatic Hyperplasia",
+    intro:
+      "Benign prostatic hyperplasia, or BPH, is a condition in which the prostate enlarges. It occurs frequently in men as they age. More than 40% of men aged 50 and over, and more than 70% of men aged 60 and over, are affected by BPH. Although BPH is a benign condition and has nothing to do with prostate cancer, it can significantly affect a patient's quality of life.",
+    footnote: "Berry, S.J., et al., J Urology 1984; 2018 US Census Bureau International Data Base",
+    subheading1: "What is Prostate Enlargement",
+    body1:
+      "The prostate is a walnut-sized male reproductive gland that produces fluid for semen. The prostate surrounds the urethra, the tube that carries urine out of the body from the bladder. The enlarged prostate presses on the urethra and narrows it, causing uncomfortable urinary symptoms.",
+    contactLine: "Simply speak with us in confidence!",
+    contactRest: " Together with you, we will look for a way to successfully treat your symptoms.",
+    subheading2: "Advantages",
+    body2:
+      "Pleasant and gentle therapy method (non-invasive) — short outpatient treatment time (approx. 15 minutes per session) — can be performed while fully clothed.",
+    stepsHeading: "Procedure",
+    steps: [
+      { title: "Introduction", desc: "The UroLift® system is inserted into the urethra cystoscopically." },
+      { title: "Positioning", desc: "The prostate tissue narrowing the urethra is identified and lifted." },
+      { title: "Implantation", desc: "Small implants permanently hold the tissue aside and open the urethra." },
+      { title: "Result", desc: "The urethra is clear — improved urinary flow without tissue removal." },
+    ],
+    beforeAfterCaption: "Left: Urethra narrowed by BPH · Right: Urethra opened after UroLift®",
+    ctaTitle: "UroLift® in Neuwied",
+    ctaText: "Fomuki is happy to advise whether UroLift® is right for your situation. Book an appointment now.",
+    bookLabel: "Book online",
+  },
+  fr: {
+    label: "HBP",
+    title: "Urolift® pour l'hyperplasie bénigne de la prostate",
+    intro:
+      "L'hyperplasie bénigne de la prostate, ou HBP, est une affection dans laquelle la prostate augmente de volume. Elle survient fréquemment chez les hommes à mesure qu'ils vieillissent. Plus de 40 % des hommes à partir de 50 ans et plus de 70 % des hommes à partir de 60 ans sont touchés par l'HBP. Bien que l'HBP soit une affection bénigne et n'ait rien à voir avec le cancer de la prostate, elle peut avoir un impact considérable sur la qualité de vie d'un patient.",
+    footnote: "Berry, S.J., et al., J Urology 1984; 2018 US Census Bureau International Data Base",
+    subheading1: "Qu'est-ce que l'augmentation de la prostate",
+    body1:
+      "La prostate est une glande reproductive masculine de la taille d'une noix qui produit le liquide séminal. La prostate entoure l'urètre, le canal qui évacue l'urine de la vessie hors du corps. La prostate hypertrophiée comprime l'urètre et le rétrécit, ce qui provoque des symptômes urinaires désagréables.",
+    contactLine: "N'hésitez pas à nous en parler en toute confiance !",
+    contactRest: " Ensemble, nous chercherons un moyen de traiter vos symptômes avec succès.",
+    subheading2: "Avantages",
+    body2:
+      "Méthode de thérapie agréable et douce (non invasive) — courte durée de traitement ambulatoire (environ 15 minutes par séance) — réalisable en vêtements de tous les jours.",
+    stepsHeading: "Déroulement de l'intervention",
+    steps: [
+      { title: "Introduction", desc: "Le système UroLift® est introduit dans l'urètre par cystoscopie." },
+      { title: "Positionnement", desc: "Le tissu prostatique qui rétrécit l'urètre est identifié et soulevé." },
+      { title: "Implantation", desc: "De petits implants maintiennent le tissu écarté en permanence et ouvrent l'urètre." },
+      { title: "Résultat", desc: "L'urètre est dégagé — flux urinaire amélioré sans ablation de tissu." },
+    ],
+    beforeAfterCaption: "Gauche : urètre rétréci par l'HBP · Droite : urètre ouvert après UroLift®",
+    ctaTitle: "UroLift® à Neuwied",
+    ctaText: "Fomuki vous conseille volontiers si UroLift® convient à votre situation. Prenez rendez-vous dès maintenant.",
+    bookLabel: "Réserver en ligne",
+  },
+} as const;
 
-export default function UroliftPage() {
+export default async function UroliftPage() {
+  const locale = await getLocale();
+  const c = content[locale as keyof typeof content] ?? content.de;
+
   return (
     <div className="min-h-screen bg-background">
-
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <Image
-          src="/images/pics/header_leistungen_01.jpg"
-          alt="UroLift BPH Behandlung Neuwied"
-          fill
-          className="object-cover opacity-20"
-          priority
-        />
-        <div className="relative z-10 bg-hero noise pt-36 pb-24 px-6" style={{ minHeight: "380px" }}>
-          <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px]" />
-          <div className="relative z-10 max-w-4xl mx-auto text-center">
-            <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-gradient shadow-glow mx-auto mb-6">
-              <Zap size={30} className="text-primary-foreground" />
-            </div>
-            <div className="text-xs uppercase tracking-widest text-accent mb-4">Leistungen</div>
-            <h1 className="font-display text-5xl md:text-6xl text-foreground mb-6">UroLift® bei BPH</h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Schonende, ambulante Behandlung der gutartigen Prostatavergrößerung — ohne Schnitt, ohne Wärme.
-            </p>
-          </div>
+      <section className="bg-primary-dark flex items-center justify-center text-center px-4 py-16 md:h-[280px]">
+        <div>
+          <p className="text-primary text-[16px] font-bold uppercase tracking-wide mb-3">{c.label}</p>
+          <h1 className="text-white text-[36px] font-bold">{c.title}</h1>
         </div>
       </section>
 
-      {/* Info cards */}
-      <section className="py-16 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-
-            <div className="glass rounded-3xl p-8">
-              <h2 className="font-display text-2xl text-foreground mb-6">Was ist UroLift®?</h2>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                UroLift® ist ein minimalinvasives Verfahren zur Behandlung der benignen
-                Prostatahyperplasie (BPH) — einer gutartigen Vergrößerung der Prostata, die
-                zu Problemen beim Wasserlassen führen kann.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                Kleine Implantate halten das Prostatagewebe dauerhaft zur Seite und öffnen
-                so die Harnröhre — ohne Schnitt, ohne Wärme, ohne Entfernung von Gewebe.
-                Der Eingriff wird ambulant in unserer Praxis durchgeführt.
-              </p>
+      <div className="container py-[60px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start mb-10">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="relative aspect-square rounded-md overflow-hidden bg-muted col-span-2">
+              <Image src="/assets/anatomie_prostate.png" alt="Anatomie Prostata" fill className="object-contain p-2" />
             </div>
-
-            <div className="glass rounded-3xl p-8">
-              <h2 className="font-display text-2xl text-foreground mb-6">Vorteile</h2>
-              <div className="space-y-3">
-                {[
-                  "Ambulanter Eingriff — kein Krankenhausaufenthalt",
-                  "Keine Vollnarkose erforderlich",
-                  "Schnelle Erholung — meist gleicher Tag",
-                  "Erhalt der Sexualfunktion",
-                  "Langanhaltende Wirkung",
-                  "Keine tägliche Medikamenteneinnahme",
-                  "Kein Gewebsverlust — umkehrbar",
-                ].map((v) => (
-                  <div key={v} className="flex items-center gap-3">
-                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary-gradient shadow-glow flex-shrink-0">
-                      <Check size={11} className="text-primary-foreground" strokeWidth={3} />
-                    </div>
-                    <span className="text-muted-foreground text-sm">{v}</span>
-                  </div>
-                ))}
-              </div>
+            <div className="relative aspect-square rounded-md overflow-hidden bg-muted">
+              <Image src="/assets/implantat.png" alt="Implantat" fill className="object-contain p-2" />
+            </div>
+            <div className="relative aspect-square rounded-md overflow-hidden bg-muted">
+              <Image src="/assets/vor_und_nach.png" alt={c.beforeAfterCaption} fill className="object-contain p-2" />
             </div>
           </div>
 
-          {/* Before / After */}
-          <div className="glass rounded-3xl p-8 mb-10">
-            <h2 className="font-display text-2xl text-foreground mb-6">Vorher / Nachher</h2>
-            <div className="relative w-full rounded-2xl overflow-hidden" style={{ aspectRatio: "16/7" }}>
-              <Image
-                src="/images/leistung/urolift_vor_nach.png"
-                alt="UroLift Vorher Nachher Vergleich"
-                fill
-                className="object-contain"
-              />
-            </div>
-            <p className="text-muted-foreground text-sm text-center mt-4">
-              Links: Eingeengte Harnröhre durch BPH · Rechts: Geöffnete Harnröhre nach UroLift®
+          <div>
+            <p className="text-body-text leading-[1.6] mb-2">{c.intro}</p>
+            <p className="text-[11px] text-body-text/60 mb-6">{c.footnote}</p>
+
+            <h3>{c.subheading1}</h3>
+            <p className="text-body-text leading-[1.6] mt-2 mb-6">{c.body1}</p>
+
+            <p className="text-body-text leading-[1.6] mb-6">
+              <Link href="/kontakt" className="font-bold">{c.contactLine}</Link>
+              {c.contactRest}
             </p>
-          </div>
 
-          {/* Anatomy */}
-          <div className="glass rounded-3xl p-8 mb-10">
-            <h2 className="font-display text-2xl text-foreground mb-6">Anatomie &amp; Implantat</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="relative rounded-2xl overflow-hidden bg-white/5" style={{ aspectRatio: "4/3" }}>
-                <Image
-                  src="/images/leistung/anatomie_prostate.png"
-                  alt="Anatomie Prostata bei BPH"
-                  fill
-                  className="object-contain p-4"
-                />
-              </div>
-              <div className="relative rounded-2xl overflow-hidden bg-white/5" style={{ aspectRatio: "4/3" }}>
-                <Image
-                  src="/images/leistung/implantat.png"
-                  alt="UroLift Implantat"
-                  fill
-                  className="object-contain p-4"
-                />
-              </div>
-            </div>
+            <h3>{c.subheading2}</h3>
+            <p className="text-body-text leading-[1.6] mt-2">{c.body2}</p>
           </div>
         </div>
-      </section>
 
-      {/* Procedure Steps */}
-      <section className="pb-16 px-6">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="font-display text-3xl text-foreground mb-8 text-center">
-            Ablauf des Eingriffs
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {steps.map((s) => (
-              <div key={s.step} className="glass rounded-2xl overflow-hidden hover:-translate-y-1 hover:shadow-glow transition-all duration-300">
-                <div className="relative" style={{ aspectRatio: "4/3" }}>
-                  <Image
-                    src={s.img}
-                    alt={`UroLift Schritt ${s.step}: ${s.title}`}
-                    fill
-                    className="object-contain bg-white/5 p-3"
-                  />
-                  <div className="absolute top-2 left-2 w-7 h-7 rounded-full bg-primary-gradient flex items-center justify-center shadow-glow">
-                    <span className="text-xs font-bold text-primary-foreground">{s.step}</span>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <p className="font-semibold text-foreground text-sm mb-1">{s.title}</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
+        <div className="trenner" />
+
+        <h2 className="text-center mb-8">{c.stepsHeading}</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          {c.steps.map((s, i) => (
+            <div key={s.title} className="border border-[#e5e5e5] rounded-md overflow-hidden">
+              <div className="relative aspect-[4/3] bg-muted">
+                <Image
+                  src={`/assets/schritt_${i + 1}.png`}
+                  alt={`${c.stepsHeading} ${i + 1}: ${s.title}`}
+                  fill
+                  className="object-contain p-3"
+                />
+                <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                  <span className="text-xs font-bold text-white">{i + 1}</span>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="pb-24 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="relative overflow-hidden glass-strong rounded-[2rem] p-10 text-center shadow-elegant">
-            <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-64 w-64 rounded-full bg-primary/20 blur-[80px]" />
-            <div className="relative">
-              <h3 className="font-display text-3xl text-foreground mb-3">UroLift® in Neuwied</h3>
-              <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-                Fomuki berät Sie gerne, ob UroLift® für Ihre Situation geeignet ist.
-                Vereinbaren Sie jetzt einen Termin.
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-4">
-                <a
-                  href={DOCTOLIB_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-primary-gradient px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105"
-                >
-                  Online buchen
-                  <ArrowRight size={14} />
-                </a>
-                <a
-                  href="tel:+49263123351"
-                  className="inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 text-sm font-semibold text-foreground hover:bg-white/10 transition-all"
-                >
-                  02631 - 23351
-                </a>
+              <div className="p-4">
+                <p className="font-bold text-body-text text-sm mb-1">{s.title}</p>
+                <p className="text-xs text-body-text/80 leading-[1.6]">{s.desc}</p>
               </div>
             </div>
-          </div>
+          ))}
         </div>
-      </section>
+        <p className="text-body-text/70 text-sm text-center mb-16">{c.beforeAfterCaption}</p>
 
+        <div className="trenner" />
+
+        <div className="text-center">
+          <h3 className="mb-3">{c.ctaTitle}</h3>
+          <p className="text-body-text leading-[1.6] max-w-xl mx-auto mb-6">{c.ctaText}</p>
+          <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" className="btn-doctolib">
+            {c.bookLabel}
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

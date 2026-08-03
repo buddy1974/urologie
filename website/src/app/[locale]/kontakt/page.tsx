@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { useLocale } from "next-intl";
 import {
   Phone,
   Printer,
@@ -13,13 +14,229 @@ import {
   Accessibility,
 } from "lucide-react";
 
-const hours = [
-  { day: "Montag", hours: "08:00–12:00 Uhr, 14:00–17:00 Uhr" },
-  { day: "Dienstag", hours: "08:00–12:00 Uhr, 14:00–17:00 Uhr" },
-  { day: "Mittwoch", hours: "08:00–12:00 Uhr" },
-  { day: "Donnerstag", hours: "08:00–12:00 Uhr, 14:00–17:00 Uhr" },
-  { day: "Freitag", hours: "08:00–12:00 Uhr" },
-];
+const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
+
+type Locale = "de" | "en" | "fr";
+
+type Day = { day: string; hours: string };
+
+type Content = {
+  heroLabel: string;
+  heroTitle: string;
+  heroText: string;
+  kontaktdaten: string;
+  adresse: string;
+  telefonLabel: string;
+  faxLabel: string;
+  barrierefreiheit: string;
+  barrierefreiheitText: string;
+  onlineBuchen: string;
+  jetztBuchen: string;
+  sprechstunden: string;
+  ausserhalb: string;
+  anfahrtTitle: string;
+  anfahrtBahn: string;
+  anfahrtAuto: string;
+  formTitle: string;
+  formSubtitle: string;
+  labelAnrede: string;
+  labelVorname: string;
+  labelNachname: string;
+  labelTelefon: string;
+  labelEmail: string;
+  labelNachricht: string;
+  placeholderVorname: string;
+  placeholderNachname: string;
+  placeholderTelefon: string;
+  placeholderEmail: string;
+  placeholderNachricht: string;
+  requiredNote: string;
+  privacyNote: string;
+  sending: string;
+  send: string;
+  successTitle: string;
+  successText: string;
+  sendAnother: string;
+  errorGeneric: string;
+  errorNetwork: string;
+  days: Day[];
+  optionKeine: string;
+  optionHerr: string;
+  optionFrau: string;
+  optionDr: string;
+  optionProf: string;
+};
+
+const content: Record<Locale, Content> = {
+  de: {
+    heroLabel: "Kontakt & Anfahrt",
+    heroTitle: "Kontakt zur Urologischen Praxis Neuwied",
+    heroText:
+      "Sie haben Fragen oder wünschen weitere Informationen? Dann rufen Sie uns an oder schreiben Sie uns über unser Kontaktformular. Wir freuen uns auf Sie!",
+    kontaktdaten: "Kontaktdaten",
+    adresse: "Adresse",
+    telefonLabel: "Telefon",
+    faxLabel: "Fax",
+    barrierefreiheit: "Barrierefreiheit",
+    barrierefreiheitText: "Rollstuhlgerecht · Aufzug vorhanden",
+    onlineBuchen: "Termin bequem online buchen:",
+    jetztBuchen: "Jetzt Termin buchen",
+    sprechstunden: "Sprechstunden",
+    ausserhalb: "Außerhalb der Sprechzeiten: Bitte rufen Sie uns an oder buchen Sie online.",
+    anfahrtTitle: "So finden Sie den Weg zu uns nach Neuwied",
+    anfahrtBahn:
+      "Die Urologie Neuwied liegt etwa 2 km vom Neuwieder Bahnhof entfernt. Dort bestehen Anbindungen der Regionalbahnen, und das Bahnhofsgelände ist zugleich Haltepunkt diverser lokaler und regionaler Buslinien. Vom Bahnhof aus erreichen Sie uns beispielsweise mit dem Taxi in wenigen Minuten.",
+    anfahrtAuto:
+      "Natürlich können Sie auch mit dem eigenen Fahrzeug anreisen. Sie erreichen uns in der Dierdorfer Straße 115–117 über die Andernacher Straße. Kostenfreie Parkplätze befinden sich hinter dem Haus, an der Straße vor der Praxis sowie in den Nebenstraßen in unmittelbarer Nähe.",
+    formTitle: "Kontaktformular",
+    formSubtitle: "Schreiben Sie uns — wir antworten schnellstmöglich.",
+    labelAnrede: "Anrede",
+    labelVorname: "Vorname",
+    labelNachname: "Nachname",
+    labelTelefon: "Telefonnummer",
+    labelEmail: "E-Mail-Adresse",
+    labelNachricht: "Ihre Nachricht",
+    placeholderVorname: "Max",
+    placeholderNachname: "Mustermann",
+    placeholderTelefon: "02631 12345",
+    placeholderEmail: "max@beispiel.de",
+    placeholderNachricht: "Ihr Anliegen...",
+    requiredNote: "Mit * gekennzeichnete Felder sind Pflichtangaben",
+    privacyNote:
+      "Ihre Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet und nicht an Dritte weitergegeben.",
+    sending: "Wird gesendet…",
+    send: "Nachricht abschicken",
+    successTitle: "Nachricht gesendet!",
+    successText: "Vielen Dank für Ihre Anfrage. Wir melden uns in Kürze bei Ihnen.",
+    sendAnother: "Weitere Nachricht senden",
+    errorGeneric: "Ein Fehler ist aufgetreten.",
+    errorNetwork: "Netzwerkfehler. Bitte versuchen Sie es erneut.",
+    days: [
+      { day: "Montag", hours: "08:00–12:00 Uhr, 14:00–17:00 Uhr" },
+      { day: "Dienstag", hours: "08:00–12:00 Uhr, 14:00–17:00 Uhr" },
+      { day: "Mittwoch", hours: "08:00–12:00 Uhr" },
+      { day: "Donnerstag", hours: "08:00–12:00 Uhr, 14:00–17:00 Uhr" },
+      { day: "Freitag", hours: "08:00–12:00 Uhr" },
+    ],
+    optionKeine: "–",
+    optionHerr: "Herr",
+    optionFrau: "Frau",
+    optionDr: "Dr.",
+    optionProf: "Prof.",
+  },
+  en: {
+    heroLabel: "Contact & Directions",
+    heroTitle: "Contact the Urology Practice Neuwied",
+    heroText:
+      "Do you have questions or would you like more information? Then call us or write to us via our Contact Form. We look forward to seeing you!",
+    kontaktdaten: "Contact Details",
+    adresse: "Address",
+    telefonLabel: "Phone",
+    faxLabel: "Fax",
+    barrierefreiheit: "Accessibility",
+    barrierefreiheitText: "Wheelchair-accessible · Elevator available",
+    onlineBuchen: "Book your appointment conveniently online:",
+    jetztBuchen: "Book Appointment Now",
+    sprechstunden: "Office Hours",
+    ausserhalb: "Outside office hours: please call us or book online.",
+    anfahrtTitle: "How to find your way to us in Neuwied",
+    anfahrtBahn:
+      "Urologie Neuwied is located around 2 km from Neuwied train station, which has regional rail connections and is also served by various local and regional bus lines. From the station, you can reach us by taxi in just a few minutes.",
+    anfahrtAuto:
+      "Of course, you're also welcome to arrive by car. You can reach us at Dierdorfer Straße 115–117 via Andernacher Straße. Free parking is available behind the building, on the street in front of the practice, and on the side streets nearby.",
+    formTitle: "Contact Form",
+    formSubtitle: "Write to us — we'll reply as soon as possible.",
+    labelAnrede: "Salutation",
+    labelVorname: "First Name",
+    labelNachname: "Last Name",
+    labelTelefon: "Phone Number",
+    labelEmail: "Email Address",
+    labelNachricht: "Your Message",
+    placeholderVorname: "John",
+    placeholderNachname: "Doe",
+    placeholderTelefon: "02631 12345",
+    placeholderEmail: "john@example.com",
+    placeholderNachricht: "Your message...",
+    requiredNote: "Fields marked with * are required",
+    privacyNote:
+      "Your data will only be used to process your request and will not be shared with third parties.",
+    sending: "Sending…",
+    send: "Send Message",
+    successTitle: "Message sent!",
+    successText: "Thank you for your inquiry. We will get back to you shortly.",
+    sendAnother: "Send another message",
+    errorGeneric: "An error occurred.",
+    errorNetwork: "Network error. Please try again.",
+    days: [
+      { day: "Monday", hours: "08:00–12:00, 14:00–17:00" },
+      { day: "Tuesday", hours: "08:00–12:00, 14:00–17:00" },
+      { day: "Wednesday", hours: "08:00–12:00" },
+      { day: "Thursday", hours: "08:00–12:00, 14:00–17:00" },
+      { day: "Friday", hours: "08:00–12:00" },
+    ],
+    optionKeine: "–",
+    optionHerr: "Mr.",
+    optionFrau: "Mrs.",
+    optionDr: "Dr.",
+    optionProf: "Prof.",
+  },
+  fr: {
+    heroLabel: "Contact & Accès",
+    heroTitle: "Contact avec le Cabinet d'urologie de Neuwied",
+    heroText:
+      "Vous avez des questions ou souhaitez plus d'informations ? Appelez-nous ou écrivez-nous via notre formulaire de contact. Nous nous réjouissons de vous accueillir !",
+    kontaktdaten: "Coordonnées",
+    adresse: "Adresse",
+    telefonLabel: "Téléphone",
+    faxLabel: "Fax",
+    barrierefreiheit: "Accessibilité",
+    barrierefreiheitText: "Accès fauteuil roulant · Ascenseur disponible",
+    onlineBuchen: "Prenez rendez-vous facilement en ligne :",
+    jetztBuchen: "Prendre rendez-vous",
+    sprechstunden: "Heures de consultation",
+    ausserhalb: "En dehors des heures de consultation : appelez-nous ou réservez en ligne.",
+    anfahrtTitle: "Comment nous trouver à Neuwied",
+    anfahrtBahn:
+      "Urologie Neuwied se trouve à environ 2 km de la gare de Neuwied, desservie par les trains régionaux et par plusieurs lignes de bus locales et régionales. Depuis la gare, vous pouvez nous rejoindre en taxi en quelques minutes seulement.",
+    anfahrtAuto:
+      "Vous pouvez bien sûr venir également en voiture. Vous nous trouverez au Dierdorfer Straße 115–117, accessible via l'Andernacher Straße. Des places de stationnement gratuites sont disponibles derrière le bâtiment, dans la rue devant le cabinet, ainsi que dans les rues avoisinantes.",
+    formTitle: "Formulaire de contact",
+    formSubtitle: "Écrivez-nous — nous répondrons le plus rapidement possible.",
+    labelAnrede: "Civilité",
+    labelVorname: "Prénom",
+    labelNachname: "Nom",
+    labelTelefon: "Numéro de téléphone",
+    labelEmail: "Adresse e-mail",
+    labelNachricht: "Votre message",
+    placeholderVorname: "Jean",
+    placeholderNachname: "Dupont",
+    placeholderTelefon: "02631 12345",
+    placeholderEmail: "jean@exemple.fr",
+    placeholderNachricht: "Votre message...",
+    requiredNote: "Les champs marqués d'un * sont obligatoires",
+    privacyNote:
+      "Vos données seront utilisées uniquement pour traiter votre demande et ne seront pas transmises à des tiers.",
+    sending: "Envoi en cours…",
+    send: "Envoyer le message",
+    successTitle: "Message envoyé !",
+    successText: "Merci pour votre demande. Nous vous répondrons sous peu.",
+    sendAnother: "Envoyer un autre message",
+    errorGeneric: "Une erreur est survenue.",
+    errorNetwork: "Erreur réseau. Veuillez réessayer.",
+    days: [
+      { day: "Lundi", hours: "08:00–12:00, 14:00–17:00" },
+      { day: "Mardi", hours: "08:00–12:00, 14:00–17:00" },
+      { day: "Mercredi", hours: "08:00–12:00" },
+      { day: "Jeudi", hours: "08:00–12:00, 14:00–17:00" },
+      { day: "Vendredi", hours: "08:00–12:00" },
+    ],
+    optionKeine: "–",
+    optionHerr: "M.",
+    optionFrau: "Mme",
+    optionDr: "Dr.",
+    optionProf: "Prof.",
+  },
+};
 
 type FormState = {
   anrede: string;
@@ -40,6 +257,9 @@ const INITIAL: FormState = {
 };
 
 export default function KontaktPage() {
+  const locale = useLocale() as Locale;
+  const c = content[locale] ?? content.de;
+
   const [form, setForm] = useState<FormState>(INITIAL);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -64,353 +284,294 @@ export default function KontaktPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setErrorMsg(data.error ?? "Ein Fehler ist aufgetreten.");
+        setErrorMsg(data.error ?? c.errorGeneric);
         setStatus("error");
         return;
       }
       setStatus("success");
       setForm(INITIAL);
     } catch {
-      setErrorMsg("Netzwerkfehler. Bitte versuchen Sie es erneut.");
+      setErrorMsg(c.errorNetwork);
       setStatus("error");
     }
   }
 
   const charCount = form.nachricht.length;
+  const inputClass =
+    "w-full rounded-md px-4 py-3 text-sm text-body-text bg-white border border-[#e5e5e5] focus:border-primary focus:outline-none transition-colors placeholder:text-body-text/40";
 
   return (
-    <div className="min-h-screen bg-background">
-
+    <div className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="relative bg-hero noise overflow-hidden pt-36 pb-24 px-6">
-        <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px]" />
-        <div className="pointer-events-none absolute bottom-0 right-0 h-80 w-80 rounded-full bg-accent/20 blur-[120px]" />
-        <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center glass rounded-full px-4 py-1.5 text-xs uppercase tracking-widest text-accent mb-6">
-            Kontakt &amp; Anfahrt
+      <section className="bg-primary-dark flex items-center justify-center text-center px-4 py-16 md:h-[280px]">
+        <div className="max-w-2xl">
+          <div className="text-primary text-[14px] font-bold uppercase tracking-[2px] mb-3">
+            {c.heroLabel}
           </div>
-          <h1 className="font-display text-5xl md:text-6xl leading-tight text-foreground mb-6">
-            Wir sind <span className="text-gradient italic">für Sie da</span>
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Erreichen Sie uns telefonisch, per Fax, über das Kontaktformular oder buchen Sie
-            Ihren Termin bequem online über Doctolib.
-          </p>
+          <h1 className="text-white text-[36px] font-bold leading-tight mb-3">{c.heroTitle}</h1>
+          <p className="text-white/85 text-[16px]">{c.heroText}</p>
         </div>
       </section>
 
       {/* Content */}
-      <section className="py-24 px-6">
-        <div className="max-w-7xl mx-auto space-y-8">
-
-          {/* Top grid: contact info + hours + map */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
-            {/* Left — Contact Info + Hours */}
-            <div className="space-y-6">
-
-              {/* Contact card */}
-              <div className="glass rounded-3xl overflow-hidden">
-                <div className="h-1 w-full bg-primary-gradient" />
-                <div className="p-8">
-                  <h2 className="font-display text-2xl text-foreground mb-8">Kontaktdaten</h2>
-                  <div className="space-y-6">
-                    <div className="flex items-start gap-4">
-                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow flex-shrink-0">
-                        <MapPin size={16} className="text-primary-foreground" />
-                      </div>
-                      <div>
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Adresse</p>
-                        <p className="text-foreground font-medium">Dierdorfer Str. 115–117</p>
-                        <p className="text-foreground font-medium">56564 Neuwied</p>
-                      </div>
+      <div className="container py-[60px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Left — Contact Info + Hours */}
+          <div className="space-y-6">
+            <div className="border border-[#e5e5e5] rounded-md overflow-hidden">
+              <div className="p-8">
+                <h2 className="text-body-text mb-8">{c.kontaktdaten}</h2>
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4">
+                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-primary flex-shrink-0">
+                      <MapPin size={16} className="text-white" />
                     </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow flex-shrink-0">
-                        <Phone size={16} className="text-primary-foreground" />
-                      </div>
-                      <div>
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Telefon</p>
-                        <a href="tel:+49263123351" className="text-foreground font-medium hover:text-accent transition-colors text-lg">
-                          02631 - 23351
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow flex-shrink-0">
-                        <Printer size={16} className="text-primary-foreground" />
-                      </div>
-                      <div>
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Fax</p>
-                        <p className="text-foreground font-medium">02631 - 941845</p>
-                      </div>
-                    </div>
-
-                    {/* Accessibility */}
-                    <div className="flex items-start gap-4">
-                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow flex-shrink-0">
-                        <Accessibility size={16} className="text-primary-foreground" />
-                      </div>
-                      <div>
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Barrierefreiheit</p>
-                        <p className="text-foreground font-medium">Rollstuhlgerecht · Aufzug vorhanden</p>
-                      </div>
+                    <div>
+                      <p className="text-xs font-semibold text-body-text/60 uppercase tracking-wider mb-1">
+                        {c.adresse}
+                      </p>
+                      <p className="text-body-text font-medium">Dierdorfer Str. 115–117</p>
+                      <p className="text-body-text font-medium">56564 Neuwied</p>
                     </div>
                   </div>
 
-                  <div className="mt-8 pt-6 border-t border-white/5">
-                    <p className="text-sm text-muted-foreground mb-4">Termin bequem online buchen:</p>
-                    <a
-                      href="https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking?speciality_id=1336"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full bg-primary-gradient px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105"
-                    >
-                      Jetzt Termin buchen
-                      <ExternalLink size={13} />
-                    </a>
+                  <div className="flex items-start gap-4">
+                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-primary flex-shrink-0">
+                      <Phone size={16} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-body-text/60 uppercase tracking-wider mb-1">
+                        {c.telefonLabel}
+                      </p>
+                      <a href="tel:+49263123351" className="text-body-text font-medium hover:text-primary transition-colors text-lg">
+                        02631 - 23351
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-primary flex-shrink-0">
+                      <Printer size={16} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-body-text/60 uppercase tracking-wider mb-1">{c.faxLabel}</p>
+                      <p className="text-body-text font-medium">02631 - 941845</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-primary flex-shrink-0">
+                      <Accessibility size={16} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-body-text/60 uppercase tracking-wider mb-1">
+                        {c.barrierefreiheit}
+                      </p>
+                      <p className="text-body-text font-medium">{c.barrierefreiheitText}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Hours card */}
-              <div className="glass rounded-3xl overflow-hidden">
-                <div className="h-1 w-full bg-primary-gradient" />
-                <div className="p-8">
-                  <h2 className="font-display text-2xl text-foreground mb-6 flex items-center gap-3">
-                    <Clock size={20} className="text-accent" />
-                    Sprechstunden
-                  </h2>
-                  <div className="space-y-3">
-                    {hours.map(({ day, hours: h }) => (
-                      <div key={day} className="flex justify-between items-center py-2.5 border-b border-white/5 last:border-0">
-                        <span className="font-medium text-foreground w-28">{day}</span>
-                        <span className="text-muted-foreground text-sm text-right">{h}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-4 glass rounded-2xl px-4 py-3 text-sm border-accent/20">
-                    <p className="text-accent font-medium">
-                      📞 Außerhalb der Sprechzeiten: Bitte rufen Sie uns an oder buchen Sie online.
-                    </p>
-                  </div>
+                <div className="mt-8 pt-6 border-t border-[#e5e5e5]">
+                  <p className="text-sm text-body-text/70 mb-4">{c.onlineBuchen}</p>
+                  <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" className="btn-doctolib inline-flex items-center gap-2">
+                    {c.jetztBuchen}
+                    <ExternalLink size={13} />
+                  </a>
                 </div>
               </div>
             </div>
 
-            {/* Right — Map + Directions */}
-            <div className="space-y-6">
-              <div className="glass rounded-3xl overflow-hidden" style={{ minHeight: "400px" }}>
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2541.0419331261096!2d7.470150976828824!3d50.440319588092734!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47be8a0ab01c0a65%3A0xc9a8fa9d6dcf0e64!2sDierdorfer%20Str.%20115%2C%2056564%20Neuwied!5e0!3m2!1sen!2sde!4v1777716475779!5m2!1sen!2sde"
-                  width="100%"
-                  height="400"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Urologie Neuwied Standort"
-                  className="opacity-90"
-                />
-              </div>
-
-              <div className="glass rounded-3xl p-8">
-                <h3 className="font-display text-xl text-foreground mb-5">Anfahrt</h3>
-                <div className="space-y-3 text-sm text-muted-foreground">
-                  <p><span className="font-semibold text-foreground">🚗 Auto:</span> Parkplätze direkt vor der Praxis vorhanden</p>
-                  <p><span className="font-semibold text-foreground">🚌 Bus:</span> Haltestelle Dierdorfer Straße (Linien 5, 12)</p>
-                  <p><span className="font-semibold text-foreground">🚂 Bahn:</span> Bahnhof Neuwied — ca. 10 Min. mit dem Bus</p>
-                  <p><span className="font-semibold text-foreground">♿ Zugang:</span> Rollstuhlgerechter Eingang · Aufzug im Gebäude</p>
+            <div className="border border-[#e5e5e5] rounded-md overflow-hidden">
+              <div className="p-8">
+                <h2 className="text-body-text mb-6 flex items-center gap-3">
+                  <Clock size={18} className="text-primary" />
+                  {c.sprechstunden}
+                </h2>
+                <div className="space-y-3">
+                  {c.days.map(({ day, hours }) => (
+                    <div key={day} className="flex justify-between items-center py-2.5 border-b border-[#e5e5e5] last:border-0">
+                      <span className="font-medium text-body-text w-28">{day}</span>
+                      <span className="text-body-text/70 text-sm text-right">{hours}</span>
+                    </div>
+                  ))}
                 </div>
-                <a
-                  href="https://maps.google.com/?q=Dierdorfer+Str.+115,+56564+Neuwied"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-5 text-sm font-semibold text-accent hover:text-foreground transition-colors"
-                >
-                  In Google Maps öffnen
-                  <ExternalLink size={13} />
-                </a>
+                <div className="mt-4 bg-muted rounded-md px-4 py-3 text-sm">
+                  <p className="text-primary-dark font-medium">📞 {c.ausserhalb}</p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="glass rounded-3xl overflow-hidden">
-            <div className="h-1 w-full bg-primary-gradient" />
-            <div className="p-8 md:p-12">
-              <h2 className="font-display text-2xl text-foreground mb-2">Kontaktformular</h2>
-              <p className="text-muted-foreground text-sm mb-8">
-                Schreiben Sie uns — wir antworten schnellstmöglich.
-              </p>
+          {/* Right — Map + Directions */}
+          <div className="space-y-6">
+            <div className="border border-[#e5e5e5] rounded-md overflow-hidden" style={{ minHeight: "400px" }}>
+              <iframe
+                src="https://www.openstreetmap.org/export/embed.html?bbox=7.4602%2C50.4236%2C7.4702%2C50.4336&layer=mapnik&marker=50.4286%2C7.4652"
+                style={{ width: "100%", height: "400px", border: 0 }}
+                loading="lazy"
+                title="Urologie Neuwied Standort"
+              />
+            </div>
 
-              {status === "success" ? (
-                <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <CheckCircle size={56} className="text-accent mb-6" />
-                  <h3 className="font-display text-2xl text-foreground mb-3">
-                    Nachricht gesendet!
-                  </h3>
-                  <p className="text-muted-foreground max-w-sm mb-8">
-                    Vielen Dank für Ihre Anfrage. Wir melden uns in Kürze bei Ihnen.
-                  </p>
-                  <button
-                    onClick={() => setStatus("idle")}
-                    className="rounded-full glass px-6 py-2.5 text-sm font-semibold text-foreground hover:bg-white/10 transition-all"
-                  >
-                    Weitere Nachricht senden
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} noValidate className="space-y-6">
+            <div className="border border-[#e5e5e5] rounded-md p-8">
+              <h3 className="text-body-text mb-5">{c.anfahrtTitle}</h3>
+              <div className="space-y-3 text-sm text-body-text/80 leading-relaxed">
+                <p>{c.anfahrtBahn}</p>
+                <p>{c.anfahrtAuto}</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                  {/* Error banner */}
-                  {status === "error" && (
-                    <div className="flex items-start gap-3 glass rounded-2xl px-4 py-3 border border-red-400/30 text-red-400">
-                      <AlertCircle size={18} className="flex-shrink-0 mt-0.5" />
-                      <p className="text-sm">{errorMsg}</p>
-                    </div>
-                  )}
+        <div className="trenner" />
 
-                  {/* Row 1: Anrede + Name */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                        Anrede
-                      </label>
-                      <select
-                        name="anrede"
-                        value={form.anrede}
-                        onChange={handleChange}
-                        className="w-full glass rounded-xl px-4 py-3 text-sm text-foreground bg-transparent border border-white/10 focus:border-accent/50 focus:outline-none transition-colors"
-                      >
-                        <option value="keine">–</option>
-                        <option value="Herr">Herr</option>
-                        <option value="Frau">Frau</option>
-                        <option value="Dr.">Dr.</option>
-                        <option value="Prof.">Prof.</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                        Vorname <span className="text-red-400">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="vorname"
-                        value={form.vorname}
-                        onChange={handleChange}
-                        required
-                        autoComplete="given-name"
-                        placeholder="Max"
-                        className="w-full glass rounded-xl px-4 py-3 text-sm text-foreground bg-transparent border border-white/10 focus:border-accent/50 focus:outline-none transition-colors placeholder:text-muted-foreground/40"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                        Nachname <span className="text-red-400">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="nachname"
-                        value={form.nachname}
-                        onChange={handleChange}
-                        required
-                        autoComplete="family-name"
-                        placeholder="Mustermann"
-                        className="w-full glass rounded-xl px-4 py-3 text-sm text-foreground bg-transparent border border-white/10 focus:border-accent/50 focus:outline-none transition-colors placeholder:text-muted-foreground/40"
-                      />
-                    </div>
+        {/* Contact Form */}
+        <div className="border border-[#e5e5e5] rounded-md overflow-hidden">
+          <div className="p-8 md:p-12">
+            <h2 className="text-body-text mb-2">{c.formTitle}</h2>
+            <p className="text-body-text/70 text-sm mb-8">{c.formSubtitle}</p>
+
+            {status === "success" ? (
+              <div className="flex flex-col items-center justify-center py-16 text-center">
+                <CheckCircle size={56} className="text-primary mb-6" />
+                <h3 className="text-body-text mb-3">{c.successTitle}</h3>
+                <p className="text-body-text/70 max-w-sm mb-8">{c.successText}</p>
+                <button onClick={() => setStatus("idle")} className="btn-primary">
+                  {c.sendAnother}
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} noValidate className="space-y-6">
+                {status === "error" && (
+                  <div className="flex items-start gap-3 rounded-md px-4 py-3 border border-red-300 bg-red-50 text-red-600">
+                    <AlertCircle size={18} className="flex-shrink-0 mt-0.5" />
+                    <p className="text-sm">{errorMsg}</p>
                   </div>
+                )}
 
-                  {/* Row 2: Telefon + Email */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                        Telefon <span className="text-red-400">*</span>
-                      </label>
-                      <input
-                        type="tel"
-                        name="telefon"
-                        value={form.telefon}
-                        onChange={handleChange}
-                        required
-                        autoComplete="tel"
-                        placeholder="02631 12345"
-                        className="w-full glass rounded-xl px-4 py-3 text-sm text-foreground bg-transparent border border-white/10 focus:border-accent/50 focus:outline-none transition-colors placeholder:text-muted-foreground/40"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                        E-Mail <span className="text-red-400">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={form.email}
-                        onChange={handleChange}
-                        required
-                        autoComplete="email"
-                        placeholder="max@beispiel.de"
-                        className="w-full glass rounded-xl px-4 py-3 text-sm text-foreground bg-transparent border border-white/10 focus:border-accent/50 focus:outline-none transition-colors placeholder:text-muted-foreground/40"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Nachricht */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                        Nachricht <span className="text-red-400">*</span>
-                      </label>
-                      <span className={`text-xs ${charCount > 1800 ? "text-red-400" : "text-muted-foreground"}`}>
-                        {charCount}/2000
-                      </span>
-                    </div>
-                    <textarea
-                      name="nachricht"
-                      value={form.nachricht}
+                    <label className="block text-xs font-semibold text-body-text/60 uppercase tracking-wider mb-2">
+                      {c.labelAnrede}
+                    </label>
+                    <select name="anrede" value={form.anrede} onChange={handleChange} className={inputClass}>
+                      <option value="keine">{c.optionKeine}</option>
+                      <option value="Herr">{c.optionHerr}</option>
+                      <option value="Frau">{c.optionFrau}</option>
+                      <option value="Dr.">{c.optionDr}</option>
+                      <option value="Prof.">{c.optionProf}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-body-text/60 uppercase tracking-wider mb-2">
+                      {c.labelVorname} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="vorname"
+                      value={form.vorname}
                       onChange={handleChange}
                       required
-                      rows={6}
-                      maxLength={2000}
-                      placeholder="Ihr Anliegen..."
-                      className="w-full glass rounded-xl px-4 py-3 text-sm text-foreground bg-transparent border border-white/10 focus:border-accent/50 focus:outline-none transition-colors placeholder:text-muted-foreground/40 resize-none"
+                      autoComplete="given-name"
+                      placeholder={c.placeholderVorname}
+                      className={inputClass}
                     />
                   </div>
-
-                  {/* Privacy note + Submit */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
-                    <p className="text-xs text-muted-foreground max-w-sm">
-                      Ihre Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet
-                      und nicht an Dritte weitergegeben.
-                    </p>
-                    <button
-                      type="submit"
-                      disabled={status === "sending"}
-                      className="inline-flex items-center gap-2 rounded-full bg-primary-gradient px-7 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-all hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 flex-shrink-0"
-                    >
-                      {status === "sending" ? (
-                        <>
-                          <span className="inline-block h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                          Wird gesendet…
-                        </>
-                      ) : (
-                        <>
-                          <Send size={14} />
-                          Nachricht senden
-                        </>
-                      )}
-                    </button>
+                  <div>
+                    <label className="block text-xs font-semibold text-body-text/60 uppercase tracking-wider mb-2">
+                      {c.labelNachname} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="nachname"
+                      value={form.nachname}
+                      onChange={handleChange}
+                      required
+                      autoComplete="family-name"
+                      placeholder={c.placeholderNachname}
+                      className={inputClass}
+                    />
                   </div>
-                </form>
-              )}
-            </div>
-          </div>
+                </div>
 
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-body-text/60 uppercase tracking-wider mb-2">
+                      {c.labelTelefon} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      name="telefon"
+                      value={form.telefon}
+                      onChange={handleChange}
+                      required
+                      autoComplete="tel"
+                      placeholder={c.placeholderTelefon}
+                      className={inputClass}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-body-text/60 uppercase tracking-wider mb-2">
+                      {c.labelEmail} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      required
+                      autoComplete="email"
+                      placeholder={c.placeholderEmail}
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <label className="block text-xs font-semibold text-body-text/60 uppercase tracking-wider">
+                      {c.labelNachricht} <span className="text-red-500">*</span>
+                    </label>
+                    <span className={`text-xs ${charCount > 1800 ? "text-red-500" : "text-body-text/60"}`}>
+                      {charCount}/2000
+                    </span>
+                  </div>
+                  <textarea
+                    name="nachricht"
+                    value={form.nachricht}
+                    onChange={handleChange}
+                    required
+                    rows={6}
+                    maxLength={2000}
+                    placeholder={c.placeholderNachricht}
+                    className={`${inputClass} resize-none`}
+                  />
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+                  <p className="text-xs text-body-text/60 max-w-sm">
+                    {c.requiredNote} — {c.privacyNote}
+                  </p>
+                  <button type="submit" disabled={status === "sending"} className="btn-primary inline-flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed flex-shrink-0">
+                    {status === "sending" ? (
+                      <>
+                        <span className="inline-block h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                        {c.sending}
+                      </>
+                    ) : (
+                      <>
+                        <Send size={14} />
+                        {c.send}
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

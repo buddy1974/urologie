@@ -55,3 +55,44 @@
   hidden tabs. Confirmed the static file serves correctly (200, correct
   `content-type`/`content-length`/`accept-ranges` headers) via a direct `fetch()`
   HEAD request. Should be verified once more in a normal foregrounded tab.
+
+## 2026-08-03 — Phase 3 reskin: all inner pages, real static-site content (website/ only)
+
+Rebuilt all 14 inner pages (Praxis, Dr. Walters [new route], Team, Links [new
+route], Kontakt, and all 9 Leistungen pages) to the Phase 2 pattern: `bg-primary-dark`
+280px page-hero band, `.container py-[60px]` content, plain white cards
+(`border border-[#e5e5e5] rounded-md`) instead of the old glassmorphism, `.trenner`
+dividers, trilingual content (`{ de, en, fr }` objects selected via `getLocale()`
+from `next-intl/server`) extracted from the static replica's DE/EN/FR HTML sources.
+
+- **Content-mapping corrections** (confirmed with Marcel before building, since the
+  pasted spec had errors): `ambulante-operationen.html` → `/leistungen/ambulante-op`
+  (not `andrologie` — that content is general outpatient surgery spanning multiple
+  specialties, and the route already existed unaddressed); `individualleistungen.html`
+  → `/leistungen/individuelle-leistungen` (not merged into `urodynamik` — that
+  content is IGeL/self-pay screening tests, unrelated to urodynamics). `andrologie`
+  keeps its existing, already-accurate Vasektomie-focused content, just restyled.
+  `onkologie` and `kinderurologie` have no static-site source page — kept their
+  existing (accurate, well-written) content, restyled only.
+- Fixed a real content-placement bug found while building: the `urodynamik` page's
+  equipment list incorrectly included the "QRS Pelvi Center" (a magnetstimulation
+  device) — moved it to the `magnetstimulation` page and kept only the
+  urodynamik-specific "Model Newton Urodynamik-System" on `urodynamik`.
+  `diagnostik`/`andrologie` keep their existing lab-equipment descriptions
+  (UriSed Mini, MES SQA-iO + SQA-VU, etc.) as instructed.
+- `dr-walters` and `links` are new routes (previously 404 per Phase 2's decision
+  log) — now built from `dr-walters.html` and `links.html`. `links` surfaces only
+  the 3 non-commented-out links from the static source (Facebook, vasektomie-neuwied.de,
+  Deutsche Kontinenz Gesellschaft) — two other links were commented out in the
+  static HTML (kinderwunsch.de, späterkommen.de) and correctly omitted.
+- `team` page's content already listed a second physician, "Frau Dr. C. Nwankwo"
+  (Fachärztin für Urologie, placeholder photo) — verified this is genuine content
+  from `team.html` (not fabricated) before keeping it.
+- `kontakt` page keeps its exact working form logic/field names
+  (anrede/vorname/nachname/telefon/email/nachricht → POST `/api/contact`), restyled
+  only; Google Maps iframe replaced with the OpenStreetMap embed per spec.
+- All image references switched to `/assets/...` (the complete Phase-1 asset set)
+  instead of the older, partial `/images/...` folder.
+- Verified via `npx tsc --noEmit` (clean) and a dev-server smoke test: all 14 routes
+  return HTTP 200 in `de`/`en`/`fr`, and every `/assets/...` path referenced by the
+  new pages was confirmed to exist on disk.

@@ -1,92 +1,149 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Baby, Check, ExternalLink, Microscope } from "lucide-react";
+import { Check, Microscope, ExternalLink } from "lucide-react";
+import { getLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Andrologie & Vasektomie",
   description: "Männergesundheit in Neuwied — Vasektomie, Erektionsstörungen, Testosteronmangel, Kinderwunsch.",
 };
 
-const services = [
-  "Männliche Sterilisation — Vasektomie (konservativ und non-skalpell)",
-  "Erektionsstörungen (impotentia coeundi)",
-  "Vorzeitiger Samenerguss",
-  "Testosteronmangel",
-  "Unerfüllter Kinderwunsch / Fruchtbarkeitsstörungen",
-  "Penisverkrümmung — Induratio Penis plastica (IPP)",
-  "Varikozele",
-  "Hodenhochstand",
-];
+const content = {
+  de: {
+    label: "Leistungen",
+    title: "Andrologie",
+    subheading: "Männergesundheit & Vasektomie — kompetent und diskret",
+    servicesTitle: "Unsere andrologischen Leistungen",
+    services: [
+      "Männliche Sterilisation — Vasektomie (konservativ und non-skalpell)",
+      "Erektionsstörungen (impotentia coeundi)",
+      "Vorzeitiger Samenerguss",
+      "Testosteronmangel",
+      "Unerfüllter Kinderwunsch / Fruchtbarkeitsstörungen",
+      "Penisverkrümmung — Induratio Penis plastica (IPP)",
+      "Varikozele",
+      "Hodenhochstand",
+    ],
+    networkTitle: "Vasektomie-Experten Netzwerk",
+    networkText: "Fomuki ist zertifiziertes Mitglied im Netzwerk der Vasektomie-Experten.",
+    networkLinkLabel: "www.vasektomie-neuwied.de",
+    equipmentLabel: "Ausstattung",
+    equipmentTitle: "Modernste Geräteausstattung",
+    equipmentText: "Zertifizierte Analysetechnik für objektive Fertilitätsdiagnostik.",
+    machineName: "MES SQA-iO + SQA-VU",
+    machineDesc: "Spermienqualitätsanalyse — vollautomatische Messung von Konzentration, Motilität und Morphologie, mit visueller Mikroskopie-Komponente",
+  },
+  en: {
+    label: "Services",
+    title: "Andrology",
+    subheading: "Men's health & vasectomy — competent and discreet",
+    servicesTitle: "Our andrological services",
+    services: [
+      "Male sterilization — vasectomy (conventional and no-scalpel)",
+      "Erectile dysfunction (impotentia coeundi)",
+      "Premature ejaculation",
+      "Testosterone deficiency",
+      "Unfulfilled desire to have children / fertility disorders",
+      "Penile curvature — Induratio Penis Plastica (IPP)",
+      "Varicocele",
+      "Undescended testicle",
+    ],
+    networkTitle: "Vasectomy Experts Network",
+    networkText: "Fomuki is a certified member of the Vasectomy Experts network.",
+    networkLinkLabel: "www.vasektomie-neuwied.de",
+    equipmentLabel: "Equipment",
+    equipmentTitle: "State-of-the-art equipment",
+    equipmentText: "Certified analysis technology for objective fertility diagnostics.",
+    machineName: "MES SQA-iO + SQA-VU",
+    machineDesc: "Sperm quality analysis — fully automatic measurement of concentration, motility and morphology, with a visual microscopy component",
+  },
+  fr: {
+    label: "Prestations",
+    title: "Andrologie",
+    subheading: "Santé masculine & vasectomie — compétence et discrétion",
+    servicesTitle: "Nos prestations andrologiques",
+    services: [
+      "Stérilisation masculine — vasectomie (conventionnelle et sans scalpel)",
+      "Troubles de l'érection (impotentia coeundi)",
+      "Éjaculation précoce",
+      "Déficit en testostérone",
+      "Désir d'enfant non satisfait / troubles de la fertilité",
+      "Courbure du pénis — Induratio Penis Plastica (IPP)",
+      "Varicocèle",
+      "Testicule non descendu",
+    ],
+    networkTitle: "Réseau Vasektomie-Experten",
+    networkText: "Fomuki est membre certifié du réseau des experts en vasectomie.",
+    networkLinkLabel: "www.vasektomie-neuwied.de",
+    equipmentLabel: "Équipement",
+    equipmentTitle: "Équipement médical de pointe",
+    equipmentText: "Technologie d'analyse certifiée pour un diagnostic objectif de la fertilité.",
+    machineName: "MES SQA-iO + SQA-VU",
+    machineDesc: "Analyse de la qualité du sperme — mesure entièrement automatique de la concentration, de la motilité et de la morphologie, avec composante de microscopie visuelle",
+  },
+} as const;
 
-export default function AndrologiePage() {
+export default async function AndrologiePage() {
+  const locale = await getLocale();
+  const t = content[locale as keyof typeof content] ?? content.de;
+
   return (
-    <div className="min-h-screen bg-background">
-
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <Image
-          src="/images/pics/leistungen_005.jpg"
-          alt="Andrologie & Vasektomie Neuwied"
-          fill
-          className="object-cover opacity-20"
-          priority
-        />
-        <div className="relative z-10 bg-hero noise pt-36 pb-24 px-6" style={{ minHeight: "380px" }}>
-          <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px]" />
-          <div className="relative z-10 max-w-4xl mx-auto text-center">
-            <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-gradient shadow-glow mx-auto mb-6">
-              <Baby size={30} className="text-primary-foreground" />
-            </div>
-            <div className="text-xs uppercase tracking-widest text-accent mb-4">Leistungen</div>
-            <h1 className="font-display text-5xl md:text-6xl text-foreground mb-6">Andrologie &amp; Vasektomie</h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Männergesundheit — kompetent und diskret.</p>
-          </div>
+    <div>
+      <section className="bg-primary-dark flex items-center justify-center text-center px-4 py-16 md:h-[280px]">
+        <div>
+          <p className="text-primary text-[16px] font-bold uppercase tracking-wide mb-3">{t.label}</p>
+          <h1 className="text-white text-[36px] font-bold mb-2">{t.title}</h1>
+          <p className="text-primary text-[16px] font-bold uppercase">{t.subheading}</p>
         </div>
       </section>
 
-      {/* Content */}
-      <section className="py-24 px-6">
-        <div className="max-w-4xl mx-auto space-y-6">
+      <div className="container py-[60px]">
+        <div className="relative w-full aspect-[16/6] mb-10 overflow-hidden rounded-md">
+          <Image src="/assets/leistungen_005.jpg" alt={t.title} fill className="object-cover" />
+        </div>
 
-          <div className="glass rounded-3xl p-8 md:p-12">
-            <h2 className="font-display text-3xl text-foreground mb-8">Unsere andrologischen Leistungen</h2>
-            <div className="space-y-3">
-              {services.map((s) => (
-                <div key={s} className="flex items-start gap-3">
-                  <Check size={16} className="flex-shrink-0 mt-0.5 text-accent" />
-                  <span className="text-muted-foreground text-sm">{s}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="glass rounded-3xl p-8 border-accent/20">
-            <p className="font-semibold text-foreground mb-2">Vasektomie-Experten Netzwerk</p>
-            <p className="text-muted-foreground text-sm mb-4">Fomuki ist zertifiziertes Mitglied im Netzwerk der Vasektomie-Experten.</p>
-            <a
-              href="http://www.vasektomie-neuwied.de"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-foreground transition-colors"
-            >
-              www.vasektomie-neuwied.de <ExternalLink size={13} />
-            </a>
-          </div>
-
-          <div>
-            <div className="text-xs uppercase tracking-widest text-accent mb-2">Ausstattung</div>
-            <h2 className="font-display text-3xl text-foreground mb-2">Modernste Geräteausstattung</h2>
-            <p className="text-muted-foreground text-sm mb-6">Zertifizierte Analysetechnik für objektive Fertilitätsdiagnostik.</p>
-            <div className="glass rounded-2xl p-6 hover:-translate-y-1 hover:shadow-glow hover:border-primary/40 transition-all duration-500">
-              <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow mb-4">
-                <Microscope size={18} className="text-primary-foreground" />
+        <div className="border border-[#e5e5e5] rounded-md p-8">
+          <h2 className="mb-6">{t.servicesTitle}</h2>
+          <div className="space-y-3">
+            {t.services.map((s) => (
+              <div key={s} className="flex items-start gap-3">
+                <Check size={16} className="flex-shrink-0 mt-0.5 text-primary" />
+                <span className="text-body-text leading-[1.6] text-[16px]">{s}</span>
               </div>
-              <p className="font-semibold text-foreground text-sm mb-2">MES SQA-iO + SQA-VU</p>
-              <p className="text-muted-foreground text-xs leading-relaxed">Spermienqualitätsanalyse — vollautomatische Messung von Konzentration, Motilität und Morphologie, mit visueller Mikroskopie-Komponente</p>
-            </div>
+            ))}
           </div>
         </div>
-      </section>
+
+        <div className="trenner" />
+
+        <div className="border border-[#e5e5e5] rounded-md p-8">
+          <p className="font-bold text-body-text mb-2">{t.networkTitle}</p>
+          <p className="text-body-text leading-[1.6] text-[16px] mb-4">{t.networkText}</p>
+          <a
+            href="https://www.vasektomie-neuwied.de"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-primary hover:text-primary-dark transition-colors font-bold"
+          >
+            {t.networkLinkLabel} <ExternalLink size={14} />
+          </a>
+        </div>
+
+        <div className="trenner" />
+
+        <div>
+          <p className="text-primary text-[14px] font-bold uppercase tracking-wide mb-2">{t.equipmentLabel}</p>
+          <h2 className="mb-2">{t.equipmentTitle}</h2>
+          <p className="text-body-text leading-[1.6] text-[16px] mb-6">{t.equipmentText}</p>
+          <div className="border border-[#e5e5e5] rounded-md p-6 max-w-md">
+            <div className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-primary mb-4">
+              <Microscope size={18} className="text-white" />
+            </div>
+            <p className="font-bold text-body-text mb-2">{t.machineName}</p>
+            <p className="text-body-text leading-[1.6] text-sm">{t.machineDesc}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

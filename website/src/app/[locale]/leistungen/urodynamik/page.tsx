@@ -1,108 +1,144 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Sparkles, Check, Microscope } from "lucide-react";
+import { getLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Urodynamik & Ästhetische Medizin",
   description: "Blasendruckmessung und ästhetische Medizin mit Botox und Filler in Neuwied.",
 };
 
-const machines = [
-  { name: "Model Newton Urodynamik-System", desc: "Mehrkanalige urodynamische Messung — Blasendruck, Harnfluss und Sphinkteraktivität gleichzeitig erfasst, für präzise Inkontinenz- und Obstruktionsdiagnostik" },
-  { name: "QRS Pelvi Center", desc: "Magnetstimulationstherapie — nicht-invasive Behandlung von Blasenschwäche und Beckenbodendysfunktion, Patient sitzt bekleidet, schmerzfrei" },
-];
+type Locale = "de" | "en" | "fr";
 
-export default function UrodynamikPage() {
+const content = {
+  de: {
+    label: "Leistungen",
+    title: "Urodynamik & Ästhetische Medizin",
+    intro: "Blasendiagnostik und ästhetische Behandlungen aus einer Hand.",
+    urodynamikTitle: "Urodynamik",
+    urodynamikText:
+      "Die Urodynamik (Blasendruckmessung) ist die präziseste Methode zur Diagnose von Harninkontinenz und Blasenentleerungsstörungen.",
+    urodynamikItems: [
+      "Harninkontinenz-Diagnostik",
+      "Blasenentleerungsstörungen",
+      "Überaktive Blase (OAB)",
+      "Therapieplanung Inkontinenz",
+    ],
+    aestheticTitle: "Ästhetische Medizin",
+    aestheticText: "Diskrete und professionelle ästhetische Behandlungen durch den erfahrenen Facharzt.",
+    aestheticItems: ["Botox-Behandlungen", "Filler-Injektionen", "Faltenbehandlung", "Individuelle Beratung"],
+    equipmentLabel: "Ausstattung",
+    equipmentTitle: "Modernste Geräteausstattung",
+    equipmentIntro: "Spezialisierte Medizintechnik für präzise Urodynamik.",
+    machineName: "Model Newton Urodynamik-System",
+    machineDesc:
+      "Mehrkanalige urodynamische Messung — Blasendruck, Harnfluss und Sphinkteraktivität gleichzeitig erfasst, für präzise Inkontinenz- und Obstruktionsdiagnostik.",
+  },
+  en: {
+    label: "Services",
+    title: "Urodynamics & Aesthetic Medicine",
+    intro: "Bladder diagnostics and aesthetic treatments from a single source.",
+    urodynamikTitle: "Urodynamics",
+    urodynamikText:
+      "Urodynamics (bladder pressure measurement) is the most precise method for diagnosing urinary incontinence and bladder-emptying disorders.",
+    urodynamikItems: [
+      "Urinary incontinence diagnostics",
+      "Bladder-emptying disorders",
+      "Overactive bladder (OAB)",
+      "Incontinence treatment planning",
+    ],
+    aestheticTitle: "Aesthetic Medicine",
+    aestheticText: "Discreet and professional aesthetic treatments by the experienced specialist.",
+    aestheticItems: ["Botox treatments", "Filler injections", "Wrinkle treatment", "Individual consultation"],
+    equipmentLabel: "Equipment",
+    equipmentTitle: "State-of-the-Art Equipment",
+    equipmentIntro: "Specialized medical technology for precise urodynamics.",
+    machineName: "Model Newton Urodynamic System",
+    machineDesc:
+      "Multi-channel urodynamic measurement — bladder pressure, urine flow and sphincter activity captured simultaneously for precise incontinence and obstruction diagnostics.",
+  },
+  fr: {
+    label: "Prestations",
+    title: "Urodynamique & Médecine Esthétique",
+    intro: "Diagnostic vésical et traitements esthétiques réunis.",
+    urodynamikTitle: "Urodynamique",
+    urodynamikText:
+      "L'urodynamique (mesure de la pression vésicale) est la méthode la plus précise pour diagnostiquer l'incontinence urinaire et les troubles de la vidange vésicale.",
+    urodynamikItems: [
+      "Diagnostic de l'incontinence urinaire",
+      "Troubles de la vidange vésicale",
+      "Vessie hyperactive (VH)",
+      "Planification du traitement de l'incontinence",
+    ],
+    aestheticTitle: "Médecine Esthétique",
+    aestheticText: "Traitements esthétiques discrets et professionnels par un spécialiste expérimenté.",
+    aestheticItems: ["Traitements Botox", "Injections d'acide hyaluronique", "Traitement des rides", "Conseil individuel"],
+    equipmentLabel: "Équipement",
+    equipmentTitle: "Équipement Médical de Pointe",
+    equipmentIntro: "Technologie médicale spécialisée pour une urodynamique précise.",
+    machineName: "Système urodynamique Model Newton",
+    machineDesc:
+      "Mesure urodynamique multicanal — pression vésicale, débit urinaire et activité sphinctérienne enregistrés simultanément, pour un diagnostic précis de l'incontinence et de l'obstruction.",
+  },
+} satisfies Record<Locale, unknown>;
+
+export default async function UrodynamikPage() {
+  const locale = (await getLocale()) as Locale;
+  const t = content[locale] ?? content.de;
+
   return (
-    <div className="min-h-screen bg-background">
-
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <Image
-          src="/images/pics/urodynamik.jpg"
-          alt="Urodynamik Blasendruckmessung Neuwied"
-          fill
-          className="object-cover opacity-20"
-          priority
-        />
-        <div className="relative z-10 bg-hero noise pt-36 pb-24 px-6" style={{ minHeight: "380px" }}>
-          <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px]" />
-          <div className="relative z-10 max-w-4xl mx-auto text-center">
-            <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-gradient shadow-glow mx-auto mb-6">
-              <Sparkles size={30} className="text-primary-foreground" />
-            </div>
-            <div className="text-xs uppercase tracking-widest text-accent mb-4">Leistungen</div>
-            <h1 className="font-display text-5xl md:text-6xl text-foreground mb-6">Urodynamik &amp; Ästhetik</h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Blasendiagnostik und ästhetische Behandlungen aus einer Hand.</p>
-          </div>
+    <div>
+      <section className="bg-primary-dark flex items-center justify-center text-center px-4 py-16 md:h-[280px]">
+        <div>
+          <p className="text-primary text-[16px] font-bold uppercase tracking-wide mb-3">{t.label}</p>
+          <h1 className="text-white text-[36px] font-bold">{t.title}</h1>
         </div>
       </section>
 
-      {/* Content */}
-      <section className="py-24 px-6">
-        <div className="max-w-4xl mx-auto space-y-6">
+      <div className="container py-[60px]">
+        <p className="text-body-text leading-[1.6] mb-8 max-w-2xl">{t.intro}</p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="glass rounded-3xl p-8">
-              <h2 className="font-display text-2xl text-foreground mb-4">Urodynamik</h2>
-              <p className="text-muted-foreground leading-relaxed mb-5">
-                Die Urodynamik (Blasendruckmessung) ist die präziseste Methode zur Diagnose von Harninkontinenz und Blasenentleerungsstörungen.
-              </p>
-              <div className="space-y-2">
-                {[
-                  "Harninkontinenz-Diagnostik",
-                  "Blasenentleerungsstörungen",
-                  "Überaktive Blase (OAB)",
-                  "Therapieplanung Inkontinenz",
-                ].map((i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <Check size={15} className="text-accent flex-shrink-0" />
-                    <span className="text-muted-foreground text-sm">{i}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+        <div className="relative w-full h-64 md:h-80 rounded-md overflow-hidden mb-8">
+          <Image src="/assets/urodynamik.jpg" alt="Urodynamik" fill className="object-cover" />
+        </div>
 
-            <div className="glass rounded-3xl p-8">
-              <h2 className="font-display text-2xl text-foreground mb-4">Ästhetische Medizin</h2>
-              <p className="text-muted-foreground leading-relaxed mb-5">
-                Diskrete und professionelle ästhetische Behandlungen durch den erfahrenen Facharzt.
-              </p>
-              <div className="space-y-2">
-                {[
-                  "Botox-Behandlungen",
-                  "Filler-Injektionen",
-                  "Faltenbehandlung",
-                  "Individuelle Beratung",
-                ].map((a) => (
-                  <div key={a} className="flex items-center gap-3">
-                    <Check size={15} className="text-primary flex-shrink-0" />
-                    <span className="text-muted-foreground text-sm">{a}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Machines */}
-          <div>
-            <div className="text-xs uppercase tracking-widest text-accent mb-2">Ausstattung</div>
-            <h2 className="font-display text-3xl text-foreground mb-2">Modernste Geräteausstattung</h2>
-            <p className="text-muted-foreground text-sm mb-6">Spezialisierte Medizintechnik für präzise Urodynamik und Beckenbodentherapie.</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {machines.map((m) => (
-                <div key={m.name} className="glass rounded-2xl p-6 hover:-translate-y-1 hover:shadow-glow hover:border-primary/40 transition-all duration-500">
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow mb-4">
-                    <Microscope size={18} className="text-primary-foreground" />
-                  </div>
-                  <p className="font-semibold text-foreground text-sm mb-2">{m.name}</p>
-                  <p className="text-muted-foreground text-xs leading-relaxed">{m.desc}</p>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="border border-[#e5e5e5] rounded-md p-8">
+            <h2>{t.urodynamikTitle}</h2>
+            <p className="text-body-text leading-[1.6] my-4">{t.urodynamikText}</p>
+            <ul className="space-y-2">
+              {t.urodynamikItems.map((item) => (
+                <li key={item} className="text-body-text text-sm">
+                  • {item}
+                </li>
               ))}
-            </div>
+            </ul>
+          </div>
+
+          <div className="border border-[#e5e5e5] rounded-md p-8">
+            <h2>{t.aestheticTitle}</h2>
+            <p className="text-body-text leading-[1.6] my-4">{t.aestheticText}</p>
+            <ul className="space-y-2">
+              {t.aestheticItems.map((item) => (
+                <li key={item} className="text-body-text text-sm">
+                  • {item}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-      </section>
+
+        <div className="trenner" />
+
+        <div>
+          <p className="text-primary text-[14px] font-bold uppercase tracking-wide mb-2">{t.equipmentLabel}</p>
+          <h2 className="mb-2">{t.equipmentTitle}</h2>
+          <p className="text-body-text text-sm mb-6">{t.equipmentIntro}</p>
+          <div className="border border-[#e5e5e5] rounded-md p-6 max-w-md">
+            <p className="font-bold text-body-text text-sm mb-2">{t.machineName}</p>
+            <p className="text-body-text text-xs leading-[1.6]">{t.machineDesc}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

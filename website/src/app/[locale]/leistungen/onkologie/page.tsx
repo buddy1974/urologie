@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { getLocale } from "next-intl/server";
 import { HeartPulse, Check } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -7,61 +8,101 @@ export const metadata: Metadata = {
   description: "Onkologische Betreuung und Nachsorge bei urologischen Tumoren in Neuwied.",
 };
 
-const tumors = [
-  "Nierenzellkarzinom (Nierenkrebs)",
-  "Harnleitertumoren",
-  "Harnblasenkarzinom (Blasenkrebs)",
-  "Harnröhrenkarzinom",
-  "Prostatakarzinom (Prostatakrebs)",
-  "Hodentumoren",
-  "Peniskarzinom",
-];
+const content = {
+  de: {
+    label: "Leistungen",
+    title: "Onkologie",
+    subtitle: "Onkologisch qualifizierte Betreuung und Nachsorge.",
+    tumorsHeading: "Tumore & Nachsorge",
+    tumors: [
+      "Nierenzellkarzinom (Nierenkrebs)",
+      "Harnleitertumoren",
+      "Harnblasenkarzinom (Blasenkrebs)",
+      "Harnröhrenkarzinom",
+      "Prostatakarzinom (Prostatakrebs)",
+      "Hodentumoren",
+      "Peniskarzinom",
+    ],
+    noteTitle: "Fomuki ist onkologisch qualifizierter Arzt",
+    noteText: "mit Spezialisierung auf medikamentöse Tumortherapie und ambulantes Operieren.",
+  },
+  en: {
+    label: "Services",
+    title: "Oncology",
+    subtitle: "Oncology-qualified care and follow-up.",
+    tumorsHeading: "Tumors & Follow-up Care",
+    tumors: [
+      "Renal cell carcinoma (kidney cancer)",
+      "Ureteral tumors",
+      "Bladder carcinoma (bladder cancer)",
+      "Urethral carcinoma",
+      "Prostate carcinoma (prostate cancer)",
+      "Testicular tumors",
+      "Penile carcinoma",
+    ],
+    noteTitle: "Fomuki is an oncology-qualified physician",
+    noteText: "specialized in drug-based tumor therapy and outpatient surgery.",
+  },
+  fr: {
+    label: "Prestations",
+    title: "Oncologie",
+    subtitle: "Prise en charge et suivi oncologiques qualifiés.",
+    tumorsHeading: "Tumeurs & Suivi",
+    tumors: [
+      "Carcinome à cellules rénales (cancer du rein)",
+      "Tumeurs de l'uretère",
+      "Carcinome de la vessie (cancer de la vessie)",
+      "Carcinome de l'urètre",
+      "Carcinome de la prostate (cancer de la prostate)",
+      "Tumeurs testiculaires",
+      "Carcinome du pénis",
+    ],
+    noteTitle: "Fomuki est médecin qualifié en oncologie",
+    noteText: "spécialisé en thérapie médicamenteuse des tumeurs et chirurgie ambulatoire.",
+  },
+} as const;
 
-export default function OnkologiePage() {
+export default async function OnkologiePage() {
+  const locale = await getLocale();
+  const t = content[locale as keyof typeof content] ?? content.de;
+
   return (
     <div className="min-h-screen bg-background">
-
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <Image
-          src="/images/pics/leistungen_007.jpg"
-          alt="Onkologie Urologie Neuwied"
-          fill
-          className="object-cover opacity-20"
-          priority
-        />
-        <div className="relative z-10 bg-hero noise pt-36 pb-24 px-6" style={{ minHeight: "380px" }}>
-          <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px]" />
-          <div className="relative z-10 max-w-4xl mx-auto text-center">
-            <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-gradient shadow-glow mx-auto mb-6">
-              <HeartPulse size={30} className="text-primary-foreground" />
-            </div>
-            <div className="text-xs uppercase tracking-widest text-accent mb-4">Leistungen</div>
-            <h1 className="font-display text-5xl md:text-6xl text-foreground mb-6">Onkologie</h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Onkologisch qualifizierte Betreuung und Nachsorge.</p>
+      <section className="bg-primary-dark flex items-center justify-center text-center px-4 py-16 md:h-[280px]">
+        <div>
+          <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 mx-auto mb-4">
+            <HeartPulse size={30} className="text-white" />
           </div>
+          <p className="text-primary text-[16px] font-bold uppercase tracking-wide mb-3">{t.label}</p>
+          <h1 className="text-white text-[36px] font-bold">{t.title}</h1>
+          <p className="text-white/80 text-lg max-w-2xl mx-auto mt-3">{t.subtitle}</p>
         </div>
       </section>
 
-      {/* Content */}
-      <section className="py-24 px-6">
+      <section className="container py-[60px]">
         <div className="max-w-4xl mx-auto space-y-6">
-
-          <div className="glass rounded-3xl p-8 md:p-12">
-            <h2 className="font-display text-3xl text-foreground mb-8">Tumore &amp; Nachsorge</h2>
+          <div className="border border-[#e5e5e5] rounded-md p-8 md:p-12">
+            <h2 className="text-3xl mb-8">{t.tumorsHeading}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {tumors.map((t) => (
-                <div key={t} className="flex items-center gap-3">
-                  <Check size={16} className="flex-shrink-0 text-accent" />
-                  <span className="text-muted-foreground text-sm">{t}</span>
+              {t.tumors.map((item) => (
+                <div key={item} className="flex items-center gap-3">
+                  <Check size={16} className="flex-shrink-0 text-primary" />
+                  <span className="text-body-text leading-[1.6] text-sm">{item}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="glass rounded-3xl p-8 border-accent/20">
-            <p className="text-accent font-semibold mb-2">Fomuki ist onkologisch qualifizierter Arzt</p>
-            <p className="text-muted-foreground text-sm">mit Spezialisierung auf medikamentöse Tumortherapie und ambulantes Operieren.</p>
+          <div className="trenner" />
+
+          <div className="border border-[#e5e5e5] rounded-md p-8 flex gap-5 items-center">
+            <div className="relative w-20 h-20 rounded-md overflow-hidden flex-shrink-0 hidden sm:block">
+              <Image src="/assets/leistungen_007.jpg" alt="" fill className="object-cover" />
+            </div>
+            <div>
+              <p className="text-primary font-bold mb-1">{t.noteTitle}</p>
+              <p className="text-body-text leading-[1.6] text-sm">{t.noteText}</p>
+            </div>
           </div>
         </div>
       </section>

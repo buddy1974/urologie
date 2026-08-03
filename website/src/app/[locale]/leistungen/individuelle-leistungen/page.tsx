@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { CreditCard, Info, ArrowRight, Stethoscope } from "lucide-react";
+import { getLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Individuelle Gesundheitsleistungen (IGeL)",
@@ -8,223 +8,126 @@ export const metadata: Metadata = {
     "Individuelle Gesundheitsleistungen (IGeL) der Urologie Neuwied — Vasektomie, Potenz- und Hormonstörungen, PSA/Testosteron, NMP22 Blasenkrebstest, EMDA-Therapie, StroVac und mehr.",
 };
 
-const services = [
-  {
-    title: "Vasektomie",
-    subtitle: "Sterilisation des Mannes",
-    desc: "Konventionell und ohne Skalpell (No-Scalpel-Technik). Fomuki ist Mitglied im Vasektomie-Experten-Netzwerk. Weitere Informationen unter vasektomie-neuwied.de.",
-    link: "https://www.vasektomie-neuwied.de",
-    external: true,
-  },
-  {
-    title: "Potenz- und Hormonstörungen",
-    subtitle: "Andrologie & Männergesundheit",
-    desc: "Umfassende Diagnostik und Behandlung von Erektionsstörungen, Testosteronmangel (Hypogonadismus) und verwandten Beschwerden des Mannes.",
-    link: "/leistungen/andrologie",
-    external: false,
-  },
-  {
-    title: "PSA & Testosteron-Messung",
-    subtitle: "Ergänzende Vorsorge",
-    desc: "PSA (Prostata-spezifisches Antigen) und Testosteronbestimmung als Ergänzung im Rahmen der Vorsorge oder bei Abklärung von Potenzstörungen — auf Wunsch des Patienten.",
-    link: null,
-    external: false,
-  },
-  {
-    title: "NMP22 BladderCheck",
-    subtitle: "Früherkennung Blasenkrebs",
-    desc: "Schnelltest auf NMP22 (Nuclear Matrix Protein 22) zur zuverlässigen Früherkennung von Blasenkarzinomen — ergänzend zur Standarddiagnostik.",
-    link: null,
-    external: false,
-  },
-  {
-    title: "ScheBo M2-PK Quick",
-    subtitle: "Früherkennung Darmkrebs",
-    desc: "Direkttest im Stuhl zur Früherkennung von Darmkrebs — einfach in der Durchführung, laborunabhängig.",
-    link: null,
-    external: false,
-  },
-  {
-    title: "EMDA-Therapie",
-    subtitle: "Induratio Penis Plastica (IPP)",
-    desc: "Elektromotive Medikamenten-Applikation (EMDA) — eine nicht-chirurgische Behandlungsmethode bei Penisabknickung / Peyronie-Erkrankung.",
-    link: null,
-    external: false,
-  },
-  {
-    title: "StroVac®-Impfung",
-    subtitle: "Vorbeugung bei häufigen Harnwegsinfekten",
-    desc: "Immunisierung mit StroVac® (OM-89) für Patientinnen und Patienten mit rezidivierenden Harnblasenentzündungen zur Vorbeugung weiterer Infekte.",
-    link: null,
-    external: false,
-  },
-  {
-    title: "Urovaxom",
-    subtitle: "Schluckimpfung bei Harnwegsinfekten",
-    desc: "Orale Immuntherapie mit Urovaxom zur Prophylaxe häufig wiederkehrender Harnblasenentzündungen — bequem als Tablette einzunehmen.",
-    link: null,
-    external: false,
-  },
-];
+type Locale = "de" | "en" | "fr";
 
-const DOCTOLIB_URL =
-  "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking?speciality_id=1336&utm_source=website";
+const content = {
+  de: {
+    label: "Leistungen",
+    title: "Individuelle Leistungen",
+    intro: "Individuelle Gesundheitsleistungen der Urologie Neuwied",
+    services: [
+      { title: "Vasektomie", desc: "Sterilisation des Mannes, konventionell und ohne Skalpell.", link: "https://www.vasektomie-neuwied.de/", linkLabel: "Vasektomie-Neuwied.de" },
+      { title: "Potenz- und Hormonstörungen des Mannes", desc: "" },
+      { title: "PSA und Testosteron-Messung", desc: "als Ergänzung im Rahmen der Vorsorge oder bei Potenzstörungen." },
+      { title: "NMP22 BladderCheck Test", desc: "Zuverlässiger Test zur Blasenkrebsfrüherkennung." },
+      { title: "ScheBo M2-PK Quick", desc: "Direkttest zur Früherkennung von Darmkrebs." },
+      { title: "EMDA Therapie", desc: "Elektromotive Medikamenten-Applikation (EMDA) bei Induratio Penis Plastica (Penisabknickung)." },
+      { title: "StroVac®-Impfung", desc: "Bei häufiger Harnblasenentzündung." },
+      { title: "Urovaxom", desc: "Schluckimpfung bei häufiger Harnblasenentzündung." },
+    ],
+    disclaimerTitle: "Transparenz & Freiwilligkeit",
+    disclaimer:
+      "IGeL-Leistungen sind freiwillig. Sie können jede Leistung ablehnen, ohne Nachteile für Ihre weitere Behandlung befürchten zu müssen. Bei Interesse sprechen Sie uns an — wir beraten Sie gerne. Die Abrechnung erfolgt gemäß GOÄ (Gebührenordnung für Ärzte); vor jeder Leistungserbringung erhalten Sie eine schriftliche Vereinbarung.",
+    cta: "Termin via Doctolib",
+  },
+  en: {
+    label: "Services",
+    title: "Individual Health Services",
+    intro: "Individual Health Services at Urologie Neuwied",
+    services: [
+      { title: "Vasectomy", desc: "Male sterilisation, conventional and no-scalpel.", link: "https://www.vasektomie-neuwied.de/", linkLabel: "Vasectomy-Neuwied.de" },
+      { title: "Potency and Hormonal Disorders in Men", desc: "" },
+      { title: "PSA and Testosterone Measurement", desc: "As a complement to preventive care or in cases of potency disorders." },
+      { title: "NMP22 BladderCheck Test", desc: "A reliable test for early bladder cancer detection." },
+      { title: "ScheBo M2-PK Quick", desc: "A direct test for early colorectal cancer detection." },
+      { title: "EMDA Therapy", desc: "Electromotive Drug Administration (EMDA) for Peyronie's disease (penile curvature)." },
+      { title: "StroVac® Vaccination", desc: "For recurrent bladder infections." },
+      { title: "Urovaxom", desc: "Oral vaccine for recurrent bladder infections." },
+    ],
+    disclaimerTitle: "Transparency & Voluntary Choice",
+    disclaimer:
+      "IGeL services are voluntary. You may decline any service without any disadvantage to your further treatment. If you're interested, just ask us — we're happy to advise. Billing follows the GOÄ (German medical fee schedule); you'll receive a written agreement before any service is provided.",
+    cta: "Book via Doctolib",
+  },
+  fr: {
+    label: "Prestations",
+    title: "Prestations Individuelles",
+    intro: "Prestations individuelles d'Urologie Neuwied",
+    services: [
+      { title: "Vasectomie", desc: "Stérilisation masculine, méthode classique et sans bistouri.", link: "https://www.vasektomie-neuwied.de/", linkLabel: "Vasectomie-Neuwied.de" },
+      { title: "Troubles de la puissance sexuelle et hormonaux chez l'homme", desc: "" },
+      { title: "Dosage du PSA et de la testostérone", desc: "En complément d'un bilan de prévention ou en cas de troubles de la puissance sexuelle." },
+      { title: "Test NMP22 BladderCheck", desc: "Un test fiable de dépistage précoce du cancer de la vessie." },
+      { title: "ScheBo M2-PK Quick", desc: "Test direct de dépistage précoce du cancer colorectal." },
+      { title: "Thérapie EMDA", desc: "Administration électromotrice de médicaments (EMDA) pour la maladie de La Peyronie (courbure du pénis)." },
+      { title: "Vaccination StroVac®", desc: "En cas de cystites récidivantes." },
+      { title: "Urovaxom", desc: "Vaccin oral en cas de cystites récidivantes." },
+    ],
+    disclaimerTitle: "Transparence & Libre Choix",
+    disclaimer:
+      "Les prestations IGeL sont facultatives. Vous pouvez refuser toute prestation sans aucun désavantage pour la suite de votre traitement. Si vous êtes intéressé, parlez-en avec nous — nous vous conseillons volontiers. La facturation se fait selon la GOÄ (barème allemand des honoraires médicaux) ; vous recevrez un accord écrit avant toute prestation.",
+    cta: "RDV via Doctolib",
+  },
+} as const satisfies Record<Locale, unknown>;
 
-export default function IndividuelleLeistungenPage() {
+export default async function IndividuelleLeistungenPage() {
+  const locale = (await getLocale()) as Locale;
+  const t = content[locale] ?? content.de;
+
   return (
-    <div className="min-h-screen bg-background">
-
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <Image
-          src="/images/leistung/IndividuelleGesundheitsleistungen-header.jpg"
-          alt="Individuelle Gesundheitsleistungen Urologie Neuwied"
-          fill
-          className="object-cover opacity-20"
-          priority
-        />
-        <div className="relative z-10 bg-hero noise pt-36 pb-24 px-6" style={{ minHeight: "380px" }}>
-          <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/30 blur-[120px]" />
-          <div className="pointer-events-none absolute bottom-0 right-0 h-80 w-80 rounded-full bg-accent/20 blur-[120px]" />
-          <div className="relative z-10 max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 text-xs uppercase tracking-widest text-accent mb-6">
-              Leistungen
-            </div>
-            <h1 className="font-display text-5xl md:text-6xl leading-tight text-foreground mb-6">
-              Individuelle <span className="text-gradient italic">Gesundheitsleistungen</span>
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Investieren Sie in Ihre Gesundheit — mit IGeL-Leistungen, die über den
-              gesetzlichen Leistungskatalog hinausgehen.
-            </p>
-          </div>
+    <div className="min-h-screen bg-white">
+      <section className="bg-primary-dark flex items-center justify-center text-center px-4 py-16 md:h-[280px]">
+        <div>
+          <p className="text-primary text-[16px] font-bold uppercase tracking-wide mb-3">{t.label}</p>
+          <h1 className="text-white text-[36px] font-bold">{t.title}</h1>
         </div>
       </section>
 
-      {/* What is IGeL */}
-      <section className="py-16 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="glass rounded-3xl p-8 md:p-12 flex gap-6 items-start">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-gradient shadow-glow flex-shrink-0 mt-1">
-              <Stethoscope size={22} className="text-primary-foreground" />
-            </div>
-            <div>
-              <h2 className="font-display text-2xl text-foreground mb-4">Was sind IGeL?</h2>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                Individuelle Gesundheitsleistungen (IGeL) sind ärztliche Leistungen, die nicht
-                im Leistungskatalog der gesetzlichen Krankenversicherung enthalten sind —
-                häufig weil der gesetzliche Nutzennachweis fehlt, obwohl die Leistung
-                medizinisch sinnvoll sein kann.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                Wir bieten Ihnen transparente Beratung, welche IGeL-Leistungen für Ihre
-                individuelle Situation empfehlenswert sind. Die Abrechnung erfolgt gemäß GOÄ
-                (Gebührenordnung für Ärzte). Vor jeder Leistungserbringung erhalten Sie eine
-                schriftliche Vereinbarung.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services */}
-      <section className="pb-16 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient shadow-glow">
-              <CreditCard size={18} className="text-primary-foreground" />
-            </div>
-            <h2 className="font-display text-3xl text-foreground">Unsere IGeL-Angebote</h2>
+      <div className="container py-[60px]">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr,2fr] gap-10 items-start">
+          <div className="relative w-full aspect-[4/3] rounded-md overflow-hidden">
+            <Image src="/assets/leistungen_007.jpg" alt="" fill className="object-cover" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {services.map((svc) => (
-              <div
-                key={svc.title}
-                className="glass rounded-2xl p-6 hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-300 flex flex-col"
-              >
-                <div className="flex-1">
-                  <h3 className="font-display text-lg text-foreground mb-0.5">{svc.title}</h3>
-                  <p className="text-xs text-accent font-medium mb-3">{svc.subtitle}</p>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{svc.desc}</p>
-                </div>
-                {svc.link && (
-                  <div className="mt-4 pt-3 border-t border-white/5">
-                    {svc.external ? (
-                      <a
-                        href={svc.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:text-foreground transition-colors"
-                      >
-                        {svc.link.replace("https://www.", "")} <ArrowRight size={12} />
+          <div>
+            <h2 className="mb-6">{t.intro}</h2>
+            <ul className="space-y-4">
+              {t.services.map((s) => (
+                <li key={s.title} className="text-body-text leading-[1.6]">
+                  <strong className="text-primary">{s.title}</strong>
+                  {s.desc && <><br />{s.desc}</>}
+                  {"link" in s && s.link && (
+                    <>
+                      <br />
+                      <a href={s.link} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark underline">
+                        {s.linkLabel}
                       </a>
-                    ) : (
-                      <a
-                        href={svc.link}
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:text-foreground transition-colors"
-                      >
-                        Mehr erfahren <ArrowRight size={12} />
-                      </a>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-      </section>
 
-      {/* Disclaimer */}
-      <section className="pb-16 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="glass rounded-3xl p-6 flex gap-4 items-start border-accent/20">
-            <Info size={20} className="text-accent flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="font-semibold text-foreground text-sm mb-1">Transparenz & Freiwilligkeit</p>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                IGeL-Leistungen sind freiwillig. Sie können jede Leistung ablehnen, ohne
-                Nachteile für Ihre weitere Behandlung befürchten zu müssen. Bei Interesse
-                sprechen Sie uns an — wir beraten Sie gerne.
-              </p>
-            </div>
-          </div>
+        <div className="trenner" />
+
+        <div className="border border-[#e5e5e5] rounded-md p-6 max-w-3xl mx-auto text-center">
+          <h3 className="mb-2">{t.disclaimerTitle}</h3>
+          <p className="text-body-text leading-[1.6]">{t.disclaimer}</p>
         </div>
-      </section>
 
-      {/* CTA */}
-      <section className="pb-24 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="relative overflow-hidden glass-strong rounded-[2rem] p-10 text-center shadow-elegant">
-            <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-64 w-64 rounded-full bg-primary/20 blur-[80px]" />
-            <div className="relative">
-              <h3 className="font-display text-3xl text-foreground mb-3">Interesse an einer IGeL?</h3>
-              <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-                Sprechen Sie uns bei Ihrem nächsten Besuch an oder vereinbaren Sie einen
-                Beratungstermin.
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-4">
-                <a
-                  href={DOCTOLIB_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-primary-gradient px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105"
-                >
-                  Online buchen
-                  <ArrowRight size={14} />
-                </a>
-                <a
-                  href="tel:+49263123351"
-                  className="inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 text-sm font-semibold text-foreground hover:bg-white/10 transition-all"
-                >
-                  02631 - 23351
-                </a>
-              </div>
-            </div>
-          </div>
+        <div className="text-center mt-10">
+          <a
+            href="https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-doctolib"
+          >
+            {t.cta}
+          </a>
         </div>
-      </section>
-
+      </div>
     </div>
   );
 }
