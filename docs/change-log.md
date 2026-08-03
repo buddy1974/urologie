@@ -85,9 +85,15 @@ from `next-intl/server`) extracted from the static replica's DE/EN/FR HTML sourc
   the 3 non-commented-out links from the static source (Facebook, vasektomie-neuwied.de,
   Deutsche Kontinenz Gesellschaft) — two other links were commented out in the
   static HTML (kinderwunsch.de, späterkommen.de) and correctly omitted.
-- `team` page's content already listed a second physician, "Frau Dr. C. Nwankwo"
-  (Fachärztin für Urologie, placeholder photo) — verified this is genuine content
-  from `team.html` (not fabricated) before keeping it.
+- `team` page: `team.html` lists a second physician, "Frau Dr. C. Nwankwo" — but
+  the name is inconsistent even within the static source itself (image
+  `alt="Frau Dr. N. Claret"` vs. displayed name "Frau Dr. C. Nwankwo", identical
+  across DE/EN/FR) and uses a generic stock placeholder photo (`dummy_female.jpg`),
+  not a real portrait. The pre-Phase-3 app already omitted her entirely. Confirmed
+  with Marcel: omit her — team page lists Fomuki + existing support staff only,
+  matching the pre-Phase-3 app. A first pass of this rebuild incorrectly
+  reintroduced her (with "Dr." in the title, also violating commit `e695ad7`) —
+  caught during review and fixed in a follow-up commit after the initial Phase 3 push.
 - `kontakt` page keeps its exact working form logic/field names
   (anrede/vorname/nachname/telefon/email/nachricht → POST `/api/contact`), restyled
   only; Google Maps iframe replaced with the OpenStreetMap embed per spec.
