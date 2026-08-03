@@ -2,11 +2,24 @@
   "nav": {
     "home": "Accueil",
     "practice": "Notre Cabinet",
+    "doctor": "Walters T. Fomuki",
     "team": "Équipe",
-    "services": "Prestations",
+    "services": "Nos Services",
+    "linksPage": "Liens",
     "appointment": "Prendre RDV",
     "contact": "Contact",
     "portal": "Espace Patient"
+  },
+  "leistungen": {
+    "diagnostik": "Diagnostic",
+    "onkologie": "Oncologie",
+    "andrologie": "Andrologie",
+    "urolift": "UroLift®",
+    "magnetstimulation": "Stimulation Magnétique",
+    "urodynamik": "Urodynamique",
+    "ambulanteOp": "Chirurgie Ambulatoire",
+    "kinderurologie": "Urologie Pédiatrique",
+    "individuelleLeistungen": "Prestations Individuelles"
   },
   "home": {
     "hero_title": "Cabinet d'Urologie Neuwied",

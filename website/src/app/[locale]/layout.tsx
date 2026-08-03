@@ -114,7 +114,7 @@ export default async function LocaleLayout({
       <body className={`${raleway.variable} font-sans antialiased flex flex-col min-h-screen bg-background text-foreground`}>
         <NextIntlClientProvider messages={messages}>
           {!isLanding && <Navbar />}
-          <main className="flex-1">
+          <main className={`flex-1 ${!isLanding ? "pt-[60px] md:pt-[102px]" : ""}`}>
             {children}
           </main>
           {!isLanding && <Footer />}

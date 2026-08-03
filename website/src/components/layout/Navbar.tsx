@@ -3,231 +3,229 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const DOCTOLIB_URL =
-  "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking?speciality_id=1336&utm_source=website";
+const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
 
-const locales = [
+const languages = [
   { code: "de", label: "Deutsch" },
   { code: "en", label: "English" },
   { code: "fr", label: "Français" },
 ];
 
+const leistungenLinks = [
+  { key: "diagnostik", href: "/leistungen/diagnostik" },
+  { key: "onkologie", href: "/leistungen/onkologie" },
+  { key: "andrologie", href: "/leistungen/andrologie" },
+  { key: "urolift", href: "/leistungen/urolift" },
+  { key: "magnetstimulation", href: "/leistungen/magnetstimulation" },
+  { key: "urodynamik", href: "/leistungen/urodynamik" },
+  { key: "ambulanteOp", href: "/leistungen/ambulante-op" },
+  { key: "kinderurologie", href: "/leistungen/kinderurologie" },
+  { key: "individuelleLeistungen", href: "/leistungen/individuelle-leistungen" },
+];
+
 const navLinks = [
   { key: "home", href: "" },
   { key: "practice", href: "/praxis" },
+  { key: "doctor", href: "/dr-walters" },
   { key: "team", href: "/team" },
-  {
-    key: "services",
-    href: "/leistungen",
-    children: [
-      { label: "Diagnostik", href: "/leistungen/diagnostik" },
-      { label: "Onkologie", href: "/leistungen/onkologie" },
-      { label: "Andrologie", href: "/leistungen/andrologie" },
-      { label: "UroLift®", href: "/leistungen/urolift" },
-      { label: "Magnetstimulation", href: "/leistungen/magnetstimulation" },
-      { label: "Urodynamik", href: "/leistungen/urodynamik" },
-      { label: "Ambulante OPs", href: "/leistungen/ambulante-op" },
-      { label: "Kinderurologie", href: "/leistungen/kinderurologie" },
-      { label: "Individuelle Leistungen", href: "/leistungen/individuelle-leistungen" },
-    ],
-  },
+  { key: "linksPage", href: "/links" },
   { key: "contact", href: "/kontakt" },
 ];
 
 export default function Navbar() {
   const t = useTranslations("nav");
+  const tLeistungen = useTranslations("leistungen");
   const locale = useLocale();
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  const isActive = (href: string) =>
+    href !== "" && (pathname === href || pathname === `/${locale}${href}`);
+
+  const linkClass = (active: boolean) =>
+    cn(
+      "text-[16px] font-bold text-body-text border-b-2 border-transparent transition-colors duration-[250ms] hover:text-primary hover:border-primary py-1",
+      active && "text-primary border-primary"
+    );
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
-        scrolled ? "py-3" : "py-5"
-      }`}
+      className={cn(
+        "fixed top-0 left-0 right-0 z-[100] bg-[rgba(255,255,255,0.9)] h-[60px] md:h-[102px] transition-shadow duration-300",
+        scrolled && "shadow-[0_2px_8px_rgba(0,0,0,0.1)]"
+      )}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <nav
-          className={`flex items-center justify-between rounded-2xl px-5 py-3 transition-all duration-500 ${
-            scrolled ? "glass-strong shadow-elegant" : "glass"
-          }`}
-        >
-          {/* Logo */}
-          <Link href={`/${locale}`} className="flex items-center">
-            <Image
-              src="/logo.png"
-              alt="Urologie Neuwied"
-              width={180}
-              height={48}
-              className="h-9 w-auto rounded-md bg-white/95 p-1 object-contain"
-              priority
-            />
+      <div className="container h-full flex items-center justify-between gap-4">
+        {/* Logo */}
+        <Link href={`/${locale}`} className="flex items-center flex-shrink-0">
+          <Image
+            src="/assets/logo.png"
+            alt="Urologie Neuwied"
+            width={170}
+            height={60}
+            className="h-[44px] md:h-[60px] w-auto max-w-[170px] object-contain"
+            priority
+          />
+        </Link>
+
+        {/* Desktop nav */}
+        <nav className="hidden lg:flex items-center gap-6">
+          {navLinks.slice(0, 3).map((link) => (
+            <Link key={link.key} href={`/${locale}${link.href}`} className={linkClass(isActive(link.href))}>
+              {t(link.key)}
+            </Link>
+          ))}
+
+          <div className="relative group">
+            <button className={cn(linkClass(pathname?.includes("/leistungen")), "flex items-center gap-1")}>
+              {t("services")}
+              <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
+            </button>
+            <div className="absolute top-full left-0 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="min-w-[200px] bg-white rounded-md shadow-[0_8px_24px_rgba(0,0,0,0.15)] py-2">
+                {leistungenLinks.map((item) => (
+                  <Link
+                    key={item.key}
+                    href={`/${locale}${item.href}`}
+                    className="flex items-center h-10 px-4 text-[15px] text-body-text hover:bg-muted hover:text-primary transition-colors"
+                  >
+                    {tLeistungen(item.key)}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {navLinks.slice(3).map((link) => (
+            <Link key={link.key} href={`/${locale}${link.href}`} className={linkClass(isActive(link.href))}>
+              {t(link.key)}
+            </Link>
+          ))}
+
+          <Link
+            href={`/${locale}/patientenportal`}
+            className="text-[16px] font-bold text-primary hover:text-primary-dark transition-colors duration-[250ms]"
+          >
+            {t("portal")}
           </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-6 text-sm">
-            {navLinks.map((link) =>
-              link.children ? (
-                <div key={link.key} className="relative group">
-                  <button className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors py-1">
-                    {t(link.key)}
-                    <ChevronDown size={13} className="group-hover:rotate-180 transition-transform duration-200" />
-                  </button>
-                  <div className="absolute top-full left-0 mt-3 w-64 glass-strong rounded-2xl shadow-elegant opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div className="py-2 px-2">
-                      {link.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={`/${locale}${child.href}`}
-                          className="block px-3 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-xl transition-colors"
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <Link
-                  key={link.key}
-                  href={`/${locale}${link.href}`}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {t(link.key)}
-                </Link>
-              )
-            )}
+          {/* Language switcher */}
+          <div className="flex items-center gap-1.5 border-l border-black/10 pl-4">
+            {languages.map((lang) => (
+              <Link
+                key={lang.code}
+                href={`/${lang.code}`}
+                title={lang.label}
+                className={cn(
+                  "rounded-sm overflow-hidden transition-all",
+                  locale === lang.code ? "ring-2 ring-primary" : "opacity-70 hover:opacity-100"
+                )}
+              >
+                <Image src={`/assets/${lang.code}.gif`} alt={lang.label} width={26} height={20} unoptimized />
+              </Link>
+            ))}
+          </div>
 
-            {/* Language switcher */}
-            <div className="flex items-center gap-0.5 border-l border-white/10 pl-4">
-              {locales.map((loc) => (
+          {/* Doctolib CTA */}
+          <a
+            href={DOCTOLIB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center bg-doctolib-blue hover:bg-[#0d6ab8] px-4 py-2 rounded transition-colors"
+          >
+            <Image src="/assets/doctolib-white-transparent.png" alt="Doctolib" width={90} height={20} className="h-5 w-auto" />
+          </a>
+        </nav>
+
+        {/* Mobile toggle */}
+        <button
+          className="lg:hidden p-2 text-body-text"
+          onClick={() => setMobileOpen((v) => !v)}
+          aria-label="Menu"
+        >
+          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-[0_8px_24px_rgba(0,0,0,0.15)] max-h-[calc(100vh-60px)] overflow-y-auto">
+          <div className="container py-4 flex flex-col gap-1">
+            {navLinks.slice(0, 3).map((link) => (
+              <Link key={link.key} href={`/${locale}${link.href}`} className="py-2.5 text-[16px] font-bold text-body-text">
+                {t(link.key)}
+              </Link>
+            ))}
+
+            <div className="py-2.5 text-[13px] font-bold uppercase tracking-widest text-primary-dark/70">
+              {t("services")}
+            </div>
+            <div className="flex flex-col gap-1 pl-3">
+              {leistungenLinks.map((item) => (
                 <Link
-                  key={loc.code}
-                  href={`/${loc.code}`}
-                  title={loc.label}
-                  className={cn(
-                    "px-2.5 py-1 rounded-lg text-xs font-semibold tracking-wide transition-all",
-                    locale === loc.code
-                      ? "bg-white/20 text-white ring-1 ring-white/30"
-                      : "text-slate-400 hover:text-white hover:bg-white/10"
-                  )}
+                  key={item.key}
+                  href={`/${locale}${item.href}`}
+                  className="py-2 text-[15px] text-body-text"
                 >
-                  {loc.code.toUpperCase()}
+                  {tLeistungen(item.key)}
                 </Link>
               ))}
             </div>
-          </nav>
 
-          {/* CTA + mobile toggle */}
-          <div className="flex items-center gap-3">
-            <Link
-              href={`/${locale}/patientenportal`}
-              className="hidden sm:inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-sm font-medium text-foreground hover:bg-white/10 transition-all"
-            >
-              Patientenportal
+            {navLinks.slice(3).map((link) => (
+              <Link key={link.key} href={`/${locale}${link.href}`} className="py-2.5 text-[16px] font-bold text-body-text">
+                {t(link.key)}
+              </Link>
+            ))}
+
+            <Link href={`/${locale}/patientenportal`} className="py-2.5 text-[16px] font-bold text-primary">
+              {t("portal")}
             </Link>
+
+            <div className="flex items-center gap-3 py-3">
+              {languages.map((lang) => (
+                <Link
+                  key={lang.code}
+                  href={`/${lang.code}`}
+                  title={lang.label}
+                  className={cn(
+                    "rounded-sm overflow-hidden",
+                    locale === lang.code ? "ring-2 ring-primary" : "opacity-70"
+                  )}
+                >
+                  <Image src={`/assets/${lang.code}.gif`} alt={lang.label} width={26} height={20} unoptimized />
+                </Link>
+              ))}
+            </div>
+
             <a
               href={DOCTOLIB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 rounded-full bg-primary-gradient px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105"
+              className="inline-flex items-center justify-center bg-doctolib-blue px-4 py-3 rounded mt-1"
             >
-              {t("appointment")}
-              <ArrowRight size={14} />
+              <Image src="/assets/doctolib-white-transparent.png" alt="Doctolib" width={100} height={22} className="h-[22px] w-auto" />
             </a>
-            <button
-              className="lg:hidden p-2 rounded-xl glass text-foreground transition-colors"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Menu"
-            >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
           </div>
-        </nav>
-
-        {/* Mobile menu */}
-        {mobileOpen && (
-          <div className="lg:hidden mt-2 glass-strong rounded-2xl px-4 py-4 space-y-1 shadow-elegant">
-            {navLinks.map((link) => (
-              <div key={link.key}>
-                {link.children ? (
-                  <div className="px-3 py-2 text-xs font-semibold uppercase tracking-widest text-accent/70 mt-2">
-                    {t(link.key)}
-                  </div>
-                ) : (
-                  <Link
-                    href={`/${locale}${link.href}`}
-                    className="block px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-xl transition-colors"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {t(link.key)}
-                  </Link>
-                )}
-                {link.children && (
-                  <div className="ml-4 mt-1 space-y-0.5">
-                    {link.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={`/${locale}${child.href}`}
-                        className="block px-3 py-2 text-sm text-muted-foreground hover:text-accent hover:bg-white/5 rounded-xl transition-colors"
-                        onClick={() => setMobileOpen(false)}
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-
-            <div className="pt-3 border-t border-white/10 space-y-2">
-              <Link
-                href={`/${locale}/patientenportal`}
-                className="block w-full text-center glass rounded-xl px-4 py-3 text-sm font-semibold text-foreground hover:bg-white/10 transition-all"
-                onClick={() => setMobileOpen(false)}
-              >
-                Patientenportal
-              </Link>
-              <a
-                href={DOCTOLIB_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full text-center rounded-xl bg-primary-gradient px-4 py-3 text-sm font-semibold text-primary-foreground shadow-glow"
-              >
-                {t("appointment")}
-              </a>
-            </div>
-
-            {/* Language switcher mobile */}
-            <div className="flex items-center justify-center gap-1 pt-2">
-              {locales.map((loc) => (
-                <Link
-                  key={loc.code}
-                  href={`/${loc.code}`}
-                  title={loc.label}
-                  className={cn(
-                    "px-2.5 py-1 rounded-lg text-xs font-semibold tracking-wide transition-all",
-                    locale === loc.code ? "bg-white/20 text-white ring-1 ring-white/30" : "text-slate-400 hover:text-white hover:bg-white/10"
-                  )}
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {loc.code.toUpperCase()}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   );
 }
