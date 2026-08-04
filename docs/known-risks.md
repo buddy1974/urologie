@@ -112,3 +112,34 @@ list it replaced.
 **How to apply:** do a real mobile-device or narrow-viewport check of the
 overlay menu, StatsStrip, and TrustStrip before treating this as fully verified
 on mobile.
+
+## "Vasektomie-Experten-Netzwerk" certified-membership claim needs confirmation (found 2026-08-04)
+
+While re-verifying the W1-W8 compliance pass, found that `JsonLd.tsx` (line
+119, FAQ structured data) and `leistungen/andrologie/page.tsx` (line 41) both
+state, in German, that "Herr Fomuki ist zertifiziertes Mitglied im
+Vasektomie-Experten-Netzwerk" (a certified member of the Vasektomie-Experten-
+Netzwerk) — a specific, named professional network membership. This predates
+this session (not introduced by any of today's changes).
+
+This directly contradicts a decision made earlier today: `TrustStrip.tsx`
+deliberately dropped "Vasektomie-Experten-Netzwerk" as a trust badge because
+it wasn't established anywhere in the codebase (see the 2026-08-04 "Visual
+enhancement pass" entry in `docs/decision-log.md`). That statement was wrong —
+the claim already exists on the site, in SEO-visible schema.org FAQ markup,
+which is arguably higher-stakes than a visual badge since it's what search
+engines and AI assistants read as structured fact.
+
+**Why it matters:** either (a) this membership is real, in which case it
+should be added back to `TrustStrip.tsx` with confirmed wording and my earlier
+decision-log entry corrected, or (b) it isn't verified, in which case it's
+already an overclaim live on the site in two places, which is a bigger problem
+than a dropped marketing badge — structured data errors on a healthcare site
+carry real regulatory risk (Heilmittelwerbegesetz-adjacent).
+
+**How to apply:** ask Marcel / Dr. Fomuki directly whether "Vasektomie-
+Experten-Netzwerk" refers to a real, named, joinable professional network he
+holds certified membership in (as opposed to a general self-description of
+expertise). Do not silently edit `JsonLd.tsx` or `andrologie/page.tsx` on the
+assumption it's wrong — confirm first, since removing a true claim from
+SEO-critical structured data is also a real cost.

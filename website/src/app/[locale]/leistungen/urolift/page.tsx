@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: metaTitles[locale as keyof typeof metaTitles] ?? metaTitles.de,
     description:
-      "UroLift® Behandlung bei benigner Prostatahyperplasie in Neuwied — ambulant, schonend, ohne Gewebsentfernung.",
+      "UroLift® Behandlung bei benigner Prostatahyperplasie in Neuwied — ambulant, schonend, ohne Gewebeentfernung.",
   };
 }
 

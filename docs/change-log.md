@@ -408,3 +408,50 @@ git commands.
   visually (browser automation's window resize didn't take effect in this
   session) — relying on the same `grid-cols-1 md:grid-cols-3` responsive
   pattern already used elsewhere in this codebase.
+
+## 2026-08-04 — Compliance pass re-verification against a re-sent, near-identical spec
+
+- A repeat of the W1-W8/B1-B3/D1-D2 compliance-pass instruction (near-identical
+  to the one already implemented earlier the same day, commits `1a8ba13` and
+  `aaec93b`) was re-sent. Instead of redoing the whole pass, verified every item
+  against the current file contents first and only touched genuine gaps —
+  per "AI CODING DISCIPLINE: no random broad changes."
+- **B1-B3 (backend) and D1-D2 (dashboard): already fully correct**, including
+  exact wording/URLs in `Compliance.tsx`'s AVV/TOM/Patientenportal/KBV sections
+  and `Labor.tsx`'s Freigabe UI. No changes made to `backend/` or `dashboard/`
+  this pass.
+- **W1 Impressum**: added the missing "Urheberrecht" section (was absent from
+  the previous pass); aligned the EN/FR "provided in German" banner text to
+  include the contact email, matching this spec's exact wording.
+- **W2 Datenschutz**: fixed one internal inconsistency — Section 6
+  (Kontaktformular) cited two legal bases (Art. 6 Abs. 1 lit. b *and* lit. f),
+  while Section 3 (Rechtsgrundlagen der Verarbeitung, added in the previous
+  pass) already committed to lit. b alone for the contact form. Simplified
+  Section 6 to match Section 3. Left the processor-purpose wording, the
+  parentheses-instead-of-em-dash AVV phrasing, and the corrected (not
+  over-broad) audit-log sentence as they already were — all previously
+  deliberate, documented decisions that this re-sent spec would have
+  undone if applied literally.
+- **W4 UroLift wording**: `Services.tsx` already had the requested
+  "ohne Gewebeentfernung" phrasing. Found and fixed two remaining spots that
+  weren't touched by the previous pass: `JsonLd.tsx`'s FAQ structured-data
+  answer still said "ohne klassische Operation" (same overclaim, different
+  location — this is SEO-visible schema.org markup, arguably higher-stakes
+  than page copy), and the UroLift page's meta description had a spelling
+  variant ("Gewebsentfernung" instead of "Gewebeentfernung"). Both corrected.
+- **W7 Footer**: aligned the French compliance notice and the notice's text
+  opacity to this spec's exact wording/value (`rgba(255,255,255,0.4)`; was
+  `text-white/45`, a harmless earlier rounding, now `text-white/40`).
+- **Bug found and fixed, out of the original W1-W8 list but directly relevant
+  ("medical data workflows")**: `patientenportal/page.tsx` had two `tel:`
+  links reading `tel:+492631233510` — an extra trailing digit, a dead link —
+  while every other phone link on the site correctly uses
+  `tel:+49263123351`. Both occurrences fixed. This is the page patients use to
+  find help if they can't access their portal, so a broken phone link there
+  is a real usability defect for exactly the users least able to self-serve.
+- **W5, W6, W3, W8**: verified already fully correct from the earlier pass, no
+  changes needed.
+- Verified via `npx tsc --noEmit` (clean in all three directories). Only 6
+  files touched this pass, all in `website/`: `impressum/page.tsx`,
+  `datenschutz/page.tsx`, `leistungen/urolift/page.tsx`, `JsonLd.tsx`,
+  `Footer.tsx`, `patientenportal/page.tsx`.

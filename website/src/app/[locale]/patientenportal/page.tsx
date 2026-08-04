@@ -311,7 +311,7 @@ export default function PatientenportalPage() {
             </form>
 
             <p className="text-[13px] text-center mt-6">
-              <a href="tel:+492631233510" className="text-primary hover:text-primary-dark transition-colors">
+              <a href="tel:+49263123351" className="text-primary hover:text-primary-dark transition-colors">
                 Probleme beim Zugang?
               </a>
             </p>
@@ -613,7 +613,7 @@ export default function PatientenportalPage() {
               ))}
               <p className="text-[13px] text-[#666] leading-relaxed pt-4">
                 Für Änderungen Ihrer Daten kontaktieren Sie bitte die Praxis unter{" "}
-                <a href="tel:+492631233510" className="text-primary hover:text-primary-dark transition-colors underline underline-offset-2">
+                <a href="tel:+49263123351" className="text-primary hover:text-primary-dark transition-colors underline underline-offset-2">
                   02631 - 23351
                 </a>.
               </p>

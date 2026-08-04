@@ -264,8 +264,7 @@ export default async function DatenschutzPage() {
               Nachricht verarbeitet.
             </p>
             <p className="text-body-text leading-[1.6] mb-2">
-              Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragsanfrage) oder Art. 6 Abs. 1 lit. f
-              DSGVO (berechtigtes Interesse).
+              Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.
             </p>
             <p className="text-body-text leading-[1.6]">
               Löschung: Anfragen werden nach vollständiger Bearbeitung gelöscht, spätestens nach 6 Monaten.

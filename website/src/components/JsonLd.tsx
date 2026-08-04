@@ -108,7 +108,7 @@ export default function JsonLd() {
             "name": "Was ist UroLift®?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "UroLift® ist ein minimalinvasives ambulantes Verfahren zur Behandlung der benignen Prostatahyperplasie (BPH) ohne klassische Operation."
+              "text": "UroLift® ist ein minimalinvasives ambulantes Verfahren zur Behandlung der benignen Prostatahyperplasie (BPH), ohne Gewebeentfernung."
             }
           },
           {

@@ -23,12 +23,12 @@ const content = {
   en: {
     title: "Impressum",
     langNote:
-      "This Impressum (legal notice) is provided in German as required by German law (§ 5 TMG/DDG).",
+      "This legal notice (Impressum) is required by German law and is provided in German. For enquiries please contact info@urologie-neuwied.de.",
   },
   fr: {
     title: "Impressum",
     langNote:
-      "Cet Impressum (mentions légales) est fourni en allemand conformément au droit allemand (§ 5 TMG/DDG).",
+      "Cette notice légale (Impressum) est requise par le droit allemand et est fournie en allemand. Pour toute question, veuillez contacter info@urologie-neuwied.de.",
   },
 } as const;
 
@@ -119,7 +119,18 @@ export default async function ImpressumPage() {
             <h2 className="mb-3">Haftungsausschluss</h2>
             <p className="text-body-text leading-[1.6]">
               Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit,
-              Vollständigkeit und Aktualität der Inhalte übernehmen wir keine Gewähr.
+              Vollständigkeit und Aktualität der Inhalte übernehmen wir keine Gewähr. Als Diensteanbieter
+              sind wir für eigene Inhalte nach den allgemeinen Gesetzen verantwortlich.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="mb-3">Urheberrecht</h2>
+            <p className="text-body-text leading-[1.6]">
+              Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen
+              dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der
+              Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des
+              jeweiligen Autors bzw. Erstellers.
             </p>
           </div>
         </div>
