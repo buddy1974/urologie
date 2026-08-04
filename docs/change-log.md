@@ -455,3 +455,32 @@ git commands.
   files touched this pass, all in `website/`: `impressum/page.tsx`,
   `datenschutz/page.tsx`, `leistungen/urolift/page.tsx`, `JsonLd.tsx`,
   `Footer.tsx`, `patientenportal/page.tsx`.
+
+## 2026-08-04 — Favicon override (website/ only)
+
+- The site's browser-tab icon wasn't picking up the branded logo Marcel placed
+  at `website/public/favicon.png`, even though that file already existed. Root
+  cause: Next.js App Router's file-convention `src/app/favicon.ico` (a stale,
+  unrelated icon, unchanged since March) takes precedence over anything
+  referenced from `public/` — nothing in the code was pointing at
+  `public/favicon.png` at all.
+- Generated `src/app/favicon.ico` (16/32/48px, multi-resolution, PNG-embedded
+  ICO container) and the Next.js App Router convention files
+  `src/app/icon.png` (512px) and `src/app/apple-icon.png` (180px) from the
+  source `public/favicon.png`, via `sharp`. Kept `public/favicon.png` in place
+  as the source asset for future regeneration.
+- The source image's visible circular mark doesn't fill its own 50×58 canvas
+  edge-to-edge (there's a real, baked-in light-grey margin, heavier on the
+  top/left). A first attempt at auto-cropping that margin out (via a
+  color-distance bounding-box heuristic) clipped the kidney-icon detail at the
+  top and bottom of the circle — caught by visually inspecting the generated
+  `icon.png` before committing, not by the script "succeeding." Settled on a
+  conservative 2px trim instead (removes only the excess background, well
+  clear of the circle's actual content) rather than risk shipping a clipped
+  logo on a live medical site.
+- Verified via a dev-server `curl`: `/favicon.ico`, `/icon.png`, and the
+  rendered page's `<head>` all now reference the new files
+  (`<link rel="icon" href="/favicon.ico?...">`,
+  `<link rel="icon" href="/icon.png?...">`,
+  `<link rel="apple-touch-icon" href="/apple-icon.png?...">`), confirming
+  Next.js picked up the new convention files correctly.
