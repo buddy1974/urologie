@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { ChevronDown, Bot } from "lucide-react";
 
 const content = {
@@ -76,7 +77,14 @@ export default function FaqSection({ locale }: { locale: string }) {
           {c.faqs.map((faq, i) => {
             const isOpen = openIndex === i;
             return (
-              <div key={faq.q} className="border-b border-[#e5e5e5] py-5">
+              <motion.div
+                key={faq.q}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                className="border-b border-[#e5e5e5] py-5"
+              >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
                   className="w-full flex items-center justify-between gap-4 text-left"
@@ -88,7 +96,7 @@ export default function FaqSection({ locale }: { locale: string }) {
                   />
                 </button>
                 {isOpen && <p className="text-body-text text-[15px] leading-[1.6] pt-3">{faq.a}</p>}
-              </div>
+              </motion.div>
             );
           })}
         </div>

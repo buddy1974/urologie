@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ChevronDown, Phone } from "lucide-react";
+import OpeningHours from "@/components/ui/OpeningHours";
 
 const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
 
@@ -112,6 +113,10 @@ export default function Hero({ locale }: { locale?: string }) {
           >
             {t(locale, "Patientenportal", "Patient Portal", "Espace Patient")}
           </a>
+        </motion.div>
+
+        <motion.div custom={4} initial="hidden" animate="visible" variants={fadeUp} className="mt-6">
+          <OpeningHours locale={locale ?? "de"} variant="compact" dark />
         </motion.div>
       </div>
 

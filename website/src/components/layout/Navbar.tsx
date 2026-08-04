@@ -5,8 +5,31 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { Menu, X, ChevronDown } from "lucide-react";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  Home,
+  Building2,
+  Stethoscope,
+  Users,
+  Link2,
+  Phone,
+  Microscope,
+  Ribbon,
+  User,
+  Zap,
+  Magnet,
+  BarChart3,
+  Hospital,
+  Baby,
+  Gem,
+  UserRound,
+  FileText,
+  ShieldCheck,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
+import OpeningHours from "@/components/ui/OpeningHours";
 
 const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
 const PRAXISOS_URL = "https://urologie-dashboard-one.vercel.app";
@@ -18,24 +41,30 @@ const languages = [
 ];
 
 const leistungenLinks = [
-  { key: "diagnostik", href: "/leistungen/diagnostik" },
-  { key: "onkologie", href: "/leistungen/onkologie" },
-  { key: "andrologie", href: "/leistungen/andrologie" },
-  { key: "urolift", href: "/leistungen/urolift" },
-  { key: "magnetstimulation", href: "/leistungen/magnetstimulation" },
-  { key: "urodynamik", href: "/leistungen/urodynamik" },
-  { key: "ambulanteOp", href: "/leistungen/ambulante-op" },
-  { key: "kinderurologie", href: "/leistungen/kinderurologie" },
-  { key: "individuelleLeistungen", href: "/leistungen/individuelle-leistungen" },
+  { key: "diagnostik", href: "/leistungen/diagnostik", icon: Microscope },
+  { key: "onkologie", href: "/leistungen/onkologie", icon: Ribbon },
+  { key: "andrologie", href: "/leistungen/andrologie", icon: User },
+  { key: "urolift", href: "/leistungen/urolift", icon: Zap },
+  { key: "magnetstimulation", href: "/leistungen/magnetstimulation", icon: Magnet },
+  { key: "urodynamik", href: "/leistungen/urodynamik", icon: BarChart3 },
+  { key: "ambulanteOp", href: "/leistungen/ambulante-op", icon: Hospital },
+  { key: "kinderurologie", href: "/leistungen/kinderurologie", icon: Baby },
+  { key: "individuelleLeistungen", href: "/leistungen/individuelle-leistungen", icon: Gem },
 ];
 
 const overlayLinks = [
-  { key: "home", href: "" },
-  { key: "practice", href: "/praxis" },
-  { key: "doctor", href: "/dr-walters" },
-  { key: "team", href: "/team" },
-  { key: "linksPage", href: "/links" },
-  { key: "contact", href: "/kontakt" },
+  { key: "home", href: "", icon: Home },
+  { key: "practice", href: "/praxis", icon: Building2 },
+  { key: "doctor", href: "/dr-walters", icon: Stethoscope },
+  { key: "team", href: "/team", icon: Users },
+  { key: "linksPage", href: "/links", icon: Link2 },
+  { key: "contact", href: "/kontakt", icon: Phone },
+];
+
+const legalLinks = [
+  { key: "portal", href: "/patientenportal", icon: UserRound, label: null },
+  { key: "impressum", href: "/impressum", icon: FileText, label: "Impressum" },
+  { key: "datenschutz", href: "/datenschutz", icon: ShieldCheck, label: "Datenschutz" },
 ];
 
 export default function Navbar() {
@@ -146,6 +175,8 @@ export default function Navbar() {
             PraxisOS
           </a>
 
+          <OpeningHours locale={locale} variant="compact" />
+
           <Link
             href={`/${locale}/patientenportal`}
             className="text-[14px] font-bold text-white bg-primary hover:bg-primary-dark transition-colors duration-200 px-[14px] py-[6px] rounded"
@@ -195,60 +226,74 @@ export default function Navbar() {
             </button>
           </div>
 
-          <div className="container py-10 max-w-3xl">
-            <nav className="flex flex-col gap-1">
-              {overlayLinks.slice(0, 3).map((link) => (
-                <Link
-                  key={link.key}
-                  href={`/${locale}${link.href}`}
-                  className={cn("text-[22px] md:text-[28px] font-bold py-3 text-body-text hover:text-primary transition-colors", isActive(link.href) && "text-primary")}
-                >
-                  {t(link.key)}
-                </Link>
-              ))}
-
-              <div className="py-3">
-                <span className="text-[22px] md:text-[28px] font-bold text-body-text">{t("services")}</span>
-                <div className="flex flex-col gap-1 mt-3 pl-2 border-l-2 border-[#e5e5e5]">
-                  {leistungenLinks.map((item) => (
+          <div className="container px-6 py-8 md:px-[60px] md:py-12 max-w-6xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {/* Column 1 — Unsere Praxis */}
+              <div>
+                <p className="text-primary text-[12px] font-bold uppercase tracking-widest mb-4">{t("practice")}</p>
+                <div className="flex flex-col gap-2.5">
+                  {overlayLinks.map((link) => (
                     <Link
-                      key={item.key}
-                      href={`/${locale}${item.href}`}
-                      className="text-[16px] py-2 pl-4 text-body-text hover:text-primary transition-colors"
+                      key={link.key}
+                      href={`/${locale}${link.href}`}
+                      className={cn(
+                        "group flex items-center gap-3 bg-white border border-[#e5e5e5] rounded-xl px-5 py-4 transition-all duration-200 hover:border-primary hover:shadow-[0_4px_16px_rgba(137,194,202,0.25)] hover:-translate-y-0.5",
+                        isActive(link.href) && "border-primary"
+                      )}
                     >
-                      {tLeistungen(item.key)}
+                      <link.icon size={19} className="text-primary flex-shrink-0" />
+                      <span className="text-primary-dark font-bold text-[15px]">{t(link.key)}</span>
                     </Link>
                   ))}
                 </div>
               </div>
 
-              {overlayLinks.slice(3).map((link) => (
-                <Link
-                  key={link.key}
-                  href={`/${locale}${link.href}`}
-                  className={cn("text-[22px] md:text-[28px] font-bold py-3 text-body-text hover:text-primary transition-colors", isActive(link.href) && "text-primary")}
-                >
-                  {t(link.key)}
-                </Link>
-              ))}
-
-              <div className="flex gap-6 mt-6 pt-6 border-t border-[#e5e5e5]">
-                <Link href={`/${locale}/impressum`} className="text-[15px] font-bold text-body-text hover:text-primary transition-colors">
-                  Impressum
-                </Link>
-                <Link href={`/${locale}/datenschutz`} className="text-[15px] font-bold text-body-text hover:text-primary transition-colors">
-                  Datenschutz
-                </Link>
+              {/* Column 2 — Leistungen */}
+              <div>
+                <p className="text-primary text-[12px] font-bold uppercase tracking-widest mb-4">{t("services")}</p>
+                <div className="flex flex-col gap-2.5">
+                  {leistungenLinks.map((item) => (
+                    <Link
+                      key={item.key}
+                      href={`/${locale}${item.href}`}
+                      className={cn(
+                        "group flex items-center gap-3 bg-white border border-[#e5e5e5] rounded-xl px-5 py-4 transition-all duration-200 hover:border-primary hover:shadow-[0_4px_16px_rgba(137,194,202,0.25)] hover:-translate-y-0.5",
+                        isActive(item.href) && "border-primary"
+                      )}
+                    >
+                      <item.icon size={19} className="text-primary flex-shrink-0" />
+                      <span className="text-primary-dark font-bold text-[15px]">{tLeistungen(item.key)}</span>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </nav>
 
-            <div className="flex flex-wrap items-center gap-6 mt-10 pt-10 border-t border-[#e5e5e5]">
-              <Link
-                href={`/${locale}/patientenportal`}
-                className="text-[14px] font-bold text-white bg-primary hover:bg-primary-dark transition-colors px-[14px] py-[6px] rounded"
-              >
-                {t("portal")}
-              </Link>
+              {/* Column 3 — Patienten & Rechtliches */}
+              <div>
+                <p className="text-primary text-[12px] font-bold uppercase tracking-widest mb-4">
+                  {t("overlayCategoryLegal")}
+                </p>
+                <div className="flex flex-col gap-2.5">
+                  {legalLinks.map((link) => (
+                    <Link
+                      key={link.key}
+                      href={`/${locale}${link.href}`}
+                      className={cn(
+                        "group flex items-center gap-3 bg-white border border-[#e5e5e5] rounded-xl px-5 py-4 transition-all duration-200 hover:border-primary hover:shadow-[0_4px_16px_rgba(137,194,202,0.25)] hover:-translate-y-0.5",
+                        isActive(link.href) && "border-primary"
+                      )}
+                    >
+                      <link.icon size={19} className="text-primary flex-shrink-0" />
+                      <span className="text-primary-dark font-bold text-[15px]">{link.label ?? t(link.key)}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* CTA strip */}
+            <div className="mt-10 bg-[#f0f7f9] rounded-xl px-6 py-5 flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 text-center sm:text-left">
+              <span className="text-primary-dark font-bold text-[16px]">{t("overlayCtaBook")}</span>
               <a
                 href={DOCTOLIB_URL}
                 target="_blank"
@@ -257,10 +302,19 @@ export default function Navbar() {
               >
                 <Image src="/assets/doctolib-white-transparent.png" alt="Doctolib" width={100} height={22} className="h-[22px] w-auto" />
               </a>
-              <a href={PRAXISOS_URL} target="_blank" rel="noopener noreferrer" className="text-[13px] font-bold text-primary-dark opacity-60 hover:opacity-100 transition-opacity">
+            </div>
+
+            {/* Utility row: PraxisOS + languages */}
+            <div className="flex flex-wrap items-center justify-center sm:justify-between gap-4 mt-8 pt-6 border-t border-[#e5e5e5]">
+              <a
+                href={PRAXISOS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[13px] font-bold text-primary-dark opacity-60 hover:opacity-100 transition-opacity"
+              >
                 PraxisOS
               </a>
-              <div className="flex items-center gap-2 ml-auto">
+              <div className="flex items-center gap-2">
                 {languages.map((lang) => (
                   <Link
                     key={lang.code}

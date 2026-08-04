@@ -94,3 +94,21 @@ it without a corresponding frontend change, which wasn't in scope for this task.
 **How to apply:** if a `{results, message}` envelope is wanted later, update
 `patientenportal/page.tsx`'s consumption of this endpoint in the same change,
 not independently.
+
+## Visual enhancement pass: mobile layout not visually verified (2026-08-04)
+
+The new "Alle Seiten" overlay card grid, StatsStrip, TrustStrip, and floating
+buttons all rely on standard responsive Tailwind classes (`grid-cols-1
+md:grid-cols-3`, `flex-col sm:flex-row`, etc.), the same pattern used
+throughout the rest of the site. However, the browser automation window-resize
+in this session didn't visibly change the captured screenshot dimensions, so
+the actual single-column mobile layout was not visually confirmed, only
+verified by reading the Tailwind classes.
+
+**Why it matters:** a card grid with three columns of varying-length lists
+(6/9/3 items) is more layout-sensitive on narrow screens than the plain text
+list it replaced.
+
+**How to apply:** do a real mobile-device or narrow-viewport check of the
+overlay menu, StatsStrip, and TrustStrip before treating this as fully verified
+on mobile.

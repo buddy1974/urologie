@@ -8,6 +8,8 @@ import type { Locale } from "@/types";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ChatWidget from "@/components/chat/ChatWidget";
+import FloatingContact from "@/components/ui/FloatingContact";
+import BackToTop from "@/components/ui/BackToTop";
 import JsonLd from "@/components/JsonLd";
 import { isLandingMode } from "@/lib/site-mode";
 import "../globals.css";
@@ -119,6 +121,8 @@ export default async function LocaleLayout({
           </main>
           {!isLanding && <Footer />}
           {!isLanding && <ChatWidget />}
+          {!isLanding && <FloatingContact />}
+          {!isLanding && <BackToTop />}
         </NextIntlClientProvider>
       </body>
     </html>

@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import { getLocale } from "next-intl/server";
 import Hero from "@/components/sections/Hero";
+import TrustStrip from "@/components/sections/TrustStrip";
 import QuickActionStrip from "@/components/sections/QuickActionStrip";
 import WelcomeSection from "@/components/sections/WelcomeSection";
+import StatsStrip from "@/components/sections/StatsStrip";
 import Services from "@/components/sections/Services";
 import DoctorProfile from "@/components/sections/DoctorProfile";
 import FaqSection from "@/components/sections/FaqSection";
 import PhotoStrip from "@/components/sections/PhotoStrip";
 import FinalCtaStrip from "@/components/sections/FinalCtaStrip";
 import LandingPage from "@/components/landing/LandingPage";
+import Reveal from "@/components/ui/Reveal";
 import { isLandingMode } from "@/lib/site-mode";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -73,13 +76,25 @@ export default async function HomePage() {
   return (
     <div>
       <Hero locale={locale} />
-      <QuickActionStrip locale={locale} />
-      <WelcomeSection locale={locale} />
+      <Reveal>
+        <TrustStrip locale={locale} />
+      </Reveal>
+      <Reveal>
+        <QuickActionStrip locale={locale} />
+      </Reveal>
+      <Reveal>
+        <WelcomeSection locale={locale} />
+      </Reveal>
+      <StatsStrip locale={locale} />
       <Services locale={locale} />
       <DoctorProfile locale={locale} />
       <FaqSection locale={locale} />
-      <PhotoStrip />
-      <FinalCtaStrip locale={locale} />
+      <Reveal>
+        <PhotoStrip />
+      </Reveal>
+      <Reveal>
+        <FinalCtaStrip locale={locale} />
+      </Reveal>
     </div>
   );
 }

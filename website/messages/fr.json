@@ -9,7 +9,9 @@
     "appointment": "Prendre RDV",
     "contact": "Contact",
     "portal": "Espace Patient",
-    "allPages": "Toutes les pages"
+    "allPages": "Toutes les pages",
+    "overlayCategoryLegal": "Patients & Mentions légales",
+    "overlayCtaBook": "Prendre rendez-vous directement"
   },
   "leistungen": {
     "diagnostik": "Diagnostic",

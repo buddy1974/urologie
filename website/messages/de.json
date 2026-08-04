@@ -9,7 +9,9 @@
     "appointment": "Termin buchen",
     "contact": "Kontakt",
     "portal": "Patientenportal",
-    "allPages": "Alle Seiten"
+    "allPages": "Alle Seiten",
+    "overlayCategoryLegal": "Patienten & Rechtliches",
+    "overlayCtaBook": "Direkt einen Termin buchen"
   },
   "leistungen": {
     "diagnostik": "Diagnostik",

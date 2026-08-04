@@ -356,3 +356,55 @@ git commands.
   Not live-tested beyond the metadata `curl` spot-checks above and the earlier
   dev-server walkthrough of the Datenschutz/Impressum/Kontakt/Patientenportal
   pages (unchanged by this pass, re-confirmed clean by `tsc`).
+
+## 2026-08-04 — Visual enhancement pass (website/ only): card-grid overlay, animated stats, live hours, floating contact, scroll reveals
+
+- **"Alle Seiten" overlay redesign** (`Navbar.tsx`): replaced the plain text
+  list with a 3-column card grid ("Unsere Praxis" / "Unsere Leistungen" /
+  "Patienten & Rechtliches"), each item as a bordered card with a lucide icon,
+  hover lift/shadow/border-color, plus a "Direkt einen Termin buchen" CTA strip
+  with the Doctolib button. Kept the existing language switcher and PraxisOS
+  link in a slim utility row at the bottom — the spec's card-grid layout didn't
+  mention them, but removing them would have cut off the only way mobile users
+  reach the language switcher. Added two new `nav` message keys
+  (`overlayCategoryLegal`, `overlayCtaBook`) to `de/en/fr.json`.
+- **Live opening-hours indicator** (new `OpeningHours.tsx`): computes open/closed
+  from the practice's real schedule using `Europe/Berlin` time, refreshed every
+  60s. Added to the desktop navbar (compact, next to PraxisOS), the homepage
+  Hero (compact, dark variant, below the CTA buttons), and the Kontakt page
+  (prominent variant, above the existing hours table).
+  Guarded with a mount check to avoid an SSR/client hydration mismatch on
+  time-dependent content.
+- **Animated stat counters** (new `StatsStrip.tsx`): 15+ years / 5.000+
+  patients-per-year / 4.9★, counting up via `requestAnimationFrame` when the
+  strip enters the viewport (framer-motion `useInView`, once). Inserted between
+  WelcomeSection and Services on the homepage.
+- **Trust badge marquee** (new `TrustStrip.tsx`): reused the existing
+  `.animate-marquee` CSS keyframe (already in `globals.css`, previously unused
+  elsewhere) rather than adding a new animation. Inserted after Hero, before
+  the quick-action strip. See `docs/decision-log.md` — 3 of the spec's 8 badges
+  were dropped as unverifiable professional/certification claims.
+- **Floating contact button + back-to-top** (new `FloatingContact.tsx`,
+  `BackToTop.tsx`): both moved to bottom-left instead of the spec's bottom-right
+  to avoid colliding with the existing `ChatWidget`; phone number corrected to
+  the real, already-used `+49263123351`. Both hidden on `/patientenportal` and
+  in landing-page mode, matching how `Navbar`/`Footer`/`ChatWidget` are already
+  gated in `layout.tsx`. See `docs/decision-log.md` for the full rationale.
+- **Scroll-reveal animations**: added a reusable `Reveal.tsx` wrapper (fade +
+  translateY, `whileInView`, once) around `TrustStrip`, `QuickActionStrip`,
+  `WelcomeSection`, `PhotoStrip`, and `FinalCtaStrip` in `page.tsx`. Sections
+  needing more specific motion got it inline instead of the generic wrapper:
+  `Services.tsx` cards stagger in (`delay: index * 0.1`) and gained a hover
+  upgrade (border-color, image zoom, arrow translateX, stronger shadow);
+  `FaqSection.tsx` items stagger in (`delay: index * 0.05`); `DoctorProfile.tsx`
+  slides the photo in from the left and the text in from the right. Converted
+  `Services.tsx` and `DoctorProfile.tsx` from server to client components to
+  support this (no server-only logic in either, so this was side-effect-free).
+- Verified via `npx tsc --noEmit` (clean) and a dev-server walkthrough in the
+  browser: homepage DE/EN (Hero opening-hours indicator, TrustStrip marquee,
+  StatsStrip counting up to the correct final values, Services hover, overlay
+  card grid in both DE and EN), and the Kontakt page's prominent opening-hours
+  widget. No console errors. Did not verify the mobile single-column layout
+  visually (browser automation's window resize didn't take effect in this
+  session) — relying on the same `grid-cols-1 md:grid-cols-3` responsive
+  pattern already used elsewhere in this codebase.

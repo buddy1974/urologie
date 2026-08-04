@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const content = {
   de: {
@@ -57,25 +60,36 @@ export default function Services({ locale }: { locale: string }) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {c.services.map((service) => (
-          <div
+        {c.services.map((service, i) => (
+          <motion.div
             key={service.key}
-            className="rounded-xl overflow-hidden border border-[#e5e5e5] transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.12)]"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
+            className="group rounded-xl overflow-hidden border border-[#e5e5e5] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-primary hover:shadow-[0_8px_32px_rgba(137,194,202,0.2)]"
           >
-            <div className="relative w-full h-[200px]">
-              <Image src={service.image} alt={service.title} fill className="object-cover" />
+            <div className="relative w-full h-[200px] overflow-hidden">
+              <Image
+                src={service.image}
+                alt={service.title}
+                fill
+                className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+              />
             </div>
             <div className="bg-white">
               <h3 className="text-primary-dark text-[18px] font-bold px-5 pt-4 pb-2">{service.title}</h3>
               <p className="text-body-text text-[15px] leading-[1.6] px-5 pb-4">{service.desc}</p>
               <Link
                 href={`/${locale}/leistungen/${service.key}`}
-                className="block text-primary font-bold px-5 pb-5 hover:text-primary-dark transition-colors"
+                className="inline-flex items-center px-5 pb-5 text-primary font-bold hover:text-primary-dark transition-colors"
               >
-                {c.moreLabel}
+                <span className="transition-transform duration-300 ease-out group-hover:translate-x-1">
+                  {c.moreLabel}
+                </span>
               </Link>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

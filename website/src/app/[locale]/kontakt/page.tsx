@@ -14,6 +14,7 @@ import {
   AlertCircle,
   Accessibility,
 } from "lucide-react";
+import OpeningHours from "@/components/ui/OpeningHours";
 
 const DOCTOLIB_URL = "https://www.doctolib.de/praxis/neuwied/urologie-neuwied/booking";
 
@@ -403,6 +404,7 @@ export default function KontaktPage() {
                   <Clock size={18} className="text-primary" />
                   {c.sprechstunden}
                 </h2>
+                <OpeningHours locale={locale} variant="prominent" className="mb-6" />
                 <div className="space-y-3">
                   {c.days.map(({ day, hours }) => (
                     <div key={day} className="flex justify-between items-center py-2.5 border-b border-[#e5e5e5] last:border-0">

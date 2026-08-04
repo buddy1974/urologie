@@ -137,3 +137,45 @@ tracked items are gone from the page, not just corrected.
 **How to apply:** If the MBO-Ä/MPG/KBV items are still relevant, they should be
 re-added as verified, sourced content (confirm against actual device maintenance
 records / KBV integration status) rather than restored as-is from the old page.
+
+## 2026-08-04 — Visual enhancement pass: three deviations from the pasted spec
+
+**Context:** A visual-enhancement spec (card-grid overlay menu, animated stats,
+live opening hours, floating contact button, back-to-top, scroll reveals, trust
+badge marquee, service card hover) was implemented in `website/` only. Three
+details in the spec conflicted with either working code or verifiable facts.
+
+**1. Floating buttons moved from bottom-right to bottom-left.** The spec put the
+new phone pill and back-to-top button bottom-right, but `ChatWidget.tsx` already
+occupies that corner (`fixed bottom-6 right-6 z-50`, expanding to a 520px-tall
+panel when open) — a comment in `Hero.tsx` already flags that corner as
+"reserved for the fixed chat widget." Stacking three floating elements there
+risked the chat panel covering or visually colliding with the new buttons.
+Moved `FloatingContact` and `BackToTop` to bottom-left instead.
+
+**2. Phone number in the floating button corrected.** The spec's `href` was
+`tel:+4926312235` — missing the final digit of the practice's real number. Used
+`tel:+49263123351`, matching the number already used in `Hero.tsx` and
+`FinalCtaStrip.tsx`.
+
+**3. Trust badge marquee (`TrustStrip.tsx`) dropped three unverifiable claims.**
+The spec listed 8 badges. Five are already established elsewhere in the
+codebase (Ärztekammer Rheinland-Pfalz / KV RLP from `Impressum`, Doctolib
+Partner, "Onkologisch qualifiziert" from `DoctorProfile`, GKV & PKV from the
+FAQ). Three were not established anywhere in the repo and imply specific,
+checkable credentials: "Deutsche Gesellschaft für Andrologie (DGA)" (formal
+society membership), "Vasektomie-Experten-Netzwerk" (a named network
+membership, distinct from the existing "Vasektomie-Experte" self-description),
+and "TÜV-geprüfte Datensicherheit" (a formal security audit/certification).
+Dropped those three rather than publish unverified professional/certification
+claims on a live medical practice's public site.
+
+**Why it matters:** none of these are legal documents the way Datenschutz is,
+but a public trust-badge strip on a healthcare site making unverifiable
+certification/membership claims carries similar risk (Heilmittelwerbegesetz-
+adjacent) to an inaccurate legal page, and a wrong phone number or a UX
+collision with an already-shipped widget are both straightforward defects.
+
+**How to apply:** if Marcel/Dr. Fomuki confirms the DGA membership,
+Vasektomie-Experten-Netzwerk affiliation, or a TÜV data-security audit are
+real, re-add them to `TrustStrip.tsx`'s badge list with the confirmed wording.

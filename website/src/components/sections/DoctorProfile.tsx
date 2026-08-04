@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 
 const content = {
@@ -47,13 +50,25 @@ export default function DoctorProfile({ locale }: { locale: string }) {
     <section className="bg-[#f9fafb]">
       <div className="container py-20">
         <div className="grid grid-cols-1 md:grid-cols-[40%_60%] gap-12 items-start">
-          <div className="order-1">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="order-1"
+          >
             <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden">
               <Image src="/assets/walters_fomuki_2023.jpg" alt={c.name} fill className="object-cover" priority={false} />
             </div>
-          </div>
+          </motion.div>
 
-          <div className="order-2">
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+            className="order-2"
+          >
             <p className="text-primary text-[12px] font-bold uppercase tracking-widest mb-3">{c.label}</p>
             <h2 className="text-primary-dark mb-2">{c.name}</h2>
             <p className="text-body-text font-bold mb-6">{c.subtitle}</p>
@@ -77,7 +92,7 @@ export default function DoctorProfile({ locale }: { locale: string }) {
             <Link href={`/${locale}/dr-walters`} className="text-primary font-bold hover:text-primary-dark transition-colors">
               {c.linkLabel}
             </Link>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
